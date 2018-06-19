@@ -10,6 +10,6 @@ $obj = json_decode($result, TRUE);
 curl_close($ch);
 //print_r($obj);
 $difficulty = $obj['difficulty'];
-$hashrate = round($difficulty / 720);
+$hashrate = round($difficulty / 120);
 print_r($hashrate);
 ?>
