@@ -1,4 +1,4 @@
-var api = 'http://94.177.171.102:15000';
+var api = 'http://localhost:16000';
 var blockTargetInterval = 120;
 var coinUnits = 1000000;
 var symbol = 'CCX';
