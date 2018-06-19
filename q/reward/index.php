@@ -1,6 +1,8 @@
 <?php
+$api = 'http://localhost:16000';
+if (isset($_GET['api'])) $api = $_GET['api'];
 $data_string = '{"jsonrpc":"2.0","id":"test","method":"getlastblockheader","params":" "}';
-$ch = curl_init('http://localhost:16000/json_rpc');
+$ch = curl_init($api.'/json_rpc');
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
