@@ -19,8 +19,8 @@
 
                             <li>Transactions: <span id="networkTransactions"></span></li>
                             <li>Supply: <span id="totalCoins"></span></li>
-                            <li>Deposits: <span id="depositCoins"></span></li>
-                            <li>Emission: <span id="emissionPercent"></span> %</li>
+                            <li>Deposits/Investments: <span id="depositCoins"></span></li>
+                            <li>Circulating Supply: <span id="emissionPercent"></span></li>
                         </ul>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
             cache: 'false',
             success: function(data) {
                 last_block_hash = data.result.block_header.hash;
-                last_block_deposts = data.result.block_header.deposits;
+                last_block_deposts = data.result.block_header.deposits;                
                 $.ajax({
                     url: api + '/json_rpc',
                     method: "POST",
@@ -172,8 +172,9 @@
                     cache: 'false',
                     success: function(data) {
                     block = data.result.block;
+                        circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
                         updateText('totalCoins', getReadableCoins(block.alreadyGeneratedCoins,6));
-                        updateText('emissionPercent', (block.alreadyGeneratedCoins / 100000000000000 * 100).toFixed(4));
+                        updateText('emissionPercent', getReadableCoins(circulating_supply,6));
                         updateText('currentReward', getReadableCoins(block.baseReward,4));
                         updateText('depositCoins', getReadableCoins(last_block_deposts,6));                        
                     }
