@@ -1,0 +1,156 @@
+@import url("bootstrap.css");
+
+.explorer-search {
+    margin-top: 5px;
+}
+
+#coinName {
+    text-transform: capitalize;
+}
+
+#coinIcon {
+    text-transform: capitalize;
+    width: 1.3em;
+    height: 1.3em;
+    display: inline-block;
+    vertical-align: middle;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    text-align: center;
+    margin-top: -4px;
+}
+
+body {
+    padding-top: 65px;
+    padding-bottom: 80px;
+    overflow-y: scroll;
+}
+
+#loading {
+    font-size: 2em;
+}
+
+.stats {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    font-size: 1em;
+}
+
+.stats:last-child {
+    width: auto;
+}
+
+.stats > h3 > i {
+    font-size: 0.8em;
+    width: 21px;
+}
+
+.stats > div {
+    padding: 5px 0;
+    font-size: 0.85em;
+}
+
+.stats > div > .fa {
+    width: 25px;
+}
+
+.stats > div > span:first-of-type {
+    font-weight: bold;
+}
+
+#stats_updated {
+    opacity: 0;
+    height: 40px;
+    line-height: 40px;
+    color: #e8e8e8;
+    font-size: 0.9em;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin: 30px 0;
+}
+
+table td {
+    font-family: "Poppins", "Lucida Console", Monaco, monospace;
+}
+
+.scrollup {
+    opacity: 0.3;
+    position: fixed;
+    bottom: 50px;
+    right: 100px;
+    display: none;
+    text-align: center;
+    line-height: 50px;
+    font-size: 50px;
+    -webkit-transition: color 200ms ease-in-out;
+    -moz-transition: color 200ms ease-in-out;
+    -o-transition: color 200ms ease-in-out;
+    -ms-transition: color 200ms ease-out;
+    display: none;
+    overflow: hidden;
+}
+
+#block.hash,
+#transaction.hash {
+    word-break: break-all;
+}
+
+.form-control {
+    background-color: #474747;
+    color: #fff;
+}
+
+.navbar .theme-switch {
+    background: transparent;
+    border: none;
+    line-height: 21px;
+    padding-top: 9.5px;
+    padding-bottom: 9.5px;
+}
+
+.nav-pills > li {
+    padding-bottom: 25px;
+}
+
+table {
+    font-size: 13px;
+}
+
+thead {
+    background-color: #1d1d1d;
+}
+
+#network-hash > thead > tr > th {
+    cursor: pointer;
+}
+
+#pools_rows > tr > td {
+    vertical-align: middle;
+    text-align: center;
+    white-space: pre-line;
+}
+
+#pools_header > tr > th:first-child,
+#pools_rows > tr > td:first-child {
+    text-align: left;
+}
+
+#pools_header > tr > th:last-child,
+#pools_rows > tr > td:last-child {
+    text-align: left;
+}
+
+#block-range-wrapper {
+    font-size: 12px;
+    line-height: 20px;
+    color: #888;
+    float: right;
+}

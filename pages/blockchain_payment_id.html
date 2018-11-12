@@ -19,9 +19,10 @@
 
 <script>
     var paymentId, xhrGetTsx, txsByPaymentId;
-    paymentId = urlParam('hash');
-    updateText('paymend_id', paymentId);
-
+	
+	paymentId = urlParam('hash');
+	updateText('paymend_id', paymentId);
+	
     currentPage = {
         destroy: function(){
             if (xhrGetTsx) xhrGetTsx.abort();
@@ -35,40 +36,41 @@
 
     function getTransactions(){
         if (xhrGetTsx) xhrGetTsx.abort();
-        txsByPaymentId = $.parseJSON(sessionStorage.getItem('txsByPaymentId'));
+		txsByPaymentId = $.parseJSON(sessionStorage.getItem('txsByPaymentId'));
         if (txsByPaymentId) {
-            renderTransactions(txsByPaymentId);
-        } else {
-            xhrGetTsx = $.ajax({
-                url: api + '/json_rpc',
-                method: "POST",
-                data: JSON.stringify({
-                    jsonrpc:"2.0",
-                    id: "test",
-                    method:"k_transactions_by_payment_id",
-                    params: {
-                        payment_id: paymentId
-                    }
-                }),
-                dataType: 'json',
-                cache: 'false',
-                success: function(data){
-                    var txs = data.result.transactions;
-                    renderTransactions(txs);
-                }
-            });
-        }
-        sessionStorage.removeItem('txsByPaymentId');
-    }
+			renderTransactions(txsByPaymentId);
+		} else {
+			xhrGetTsx = $.ajax({
+				url: api + '/json_rpc',
+				method: "POST",
+				data: JSON.stringify({
+					jsonrpc:"2.0",
+					id: "test",
+					method:"k_transactions_by_payment_id",
+					params: {
+						payment_id: paymentId
+					}
+				}),
+				dataType: 'json',
+				cache: 'false',
+				success: function(data){
+					var txs = data.result.transactions;
+					renderTransactions(txs);
+				}
+			});
+		}
+		sessionStorage.removeItem('txsByPaymentId');
+	}
 
     function getTransactionCells(transaction){
         return '<td>' + formatPaymentLink(transaction.hash) + '</td>' +
                '<td>' + getReadableCoins(transaction.fee, 4, true) + '</td>' +
                '<td>' + getReadableCoins(transaction.amount_out, 4, true) + '</td>' +
-               '<td>' + transaction.size + '</td>';
+               '<td>' + localizeNumber(transaction.size) + '</td>';
     }
 
     function getTransactionRowElement(transaction, jsonString){
+
         var row = document.createElement('tr');
         row.setAttribute('data-json', jsonString);
         row.setAttribute('data-hash', transaction.hash);
@@ -80,11 +82,15 @@
     }
 
     function renderTransactions(transactionResults){
+
         var $transactionsRows = $('#transactions_rows');
 
         for (var i = 0; i < transactionResults.length; i++){
+
             var transaction = transactionResults[i];
+
             var transactionJson = JSON.stringify(transaction);
+
             var existingRow = document.getElementById('transactionRow' + transaction.hash);
 
             if (existingRow && existingRow.getAttribute('data-json') !== transactionJson){
@@ -95,10 +101,12 @@
                 var transactionElement = getTransactionRowElement(transaction, transactionJson);
                 $transactionsRows.append(transactionElement);
             }
+
         }
     }
 
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+	$(function() {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	
 </script>

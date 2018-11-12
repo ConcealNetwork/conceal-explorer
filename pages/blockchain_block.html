@@ -56,89 +56,90 @@
 
     function getBlock(){
         if (xhrGetBlock) xhrGetBlock.abort();
-        var searchBlk = $.parseJSON(sessionStorage.getItem('searchBlock'));
-        if (searchBlk) {
-            renderBlock(searchBlk);
-        } else {
-            xhrGetBlock = $.ajax({
-                url: api + '/json_rpc',
-                method: "POST",
-                data: JSON.stringify({
-                    jsonrpc:"2.0",
-                    id: "test",
-                    method:"f_block_json",
-                    params: {
-                        hash: urlParam('hash')
-                    }
-                }),
-                dataType: 'json',
-                cache: 'false',
-                success: function(data){
-                    block = data.result.block;
-                    renderBlock(block);
-                }
-            });
-        }
-        sessionStorage.removeItem('searchBlock');
+		var searchBlk = $.parseJSON(sessionStorage.getItem('searchBlock'));
+		if (searchBlk) {
+			renderBlock(searchBlk);
+		} else {
+			xhrGetBlock = $.ajax({
+				url: api + '/json_rpc',
+				method: "POST",
+				data: JSON.stringify({
+					jsonrpc:"2.0",
+					id: "test",
+					method:"f_block_json",
+					params: {
+						hash: urlParam('hash')
+					}
+				}),
+				dataType: 'json',
+				cache: 'false',
+				success: function(data){
+					block = data.result.block;
+					renderBlock(block);
+				}
+			});
+		}
+		sessionStorage.removeItem('searchBlock');
     }
-
-    function renderBlock(block){
-        updateText('block.hash', block.hash);
-        updateText('block.height', block.height);
-        updateText('block.timestamp', formatDate(block.timestamp));
-        updateText('block.version', block.major_version + '.' + block.minor_version);
-        updateText('block.difficulty', block.difficulty);
-        updateText('block.orphan', block.orphan_status ? "так" : "ні");
-        updateText('block.transactions', block.transactions.length);
-        updateText('block.transactionsSize', block.transactionsCumulativeSize);
-        updateText('block.blockSize', block.blockSize);
-        updateText('block.currentTxsMedian', block.sizeMedian);
-        updateText('block.effectiveTxsMedian', block.effectiveSizeMedian);
-        updateText('block.rewardPenalty', block.penalty*100 + "%");
-        updateText('block.baseReward', getReadableCoins(block.baseReward));
-        updateText('block.transactionsFee', getReadableCoins(block.totalFeeAmount));
-        updateText('block.reward', getReadableCoins(block.reward));
-        updateText('block.totalCoins', getReadableCoins(block.alreadyGeneratedCoins));
-        updateText('block.totalTransactions', block.alreadyGeneratedTransactions);
-        renderTransactions(block.transactions);
-
-        makePrevBlockLink(block.prev_hash);
-
-        $.ajax({
-            url: api + '/json_rpc',
-            method: "POST",
-            data: JSON.stringify({
-                jsonrpc: "2.0",
-                id: "test",
-                method: "getblockheaderbyheight",
-                params: {
-                    height: (block.height + 1)
-                }
-            }),
-            dataType: 'json',
-            cache: 'false',
-            success: function(data){
-                if(data.result){
-                    var nextBlockHash = data.result.block_header.hash;
-                }
-                if(nextBlockHash) {
-                    makeNextBlockLink(nextBlockHash);
-                }
-            },
-            error: function (ajaxContext) {
-            }
-        });
-
-    }
-
+	
+	function renderBlock(block){
+				updateText('block.hash', block.hash);
+				updateText('block.height', localizeNumber(block.height));
+				updateText('block.timestamp', formatDate(block.timestamp));
+				updateText('block.version', block.major_version + '.' + block.minor_version);
+				updateText('block.difficulty', localizeNumber(block.difficulty));
+				updateText('block.orphan', block.orphan_status ? "YES" : "NO");
+				updateText('block.transactions', block.transactions.length);
+				updateText('block.transactionsSize', localizeNumber(block.transactionsCumulativeSize));
+				updateText('block.blockSize', localizeNumber(block.blockSize));
+				updateText('block.currentTxsMedian', localizeNumber(block.sizeMedian));
+				updateText('block.effectiveTxsMedian', localizeNumber(block.effectiveSizeMedian));
+				updateText('block.rewardPenalty', block.penalty*100 + "%");
+				updateText('block.baseReward', getReadableCoins(block.baseReward));
+				updateText('block.transactionsFee', getReadableCoins(block.totalFeeAmount));
+				updateText('block.reward', getReadableCoins(block.reward));
+				updateText('block.totalCoins', getReadableCoins(block.alreadyGeneratedCoins));
+				updateText('block.totalTransactions', localizeNumber(block.alreadyGeneratedTransactions));
+				renderTransactions(block.transactions);
+			
+				makePrevBlockLink(block.prev_hash);
+				
+				$.ajax({
+					url: api + '/json_rpc',
+					method: "POST",
+					data: JSON.stringify({
+					jsonrpc: "2.0",
+					id: "test",
+					method: "getblockheaderbyheight",
+					params: {
+						height: (block.height + 1)
+					}
+					}),
+					dataType: 'json',
+					cache: 'false',
+					success: function(data){
+					  if(data.result){
+						var nextBlockHash = data.result.block_header.hash;
+					  }
+						 if(nextBlockHash) {
+							makeNextBlockLink(nextBlockHash);
+						 }
+					},
+					error: function (ajaxContext) {
+					}
+				});
+	
+	}
+	
     function getTransactionCells(transaction){
         return '<td>' + formatPaymentLink(transaction.hash) + '</td>' +
                '<td>' + getReadableCoins(transaction.fee, 4, true) + '</td>' +
                '<td>' + getReadableCoins(transaction.amount_out, 4, true) + '</td>' +
-               '<td>' + transaction.size + '</td>';
+               '<td>' + localizeNumber(transaction.size) + '</td>';
     }
 
     function getTransactionRowElement(transaction, jsonString){
+
         var row = document.createElement('tr');
         row.setAttribute('data-json', jsonString);
         row.setAttribute('data-hash', transaction.hash);
@@ -150,11 +151,15 @@
     }
 
     function renderTransactions(transactionResults){
+
         var $transactionsRows = $('#transactions_rows');
 
         for (var i = 0; i < transactionResults.length; i++){
+
             var transaction = transactionResults[i];
+
             var transactionJson = JSON.stringify(transaction);
+
             var existingRow = document.getElementById('transactionRow' + transaction.hash);
 
             if (existingRow && existingRow.getAttribute('data-json') !== transactionJson){
@@ -165,22 +170,24 @@
                 var transactionElement = getTransactionRowElement(transaction, transactionJson);
                 $transactionsRows.append(transactionElement);
             }
+
         }
     }
-
-    function makeNextBlockLink(blockHash){
-        $('#block_height').append(' <a href="' + getBlockchainUrl(blockHash) + '" title="Next block"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>');
-    }
-
-    function makePrevBlockLink(blockHash){
-        $('#block_height').prepend('<a href="' + getBlockchainUrl(blockHash) + '" title="Previous block"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a> ');
-    }
-
-    function formatPrevNextBlockLink(hash){
+	
+	function makeNextBlockLink(blockHash){
+		$('#block_height').prepend('<a href="' + getBlockchainUrl(blockHash) + '" title="Next block"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a> ');
+	}
+	
+	function makePrevBlockLink(blockHash){
+		$('#block_height').append(' <a href="' + getBlockchainUrl(blockHash) + '" title="Previous block"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>');
+	}
+	
+	function formatPrevNextBlockLink(hash){
         return '<a href="' + getBlockchainUrl(hash) + '">' + hash + '</a>';
     }
-
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+	
+	$(function() {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	
 </script>
