@@ -3,17 +3,15 @@
 require '../util.php';
 $config = (require '../../config.php');
 
-$info = fetch_maple($config['maple']);
+$datay1 = json_decode(file_get_contents('prices.txt'), true);
 
-$price = $info['ticker']['sell'];
-
-$sats = $price * 100000000;
+$sats = end($datay1);
 
 $info2 = fetch_bitstamp($config['bitstamp']);
 
 $btc = number_format($info2['last'],2,".",",");
 
-$ccxinusd = $price * $info2['last'];
+$ccxinusd = ($sats / 100000000) * $info2['last'];
 
 $ccx_usd = number_format($ccxinusd, 4, ".", "");
 
