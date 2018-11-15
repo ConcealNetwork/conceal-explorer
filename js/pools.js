@@ -204,7 +204,8 @@ NETWORK_STAT_MAP2.forEach(function(url, host, map) {
         poolStats.push([poolName, data.pool_statistics.hashRate, colorHash.hex(poolName)]);
 
         $.getJSON(url + '/network/stats', function(data, textStatus, jqXHR) {
-            updateText('height-'+poolName, localizeNumber(data.height));
+            properHeight = data.height + 1;
+            updateText('height-'+poolName, localizeNumber(properHeight));
         });
 
         $.getJSON(url + '/config', function(data, textStatus, jqXHR) {
