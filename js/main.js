@@ -93,6 +93,11 @@ function formatBlockLink(hash){
 }
 
 function getReadableCoins(coins, digits, withoutSymbol){
+    var amount = (coins/ coinUnits).toFixed(6);
+    return (amount) + (withoutSymbol ? '' : (' ' + symbol));
+}
+
+function getReadableCoins2(coins, digits, withoutSymbol){
     var amount = (parseInt(coins || 0) / coinUnits).toFixed(digits || coinUnits.toString().length - 1);
     return localizeNumber(amount) + (withoutSymbol ? '' : (' ' + symbol));
 }

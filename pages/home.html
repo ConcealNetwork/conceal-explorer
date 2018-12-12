@@ -173,10 +173,10 @@
                     success: function(data) {
                     block = data.result.block;
                         circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
-                        updateText('totalCoins', getReadableCoins(block.alreadyGeneratedCoins,6));
-                        updateText('emissionPercent', getReadableCoins(circulating_supply,6));
+                        updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins,6));
+                        updateText('emissionPercent', getReadableCoins2(circulating_supply,6));
                         updateText('currentReward', getReadableCoins(block.baseReward,4));
-                        updateText('depositCoins', getReadableCoins(last_block_deposts,6));                        
+                        updateText('depositCoins', getReadableCoins2(last_block_deposts,6));                        
                     }
                 });
             }
