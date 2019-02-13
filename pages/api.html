@@ -1,21 +1,29 @@
-<h2><i class="fa fa-code" aria-hidden="true"></i> API <small id="paymend_id" style="word-break: break-all;"></small></h2>
-
-
-
-	<div class="container">
+<div class="card mg-t-20" id="blockInfo">
+	<div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h2><i class="fa fa-code" aria-hidden="true"></i> API <small id="paymend_id" style="word-break: break-all;"></small></h2></div>
+	<div class="card-body card-body-info">				
 		<div class="row">
-          <div class="col-lg-12">
-			
-			<h4>Supported APIs</h4>
-			
-			<ul>
-				<li><strong><a href="/q/hashrate">hashrate</a></strong> &ndash; current estimated network hashrate</li>
-				<li><strong><a href="/q/height">height</a></strong> &ndash; current height (incl. genesis block)</li>
-				<li><strong><a href="/q/reward">reward</a></strong> &ndash; current block reward</li>
-				<li><strong><a href="/q/supply">supply</a></strong> &ndash; circulating supply</li>
-			</ul>
-
-			
-		  </div>
+			<div class="col-lg-12">		
+				<h4><span tkey="apiTitle">Supported APIs</h4>				
+				<ul>
+					<li><strong><a href="/q/hashrate"><span tkey="apiHashrateLabel">hashrate</span></a></strong> &ndash; <span tkey="apiHashrateText">current estimated network hashrate</span></li>
+					<li><strong><a href="/q/height"><span tkey="apiHeightLabel">height</span></a></strong> &ndash; <span tkey="apiHeightText">current height (incl. genesis block)</span></li>
+					<li><strong><a href="/q/reward"><span tkey="apiRewardLabel">reward</span></a></strong> &ndash; <span tkey="apiRewardText">current block reward</span></li>
+					<li><strong><a href="/q/supply"><span tkey="apiSupplyLabel">supply</span></a></strong> &ndash; <span tkey="apiSupplyText">circulating supply</span></li>
+					<li><strong><a href="/q/totalsupply"><span tkey="apiTotalSupplyLabel">totalsupply</span></a></strong> &ndash; <span tkey="apiTotalSupplyText">current total supply of coins</span></li>
+					<li><strong><a href="/q/totalbanked"><span tkey="apiTotalBankedLabel">totalbanked</span></a></strong> &ndash; <span tkey="apiTotalBankedText">current total banked coins</span></li>
+				</ul>				
+			</div>
 		</div>
 	</div>
+</div>
+
+<script>
+currentPage = {
+    destroy: function(){},
+    init: function(){
+        loadTranslations();
+    },
+    update: function(){
+    }
+};
+</script>

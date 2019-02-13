@@ -1,56 +1,71 @@
-<h2><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Transaction</h2>
-<div class="row" id="tx_info">
-    <div class="col-md-12 stats">
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Unique fingerprint of the transaction."><i class="fa fa-question-circle"></i></span> Hash: <span id="transaction.hash" style="word-break: break-all;"></span></div>
-		<div id="confirmations" style="display: none;"><span data-toggle="tooltip" data-placement="right" data-original-title="The number of network confirmations."><i class="fa fa-question-circle"></i></span> Confirmations: <span id="transaction.confirmations"></span>, First confirmation time: <span id="transaction.timestamp"></span> (<time class="transaction-timeago"></time>)</div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Money that goes to the miner, who included this transaction into block."><i class="fa fa-question-circle"></i></span> Fee: <span id="transaction.fee"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="It does not mean that this is the amount that is actually transferred."><i class="fa fa-question-circle"></i></span> Sum of outputs: <span id="transaction.amount_out"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Size of the transaction in bytes."><i class="fa fa-question-circle"></i></span> Size: <span id="transaction.size"></span></div>
-        <div id="div_transaction_paymentId"><span data-toggle="tooltip" data-placement="right" data-original-title="Optional user-defined hexadecimal characters string. Can be used by anyone to distinguish the transactions easier."><i class="fa fa-question-circle"></i></span> Payment ID: <span id="transaction.paymentId"></span></div>
-        <div id="div_transaction_mixin"><span data-toggle="tooltip" data-placement="right" data-original-title="Conceal uses a static MixIn of 4 for all transfers."><i class="fa fa-question-circle"></i></span> Mixin: <span id="transaction.mixin"></span></div>
-		<div id="tx_unconfirmed" style="display: none;"><span data-toggle="tooltip" data-placement="right" data-original-title="The transaction is not included into block yet and therefore is not wtitten into blockchain."><i class="fa fa-question-circle"></i></span> <span class="text-warning">Unconfirmed transaction</span></div>
+<div class="card mg-t-20" id="transactionInfo">
+    <div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h2><i class="fa fa-exchange fa-fw" aria-hidden="true"></i><span tkey="txViewTxTitle">Transaction</span></h2></div>
+    <div class="card-body card-body-info">    
+        <div class="row" id="tx_info">
+            <div class="col-md-12 stats">
+                <div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="txViewHashHint" data-original-title="Unique fingerprint of the transaction."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="txViewHash"> Hash: </span><span id="transaction.hash" style="word-break: break-all;"></span></div>
+                <div  class="mg-t-10" id="confirmations" style="display: none;"><span data-toggle="tooltip" data-placement="right" tdata-original-title="txViewConfirmationsHint" data-original-title="The number of network confirmations."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="txViewConfirmations"> Confirmations: </span><span id="transaction.confirmations"></span><span class="card-label" tkey="txViewConfirmationsTime">, First confirmation time: </span><span id="transaction.timestamp"></span> (<time class="transaction-timeago"></time>)</div>
+                <div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="txViewFeeHint" data-original-title="Money that goes to the miner, who included this transaction into block."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="txViewFee"> Fee: </span><span id="transaction.fee"></span></div>
+                <div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="txViewOutputsHint" data-original-title="It does not mean that this is the amount that is actually transferred."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="txViewOutputs"> Sum of outputs: </span><span id="transaction.amount_out"></span></div>
+                <div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="txViewSizeHint" data-original-title="Size of the transaction in bytes."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="txViewSize"> Size: </span><span id="transaction.size"></span></div>
+                <div  class="mg-t-10" id="div_transaction_paymentId"><span data-toggle="tooltip" data-placement="right" data-original-title="Optional user-defined hexadecimal characters string. Can be used by anyone to distinguish the transactions easier."><i class="fa fa-question-circle"></i></span><span class="card-label"> Payment ID: </span><span id="transaction.paymentId"></span></div>
+                <div  class="mg-t-10" id="div_transaction_mixin"><span data-toggle="tooltip" data-placement="right" data-original-title="Conceal uses a static MixIn of 4 for all transfers."><i class="fa fa-question-circle"></i></span><span class="card-label"> Mixin: </span><span id="transaction.mixin"></span></div>
+                <div  class="mg-t-10" id="tx_unconfirmed" style="display: none;"><span data-toggle="tooltip" data-placement="right" data-original-title="The transaction is not included into block yet and therefore is not wtitten into blockchain."><i class="fa fa-question-circle"></i></span> <span class="text-warning"><span class="card-label">Unconfirmed transaction</span></span></div>
+            </div>
+        </div>
     </div>
 </div>
-<div id="tx_block">
-	<h3><i class="fa fa-cube fa-fw" aria-hidden="true"></i> In block</h3>
-	<div class="row">
-		<div class="col-md-12 stats">
-			<div><i class=""></i> Hash: <span id="block.hash" style="word-break: break-all;"></span></div>
-			<div><i class=""></i> Height: <span id="block.height"></span></div>
-			<div><i class=""></i> Timestamp: <span id="block.timestamp"></span></div>
-		</div>
-	</div>
+
+<div class="card mg-t-20" id="inBlockInfo">
+    <div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h3><i class="fa fa-cube fa-fw" aria-hidden="true"></i><span tkey="txViewInBlockTitle">In block</span></h3></div>
+    <div class="card-body">    
+        <div class="row" id="tx_block">
+            <div class="col-md-12 stats">
+                <div><i class=""></i><span class="card-label" tkey="txViewInBlockHash"> Hash: </span><span id="block.hash" style="word-break: break-all;"></span></div>
+                <div class="mg-t-10"><i class=""></i><span class="card-label" tkey="txViewInBlockHeight"> Height: </span><span id="block.height"></span></div>
+                <div class="mg-t-10"><i class=""></i><span class="card-label" tkey="txViewInBlockTimestamp"> Timestamp: </span><span id="block.timestamp"></span></div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<h3 class="inputs">Inputs (<span id="inputs_count"></span>)</h3>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th><i class=""></i> Amount</th>
-            <th><i class=""></i> Image</th>
-        </tr>
-        </thead>
-        <tbody id="inputs_rows">
+<div class="card mg-t-20" id="inputsInfo">
+    <div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h3 class="inputs"><span tkey="txViewInputsTitle">Inputs</span> (<span id="inputs_count"></span>)</h3></div>
+    <div class="card-body">    
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th><i class=""></i><span tkey="txViewInputsAmmount">Amount</span></th>
+                    <th><i class=""></i><span tkey="txViewInputsImage">Image</span></th>
+                </tr>
+                </thead>
+                <tbody id="inputs_rows">
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 
-<h3 class="outputs">Outputs (<span id="outputs_count"></span>)</h3>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th><i class=""></i> Amount</th>
-            <th><i class=""></i> Key</th>
-        </tr>
-        </thead>
-        <tbody id="outputs_rows">
+<div class="card mg-t-20" id="outputsInfo">
+    <div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h3 class="outputs"><span tkey="txViewOutputsTitle">Outputs</span> (<span id="outputs_count"></span>)</h3></div>
+    <div class="card-body">      
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th><i class=""></i><span tkey="txViewOutputsAmmount">Amount</span></th>
+                    <th><i class=""></i><span tkey="txViewOutputsKey">Key</span></th>
+                </tr>
+                </thead>
+                <tbody id="outputs_rows">
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -62,6 +77,7 @@
         },
         init: function(){
             getTransaction();
+			loadTranslations();
         },
         update: function(){
         }

@@ -8,6 +8,8 @@ require '../util.php';
 $config = (require '../../config.php');
 $info = fetch_exchange("https://app.stex.com/api2/ticker");
 
+
+
 for ($x = 1; $x <= count($info); $x++) {
     $market = $info[$x];
     if ($market['market_name'] == "CCX_BTC") {

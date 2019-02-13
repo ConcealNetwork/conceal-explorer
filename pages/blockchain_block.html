@@ -1,43 +1,54 @@
-<h2><i class="fa fa-cube fa-fw" aria-hidden="true"></i> Block <small id="block.hash" style="word-break: break-all;"></small></h2>
-<div class="row">
-    <div class="col-md-6 stats">
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Block index in the chain, counting from zero (i.e. genesis block)."><i class="fa fa-question-circle"></i></span> Height: <span id="block_height"><span id="block.height"></span></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Block timestamp displayed as UTC. The timestamp correctness it up to miner, who mined the block."><i class="fa fa-question-circle"></i></span> Timestamp: <span id="block.timestamp"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="“major version”.“minor version”"><i class="fa fa-question-circle"></i></span> Version: <span id="block.version"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="How difficult it is to find a solution for the block. More specifically, it`s mathematical expectation for number of hashes someone needs to calculate in order to find a correct nonce value solving the block."><i class="fa fa-question-circle"></i></span> Difficulty: <span id="block.difficulty"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="True, if the block belongs to an alternative chain. In such case all the transactions, excluding coinbase, are removed from the block back to transaction pool to be included in another block. It means there is no reward for the miner."><i class="fa fa-question-circle"></i></span> Orphan: <span id="block.orphan"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Number of transactions in the block, including coinbase transaction (which transfers block reward to the miner)."><i class="fa fa-question-circle"></i></span> Transactions: <span id="block.transactions"></span></a></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Cumulative amount of coins issued by all the blocks in blockchain from the genesis and up to this block."><i class="fa fa-question-circle"></i></span> Total coins in the network: <span id="block.totalCoins"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Cumulative number of transactions in the blockchain, from the genesis block and up to this block."><i class="fa fa-question-circle"></i></span> Total transactions in the network: <span id="block.totalTransactions"></span></div>
-    </div>
+<div class="card mg-t-20" id="blockInfo">
+	<div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h2><i class="fa fa-cube fa-fw" aria-hidden="true"></i> Block <small id="block.hash" style="word-break: break-all;"></small></h2></div>
+	<div class="card-body card-body-info">
+		<div class="row">
+			<div class="col-md-6 stats">
+				<div><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockHeightHint" data-original-title="Block index in the chain, counting from zero (i.e. genesis block)."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockHeight"> Height: </span><span id="block_height"><span id="block.height"></span></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockTimestampHint" data-original-title="Block timestamp displayed as UTC. The timestamp correctness it up to miner, who mined the block."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockTimestamp"> Timestamp: </span><span id="block.timestamp"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockVersionHint" data-original-title="“major version”.“minor version”"><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockVersion"> Version: </span><span id="block.version"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockDifficultyHint" data-original-title="How difficult it is to find a solution for the block. More specifically, it`s mathematical expectation for number of hashes someone needs to calculate in order to find a correct nonce value solving the block."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockDifficulty"> Difficulty: </span><span id="block.difficulty"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockOrphanHint" data-original-title="True, if the block belongs to an alternative chain. In such case all the transactions, excluding coinbase, are removed from the block back to transaction pool to be included in another block. It means there is no reward for the miner."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockOrphan"> Orphan: </span><span id="block.orphan"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockTransactionsHint" data-original-title="Number of transactions in the block, including coinbase transaction (which transfers block reward to the miner)."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockTransactions"> Transactions: </span><span id="block.transactions"></span></a></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blocTotalCoinsHint" data-original-title="Cumulative amount of coins issued by all the blocks in blockchain from the genesis and up to this block."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blocTotalCoins"> Total coins in the network: </span><span id="block.totalCoins"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockTotalTxCountHint" data-original-title="Cumulative number of transactions in the blockchain, from the genesis block and up to this block."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockTotalTxCount"> Total transactions in the network: </span><span id="block.totalTransactions"></span></div>
+			</div>
 
-    <div class="col-md-6 stats">
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Cumulative size of all transactions in the block, including coinbase. In case it's exceeding 'effective txs median' the reward penalty occurs and therefore miner receives less reward."><i class="fa fa-question-circle"></i></span> Total transactions size, bytes: <span id="block.transactionsSize"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Size of the whole block, i.e. block header plus all transactions."><i class="fa fa-question-circle"></i></span> Total block size, bytes: <span id="block.blockSize"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Median value of block total transactions size among last n blocks."><i class="fa fa-question-circle"></i></span> Current txs median, bytes: <span id="block.currentTxsMedian"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Bounded from below median value that is actually used to calculate penalty. More specifically, &lt;effective median&gt; = max(&lt;current median&gt;, 20000)"><i class="fa fa-question-circle"></i></span> Effective txs median, bytes: <span id="block.effectiveTxsMedian"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Penalty for exceeding the median. &lt;penalty&gt; = (&lt;total&nbsp;transactions&nbsp;size&gt; / &lt;effective&nbsp;tx&nbsp;median&gt; − 1) ^ 2. No penalty if total transactions size is less then effective median. Penalty is near 100% if total txs size is twice the effective median. Greater blocks are not allowed."><i class="fa fa-question-circle"></i></span> Reward penalty: <span id="block.rewardPenalty"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Base value for calculating the block reward. Does not depend on how many transactions are included into the block. Also, this is how many coins the miner would receive if the block contains only coinbase transaction."><i class="fa fa-question-circle"></i></span> Base reward: <span id="block.baseReward"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Sum of fees for all transactions in the block."><i class="fa fa-question-circle"></i></span> Transactions fee: <span id="block.transactionsFee"></span></div>
-        <div><span data-toggle="tooltip" data-placement="right" data-original-title="Actual amount of coins the miner received for finding the block. &lt;reward&gt; = &lt;base reward&gt; × (1 − &lt;penalty&gt;) + &lt;transactions fee&gt;"><i class="fa fa-question-circle"></i></span> Reward: <span id="block.reward"></span></div>
-    </div>
+			<div class="col-md-6 stats">
+				<div><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockTotalTxSizeHint" data-original-title="Cumulative size of all transactions in the block, including coinbase. In case it's exceeding 'effective txs median' the reward penalty occurs and therefore miner receives less reward."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockTotalTxSize"> Total transactions size, bytes: </span><span id="block.transactionsSize"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockTotalTxBlockSizeHint" data-original-title="Size of the whole block, i.e. block header plus all transactions."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockTotalTxBlockSize"> Total block size, bytes: </span><span id="block.blockSize"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockTotalTxMedianHint" data-original-title="Median value of block total transactions size among last n blocks."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockTotalTxMedian"> Current txs median, bytes: </span><span id="block.currentTxsMedian"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockEffectiveTxMedianHint" data-original-title="Bounded from below median value that is actually used to calculate penalty. More specifically, &lt;effective median&gt; = max(&lt;current median&gt;, 20000)"><i class="fa fa-question-circle"></i></span<span class="card-label"><span class="card-label" tkey="blockEffectiveTxMedian"> Effective txs median, bytes: </span><span id="block.effectiveTxsMedian"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockRewardPenaltyHint" data-original-title="Penalty for exceeding the median. &lt;penalty&gt; = (&lt;total&nbsp;transactions&nbsp;size&gt; / &lt;effective&nbsp;tx&nbsp;median&gt; − 1) ^ 2. No penalty if total transactions size is less then effective median. Penalty is near 100% if total txs size is twice the effective median. Greater blocks are not allowed."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockRewardPenalty"> Reward penalty: </span><span id="block.rewardPenalty"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockBaseRewardHint" data-original-title="Base value for calculating the block reward. Does not depend on how many transactions are included into the block. Also, this is how many coins the miner would receive if the block contains only coinbase transaction."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockBaseReward"> Base reward: </span><span id="block.baseReward"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockTxFeeHint" data-original-title="Sum of fees for all transactions in the block."><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockTxFee"> Transactions fee: </span><span id="block.transactionsFee"></span></div>
+				<div class="mg-t-10"><span data-toggle="tooltip" data-placement="right" tdata-original-title="blockRewardHint" data-original-title="Actual amount of coins the miner received for finding the block. &lt;reward&gt; = &lt;base reward&gt; × (1 − &lt;penalty&gt;) + &lt;transactions fee&gt;"><i class="fa fa-question-circle"></i></span><span class="card-label" tkey="blockReward"> Reward: </span><span id="block.reward"></span></div>
+			</div>
+		</div>
+	</div>
 </div>
 
-<h3 class="transactions"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Тransactions</h3>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th><i class=""></i> Hash</th>
-            <th><i class=""></i> Fee</th>
-            <th><i class=""></i> Total Amount</th>
-            <th><i class=""></i> Size</th>
-        </tr>
-        </thead>
-        <tbody id="transactions_rows">
 
-        </tbody>
-    </table>
+<h2></h2>
+<div class="row">
+</div>
+
+<div class="card mg-t-20" id="blockTransactions">
+	<div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h3 class="transactions"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i><span tkey="blockTxTitle">Тransactions</span></h3></div>	
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				<th><i class=""></i><span tkey="blockTxTableHash">Hash</span></th>
+				<th><i class=""></i><span tkey="blockTxTableFee">Fee</span></th>
+				<th><i class=""></i><span tkey="blockTxTableTotalAmmount">Total Amount</span>t</th>
+				<th><i class=""></i><span tkey="blockTxTableSize">Size</span></th>
+			</tr>
+			</thead>
+			<tbody id="transactions_rows">
+
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <script>
@@ -48,7 +59,8 @@
             if (xhrGetBlock) xhrGetBlock.abort();
         },
         init: function(){
-            getBlock();
+			getBlock();
+			loadTranslations();
         },
         update: function(){
         }
@@ -83,52 +95,52 @@
     }
 	
 	function renderBlock(block){
-				updateText('block.hash', block.hash);
-				updateText('block.height', localizeNumber(block.height));
-				updateText('block.timestamp', formatDate(block.timestamp));
-				updateText('block.version', block.major_version + '.' + block.minor_version);
-				updateText('block.difficulty', localizeNumber(block.difficulty));
-				updateText('block.orphan', block.orphan_status ? "YES" : "NO");
-				updateText('block.transactions', block.transactions.length);
-				updateText('block.transactionsSize', localizeNumber(block.transactionsCumulativeSize));
-				updateText('block.blockSize', localizeNumber(block.blockSize));
-				updateText('block.currentTxsMedian', localizeNumber(block.sizeMedian));
-				updateText('block.effectiveTxsMedian', localizeNumber(block.effectiveSizeMedian));
-				updateText('block.rewardPenalty', block.penalty*100 + "%");
-				updateText('block.baseReward', getReadableCoins(block.baseReward));
-				updateText('block.transactionsFee', getReadableCoins(block.totalFeeAmount));
-				updateText('block.reward', getReadableCoins(block.reward));
-				updateText('block.totalCoins', getReadableCoins(block.alreadyGeneratedCoins));
-				updateText('block.totalTransactions', localizeNumber(block.alreadyGeneratedTransactions));
-				renderTransactions(block.transactions);
-			
-				makePrevBlockLink(block.prev_hash);
-				
-				$.ajax({
-					url: api + '/json_rpc',
-					method: "POST",
-					data: JSON.stringify({
-					jsonrpc: "2.0",
-					id: "test",
-					method: "getblockheaderbyheight",
-					params: {
-						height: (block.height + 1)
-					}
-					}),
-					dataType: 'json',
-					cache: 'false',
-					success: function(data){
-					  if(data.result){
-						var nextBlockHash = data.result.block_header.hash;
-					  }
-						 if(nextBlockHash) {
-							makeNextBlockLink(nextBlockHash);
-						 }
-					},
-					error: function (ajaxContext) {
-					}
-				});
+		console.log("renderBlock");
+		updateText('block.hash', block.hash);
+		updateText('block.height', localizeNumber(block.height));
+		updateText('block.timestamp', formatDate(block.timestamp));
+		updateText('block.version', block.major_version + '.' + block.minor_version);
+		updateText('block.difficulty', localizeNumber(block.difficulty));
+		updateText('block.orphan', block.orphan_status ? "YES" : "NO");
+		updateText('block.transactions', block.transactions.length);
+		updateText('block.transactionsSize', localizeNumber(block.transactionsCumulativeSize));
+		updateText('block.blockSize', localizeNumber(block.blockSize));
+		updateText('block.currentTxsMedian', localizeNumber(block.sizeMedian));
+		updateText('block.effectiveTxsMedian', localizeNumber(block.effectiveSizeMedian));
+		updateText('block.rewardPenalty', block.penalty*100 + "%");
+		updateText('block.baseReward', getReadableCoins(block.baseReward));
+		updateText('block.transactionsFee', getReadableCoins(block.totalFeeAmount));
+		updateText('block.reward', getReadableCoins(block.reward));
+		updateText('block.totalCoins', getReadableCoins(block.alreadyGeneratedCoins));
+		updateText('block.totalTransactions', localizeNumber(block.alreadyGeneratedTransactions));
+		renderTransactions(block.transactions);
 	
+		makePrevBlockLink(block.prev_hash);
+		
+		$.ajax({
+			url: api + '/json_rpc',
+			method: "POST",
+			data: JSON.stringify({
+			jsonrpc: "2.0",
+			id: "test",
+			method: "getblockheaderbyheight",
+			params: {
+				height: (block.height + 1)
+			}
+			}),
+			dataType: 'json',
+			cache: 'false',
+			success: function(data){
+				if(data.result){
+				var nextBlockHash = data.result.block_header.hash;
+				}
+					if(nextBlockHash) {
+					makeNextBlockLink(nextBlockHash);
+					}
+			},
+			error: function (ajaxContext) {
+			}
+		});	
 	}
 	
     function getTransactionCells(transaction){

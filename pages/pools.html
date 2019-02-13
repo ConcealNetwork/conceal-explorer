@@ -1,77 +1,69 @@
 <!-- // pools stats by MainCoins @ http://krb.mypool.name -->
 <div class="row">
     <div class="col-sm-12 col-md-6">
-        <div class="panel panel-default" id="network-stats">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-tachometer"></i> Stats</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card mg-t-20" id="miningStats">
+            <div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h3 class="panel-title"><i class="fa fa-tachometer"></i> <span tkey="stats">Stats</span></h3></div>
+            <div class="card-body card-body-info">
                 <div class="row">
                     <div class="col-sm-6 col-md-6">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><i class="fa fa-tachometer"></i> Pools speed: <span id="totalPoolsHashrate"></span></li>
-                            <li><i class="fa fa-tachometer"></i> Network speed: <span id="networkHashrate"></span></li>
-                            <li><i class="fa fa-group"></i> Total miners: <span id="total_miners"></span></li>
+                            <li ><i class="fa fa-tachometer"></i> <span class="card-label" tkey="poolsSpeed">Pools speed: </span><span id="totalPoolsHashrate"></span></li>
+                            <li class="mg-t-10"><i class="fa fa-tachometer"></i> <span class="card-label" tkey="networkSpeed">Network speed: </span><span id="networkHashrate"></span></li>
+                            <li class="mg-t-10"><i class="fa fa-group"></i> <span class="card-label" tkey="totalMiners">Total miners: </span><span id="total_miners"></span></li>
 
                         </ul>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><i class="fa fa-unlock-alt"></i> Current difficulty: <span id="networkDifficulty"></span></li>
-                            <li><i class="fa fa-lock"></i> Average difficulty: <span id="avgDifficulty"></span></li>
-                            <li><i class="fa fa-tachometer"></i> Average Hashrate: <span id="avgHashrate"></span></li>
+                            <li><i class="fa fa-unlock-alt"></i> <span class="card-label" tkey="currDiff">Current difficulty: </span><span id="networkDifficulty"></span></li>
+                            <li class="mg-t-10"><i class="fa fa-lock"></i> <span class="card-label" tkey="avgDiff">Average difficulty: </span><span id="avgDifficulty"></span></li>
+                            <li class="mg-t-10"><i class="fa fa-tachometer"></i> <span class="card-label" tkey="avfHashrate">Average Hashrate: </span><span id="avgHashrate"></span></li>
                         </ul>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-6">
-        <div class="panel panel-default" id="network-stats">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-tachometer"></i> Estimate Mining Profits</h3>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12">
-                        <div id="calcHashHolder">
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="calcHashRate" placeholder="Enter your hash rate">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="calcHashDropdown">
-                                        <span id="calcHashUnit" data-mul="1">KH/s</span> <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right" role="menu" id="calcHashUnits">
-                                        <li><a href="#" data-mul="0">H/s</a></li>
-                                        <li><a href="#" data-mul="1">KH/s</a></li>
-                                        <li><a href="#" data-mul="2">MH/s</a></li>
-                                    </ul>
-                                </div>
-                                <span class="input-group-addon">=</span>
-                                <span class="input-group-addon" id="calcHashResultsHolder"><span id="calcHashAmount"></span> <span id="calcHashSymbol"></span> CCX / day</span>
-                            </div>
-                        </div>
+        <div class="card mg-t-20" id="miningProfitCalc">
+            <div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><span tkey="estMiningProfits">Estimate Mining Profits</span></div>
+            <div class="card-body" id="calcHashHolder">
+                <div class="input-group">
+                    <input class="form-control" id="calcHashRate" tplaceholder="enterYourHashrate" placeholder="Enter Your Hash Rate" type="number">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="calcHashDropdown">
+                            <span id="calcHashUnit" data-mul="1">KH/s</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu" id="calcHashUnits">
+                            <li><a href="#" data-mul="0">H/s</a></li>
+                            <li><a href="#" data-mul="1">KH/s</a></li>
+                            <li><a href="#" data-mul="2">MH/s</a></li>
+                        </ul>
                     </div>
+                    <span class="input-group-addon">=</span>
+                    <span class="input-group-addon" id="calcHashResultsHolder">
+                    <span id="calcHashAmount"></span> 
+                    <span id="calcHashSymbol" tkey="CCXPerDay">CCX / day</span>
+                    </span>
                 </div>
             </div>
-        </div>
+        </div>            
     </div>
 </div>
 
 <br />
 
-<div class="table-responsive">
+<div class="table-responsive mg-t-20" id="network-pools">
     <table id="network-hash" class="table table-hover">
         <thead>
             <tr>
                 <th><span id="symbol"></span> Pools</th>
-                <th class="sorttable_numeric"><i class="fa fa-bars"></i> Height</th>
-                <th class="sorttable_numeric"><i class="fa fa-tachometer"></i> Hashrate</th>
-                <th class="sorttable_numeric"><i class="fa fa-group"></i> Miners</th>
-                <th class="sorttable_numeric"><i class="fa fa-money"></i> Total Fee</th>
-                <th class="sorttable_numeric"><i class="fa fa-sign-out"></i> Min. Payout</th>
-                <th><i class="fa fa-clock-o"></i> Last Block Found</th>
+                <th class="sorttable_numeric"><i class="fa fa-bars"></i><span tkey="poolsHeight">Height</span></th>
+                <th class="sorttable_numeric"><i class="fa fa-tachometer"></i><span tkey="poolsHashrate">Hashrate</span></th>
+                <th class="sorttable_numeric"><i class="fa fa-group"></i><span tkey="poolsMiners">Miners</span></th>
+                <th class="sorttable_numeric"><i class="fa fa-money"></i><span tkey="poolsTotalFee">Total Fee</span></th>
+                <th class="sorttable_numeric"><i class="fa fa-sign-out"></i><span tkey="poolsMinPayout">Min. Payout</span></th>
+                <th><i class="fa fa-clock-o"></i><span tkey="poolsLastBlockFound">Last Block Found</span></th>
             </tr>
         </thead>
         <tbody id="pools_rows">
@@ -81,7 +73,7 @@
 
 
 <div class="container">
-    <div class="row">
+    <div class="row pools-chart-row">
         <div class="col-lg-6 col-lg-offset-3">
             <canvas id="poolsChart" style="margin: 0 auto;" height="300"></canvas>
         </div>

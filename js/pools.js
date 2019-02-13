@@ -98,7 +98,7 @@ var displayChart = function displayChart() {
             segmentShowStroke: false
         }]
     };
-
+    
     if (poolsChart === null) {
         var options = {
             animation: {
@@ -106,9 +106,9 @@ var displayChart = function displayChart() {
             },
             title: {
                 display: true,
-                text: 'Network Hashrate Visualization',
+                text: langData['poolsChartTitle'] || 'Network Hashrate Visualization',
                 fontSize: 18,
-                fontColor: '#2ecc71'
+                fontColor: '#FFA500'
             },
             legend: {
                 position: 'bottom',
@@ -147,7 +147,7 @@ var displayChart = function displayChart() {
     }
 }
 
-var lazyRefreshChart = _.debounce(displayChart, 50);
+var lazyRefreshChart = debounce(displayChart, 50, true);
 
 
 NETWORK_STAT_MAP.forEach(function(url, host, map) {
@@ -413,6 +413,7 @@ currentPage = {
     init: function(){
         getBlocks();
         renderLastBlock();
+        loadTranslations();
     },
     update: function(){
         updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval) + '/sec');

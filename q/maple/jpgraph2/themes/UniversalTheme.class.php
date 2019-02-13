@@ -5,10 +5,10 @@
 */
 class UniversalTheme extends Theme 
 {
-    private $font_color       = '#777777';
+    private $font_color       = '#aaaaaa';
     private $background_color = '#111111';
-    private $axis_color       = '#777777';
-    private $grid_color       = '#111111';
+    private $axis_color       = '#aaaaaa';
+    private $grid_color       = '#222222';
 
     function GetColorList() {
         return array(
@@ -47,7 +47,7 @@ class UniversalTheme extends Theme
         // legend
         $graph->legend->SetFrameWeight(0);
         $graph->legend->Pos(0.5, 0.85, 'center', 'top');
-        $graph->legend->SetFillColor('#222222');
+        $graph->legend->SetFillColor('#111111');
         $graph->legend->SetLayout(LEGEND_HOR);
         $graph->legend->SetColumns(3);
         $graph->legend->SetShadow(false);

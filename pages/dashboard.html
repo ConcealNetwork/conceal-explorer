@@ -1,0 +1,425 @@
+<div class="slim-mainpanel">
+	<div class="container pd-t-30">
+		<div class="dash-headline-two">
+			<div>
+				<h4 class="tx-white mg-b-5" tkey="welcome">Welcome</h4>
+				<p class="mg-b-0" id="currentDate"></p>
+			</div>
+			<div class="d-h-t-right">
+				<div class="summary-item">
+					<h1 id="interestToDate">N/A</h1>
+					<span tkey="earnedToDate">Interest<br>earned todate</span>
+				</div>
+				<div class="summary-item">
+					<h1 id="totalBanked">N/A</h1>
+					<span tkey="totalBanked">Total<br>banked</span>
+				</div>
+			</div>
+		</div><!-- dash-headline-two -->
+
+		<div class="nav-statistics-wrapper">
+			<nav class="nav">
+				<a href="" class="nav-link active" tkey="overview">Overview</a>
+			</nav>
+		</div><!-- nav-statistics-wrapper -->
+
+		<div class="row row-statistics mg-b-30">
+			<div class="col-4 dasboard-box">
+				<h1 class="tx-white tx-56 tx-lato tx-bold"><span id="networkDifficulty">N/A</span></h1>
+				<h6 class="tx-15 tx-primary tx-bold mg-b-20" tkey="netDifficulty">Network Difficulty</h6>
+				<p tyke="netDiffInfo">Chart on the right show the network difficulty for the last 30 blocks.</p>
+				<a data-page="explorer.html" href="#explorer" class="statement-link" tkey="netExplorer">Network Explorer<i class="fa fa-angle-right mg-l-5"></i></a>
+				<p class="tx-12"></p>
+			</div><!-- col-5 -->
+			<div class="col-8 dasboard-box">
+				<canvas id="diffAreaChart" height="280"></canvas>
+			</div><!-- col-7 -->
+		</div><!-- row -->
+
+		<hr>
+
+		<div class="report-summary-header">
+			<div>
+				<h4 class="tx-white mg-b-3" tkey="netOverallSummary">Overall Network Summary</h4>
+			</div>
+			<div>
+				<a href="https://conceal.network/#about" class="btn btn-primary-outline" tkey="aboutConcealNetwork">About Conceal Network</a>
+			</div>
+		</div><!-- d-flex -->
+
+		<div class="card card-dash-one mg-t-20">
+			<div class="row no-gutters">
+				<div class="col-lg-4">
+					<div class="dash-content">
+						<label class="tx-primary" tkey="blockchainHeight">Blockchain Height</label>
+						<h2><span id="networkHeight">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-4 -->
+				<div class="col-lg-4">
+					<div class="dash-content dash-small-info">
+						<label class="tx-primary" tkey="transactions">Transactions</label>
+						<h2><span id="networkTransactions">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-4 -->
+				<div class="col-lg-4">
+					<div class="dash-content dash-small-info">
+						<label class="tx-primary" tkey="netHashrate">Network Hashrate</label>
+						<h2><span id="networkHashrate">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-4 -->
+			</div><!-- row -->
+		</div>
+
+		<hr>
+
+		<div class="report-summary-header">
+			<div>
+				<h4 class="tx-white mg-b-3" tkey="supplyAndBanking">Supply & Banking</h4>
+			</div>
+			<div>
+				<a href="https://conceal.network/#features" class="btn btn-primary-outline" tkey="aboutConcealBanking">About Conceal Banking</a>
+			</div>
+		</div><!-- d-flex -->
+
+		<div class="card card-dash-one mg-t-20">
+			<div class="row no-gutters">
+				<div class="col-lg-4">
+					<div class="dash-content">
+						<label class="tx-primary" tkey="totalBanked">Total Banked</label><BR>
+						<label class="tx-secondary" tkey="totalBankedInfo">Total funds locked in deposits and investments</label>
+						<h2><span id="depositCoins">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-4 -->
+				<div class="col-lg-4">
+					<div class="dash-content dash-small-info">
+						<label class="tx-primary" tkey="circulatingSuppy">Circulating Supply</label><BR>
+						<label class="tx-secondary" tkey="circulatingSuppyInfo">The total number of coins not banked.</label>
+						<h2><span id="emissionPercent">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-4 -->
+				<div class="col-lg-4">
+					<div class="dash-content dash-small-info">
+						<label class="tx-primary" tkey="totalSupply">Total Supply</label><BR>
+						<label class="tx-secondary" tkey="totalSupplyInfo">The total supply minted to date.</label>
+						<h2><span id="totalCoins">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-4 -->
+			</div><!-- row -->
+		</div>
+
+		<div class="nav-statistics-wrapper mg-t-20">
+				<nav class="nav">
+					<a href="" class="nav-link active" tkey="markets">Market / Calculator</a>
+				</nav>
+		</div><!-- nav-statistics-wrapper -->
+
+		<!-- Statistics -->
+		<div id="blockStats" class="card card-dash-one mg-b-20">
+			<div class="row no-gutters">
+				<div class="col-lg-3">
+					<div class="dash-content dash-small-info">
+					<div class="icon icon-info">
+						<span class="fa fa-sm fa-dollar"></span>
+					</div>
+					<label class="tx-primary" tkey="mktCCXToUSD">CCX to USD</label>
+					<h2><span id="CCXToUSD">N/A</h2>
+					</div><!-- dash-content -->
+				</div><!-- col-3 -->
+				<div class="col-lg-3">
+					<div class="dash-content dash-small-info">
+					<div class="icon icon-info">
+						<span class="fa fa-sm fa-btc"></span>
+					</div>
+					<label class="tx-primary" tkey="mktCCXToBTC">CCX to BTC</label>
+					<h2><span id="CCXToBTC">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-3 -->
+				<div class="col-lg-3">
+					<div class="dash-content dash-small-info">
+					<div class="icon icon-info">
+						<span class="fa fa-sm fa-market"></span>
+					</div>
+					<label class="tx-primary" tkey="mktMarketcap">Marketcap</label>
+					<h2><span id="marketcap">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-3 -->
+				<div class="col-lg-3">
+					<div class="dash-content dash-small-info">
+					<div class="icon icon-info">
+						<span class="fa fa-sm fa-money"></span>
+					</div>
+					<label class="tx-primary" tkey="mktDailyVolume">Daily Volume</label>
+					<h2><span id="dailyVolume">N/A</span></h2>
+					</div><!-- dash-content -->
+				</div><!-- col-3 -->
+			</div><!-- row -->
+		</div>        
+			
+		<div id="chartMarketPrice">
+			<canvas id="chartMarketPriceCanvas"></canvas>
+			<a class="chart-style"></a>                                	
+		</div>
+	
+		<!-- Mining Profit Calculator -->
+		<div class="card mg-t-20" id="miningProfitCalc">
+			<div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><span tkey="estimateProfit">Estimate Mining Profits</span></div>
+			<div class="card-body" id="calcHashHolder">
+				<div class="input-group">
+					<input class="form-control" id="calcHashRate" tplaceholder="enterYourHashrate" placeholder="Enter Your Hash Rate" type="number">
+					<div class="input-group-btn">
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="calcHashDropdown">
+							<span id="calcHashUnit" data-mul="1">KH/s</span> <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right" role="menu" id="calcHashUnits">
+							<li><a href="#" data-mul="0">H/s</a></li>
+							<li><a href="#" data-mul="1">KH/s</a></li>
+							<li><a href="#" data-mul="2">MH/s</a></li>
+						</ul>
+					</div>
+					<span class="input-group-addon">=</span>
+					<span class="input-group-addon" id="calcHashResultsHolder">
+						<div id="calcHashAmount">
+							<span id="calcHashAmount1"></span>
+							<span id="calcHashSymbol"> CCX</span>
+							<span id="calcHashAmount2"></span>
+						</div> 
+						<div id="calcHashPeriod"> 
+							<span tkey="perDay">per day</span>
+						</div>
+					</span>
+				</div>
+			</div>
+		</div>
+	
+	</div><!-- container -->
+</div><!-- slim-mainpanel -->
+
+<script>
+	var block = null;
+	var USDperCCX = null;
+
+
+	// Automatically update profit calculation on key press
+	$('#calcHashRate').keyup(calcEstimateProfit).change(calcEstimateProfit);
+
+	// Click on button
+	$('#calcHashUnits > li > a').click(function(e){
+		e.preventDefault();
+		$('#calcHashUnit').text($(this).text()).data('mul', $(this).data('mul'));
+		calcEstimateProfit();
+	});
+
+	// Calculate current estimation
+	function calcEstimateProfit(){
+		try {
+			var rateUnit = Math.pow(1000,parseInt($('#calcHashUnit').data('mul')));
+			var hashRate = parseFloat($('#calcHashRate').val()) * rateUnit;
+			var profit = (hashRate * 86400 / lastStats.difficulty) * lastStats.last_block_reward;
+			if (profit) {
+				var actualCoins = getReadableCoins(profit, 2, true);
+				updateText('calcHashAmount1',actualCoins);
+				updateText('calcHashAmount2', getCurrencyPriceText(actualCoins));
+				return;
+			}
+		}
+		catch(e){ }
+		updateText('calcHashAmount1', '');
+		updateText('calcHashAmount2', '');
+	}
+
+	// Get price in specified currency
+	function getCurrencyPriceText(coinAmmount) {    
+		if (USDperCCX) {
+			var price = USDperCCX * coinAmmount; 
+			return ("(" + price.toFixed(2) + "$)");
+		}
+	}
+
+	currentPage = {
+		destroy: function() {
+		},
+		init: function() {
+			$("#currentDate").html("Today is: " + moment().format('MMMM Do YYYY'));
+			loadTranslations();
+
+			$.ajax({
+				url: api + '/json_rpc',
+				method: "POST",
+				data: JSON.stringify({
+					jsonrpc:"2.0",
+					id: "test",
+					method:"f_blocks_list_json",
+					params: {
+						height: lastStats.last_known_block_index
+					}
+				}),
+				dataType: 'json',
+				cache: 'false',
+				success: function(data) {
+					renderDiffChart(data.result.blocks);
+				}
+			});
+
+			// get conceal market data
+			$.getJSON( "https://api.coingecko.com/api/v3/coins/conceal?sparkline=true", function( data ) {
+				USDperCCX = data.market_data.current_price.usd;
+				$("#CCXToUSD").html(data.market_data.current_price.usd.toFixed(2) + " $");
+				$("#CCXToBTC").html(data.market_data.current_price.btc.toFixed(8));
+				$("#marketcap").html(data.market_data.market_cap.usd.toFixed(0) + " $ (" + data.market_cap_rank + ")");
+				$("#dailyVolume").html(data.market_data.total_volume.usd.toFixed(0) + " $");
+
+				var chartObj = new Chart(document.getElementById('chartMarketPriceCanvas'), {
+					type: 'line',
+					data: {
+						labels: data.market_data.sparkline_7d.price,
+						datasets: [{
+							data: data.market_data.sparkline_7d.price,
+							backgroundColor: 'rgb(255,165,0,0.2)', 
+							fill: true,
+							borderWidth: 0,
+							pointRadius: 1,
+							borderColor: '#FFA500'
+						}]
+					},
+					options: {
+						animation: false,
+						responsive: true,
+						maintainAspectRatio: false,
+						legend: {
+							display: false,
+							labels: {
+								display: false
+							}
+						},
+						scales: {
+							yAxes: [{
+								ticks: {
+									maxTicksLimit: 5,
+									beginAtZero:true,
+									fontSize: 10,
+									callback: function(value, index, values) {
+										return value.toFixed(2) + '$';
+									}                    
+								},
+								gridLines: {
+									color: 'rgba(255,255,255,.08)'
+								}
+							}],
+							xAxes: [{
+								display: false
+							}]
+						}
+					}
+				});
+			});
+		},
+		update: function() {
+			renderLastBlock();
+			updateText('networkHeight', localizeNumber(lastStats.height.toString()));
+			updateText('networkTransactions', localizeNumber(lastStats.tx_count.toString()));
+			updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval));
+			updateText('networkDifficulty', getReadableDifficultyString(lastStats.difficulty, 0));
+			$("time.timeago").timeago();
+		}
+	};
+
+    function renderLastBlock() {
+		$.getJSON( "https://explorer.conceal.network/daemon/getinfo", function( data ) {
+			updateText('interestToDate', getReadableCoins2(data.full_deposit_interest,0));
+			updateText('totalBanked', getReadableCoins2(data.full_deposit_amount,0));
+
+			$.ajax({				
+				url: api + '/json_rpc',
+				method: "POST",
+				data: JSON.stringify({
+					jsonrpc:"2.0",
+					id: "test",
+					method:"getlastblockheader",
+					params: {}
+				}),
+				dataType: 'json',
+				cache: 'false',
+				success: function(data) {
+					last_block_hash = data.result.block_header.hash;
+					last_block_deposts = data.result.block_header.deposits;                
+					$.ajax({
+						url: api + '/json_rpc',
+						method: "POST",
+						data: JSON.stringify({
+							jsonrpc:"2.0",
+							id: "test",
+							method:"f_block_json",
+							params: {
+								hash: last_block_hash
+							}
+						}),
+						dataType: 'json',
+						cache: 'false',
+						success: function(data) {
+							block = data.result.block;
+							circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
+							updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins,0));
+							updateText('emissionPercent', getReadableCoins2(circulating_supply,0));
+							updateText('currentReward', getReadableCoins(block.baseReward,0));
+							updateText('depositCoins', getReadableCoins2(last_block_deposts,0));                        
+						}
+					});
+				}
+			});
+		});
+	}
+	
+	function renderDiffChart(blocksData) {
+		var diffData = [];
+		var labelData = [];
+
+		for (i = 0; i < blocksData.length; i++) {
+			diffData.push(blocksData[i].difficulty);
+			labelData.push(moment.unix(blocksData[i].timestamp).format("hh:mm:ss") );
+		}
+
+		var diffAreaChart = new Chart(document.getElementById('diffAreaChart'), {
+			type: 'line',
+			data: {
+			labels: labelData,
+			datasets: [{
+				data: diffData,
+				backgroundColor: 'rgb(255,165,0,0.2)', 
+				fill: true,
+				borderWidth: 0,
+				borderColor: '#FFA500'
+			}]
+			},
+			options: {
+				maintainAspectRatio: false,
+				legend: {
+					display: false,
+					labels: {
+						display: false
+					}
+				},
+				scales: {
+					yAxes: [{
+					ticks: {
+						maxTicksLimit: 5,
+						beginAtZero:true,
+						fontSize: 10
+					},
+					gridLines: {
+						color: 'rgba(255,255,255,.08)'
+					}
+					}],
+					xAxes: [{
+						ticks: {
+							beginAtZero:true,
+							fontSize: 11
+						},
+						gridLines: {
+							color: 'rgba(255,255,255,.08)'
+						}
+					}]
+				}
+			}
+		});
+	}
+</script>
