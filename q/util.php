@@ -5,7 +5,8 @@ function build_post_context(string $postdata) {
                 'http' =>
                         array(
                                 'method' => 'POST',
-                                'header' => 'application/json',
+                                'header' => "Content-Type: application/json\r\n".
+                                            "Content-Length: ".strlen($postdata)."\r\n",
                                 'content' => $postdata
                         )
                 )
