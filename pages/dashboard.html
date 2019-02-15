@@ -197,6 +197,8 @@
 <script>
 	var block = null;
 	var USDperCCX = null;
+	var diffAreaChart = null;
+	var marketPriceAreaChart = null;
 
 
 	// Automatically update profit calculation on key press
@@ -268,7 +270,11 @@
 				$("#marketcap").html(data.market_data.market_cap.usd.toFixed(0) + " $ (" + data.market_cap_rank + ")");
 				$("#dailyVolume").html(data.market_data.total_volume.usd.toFixed(0) + " $");
 
-				var chartObj = new Chart(document.getElementById('chartMarketPriceCanvas'), {
+				if (marketPriceAreaChart) {
+					marketPriceAreaChart.destroy();
+				}
+
+				marketPriceAreaChart = new Chart(document.getElementById('chartMarketPriceCanvas'), {
 					type: 'line',
 					data: {
 						labels: data.market_data.sparkline_7d.price,
@@ -378,7 +384,11 @@
 			labelData.push(moment.unix(blocksData[i].timestamp).format("hh:mm:ss") );
 		}
 
-		var diffAreaChart = new Chart(document.getElementById('diffAreaChart'), {
+		if (diffAreaChart) {
+			diffAreaChart.destroy();
+		}
+
+		diffAreaChart = new Chart(document.getElementById('diffAreaChart'), {
 			type: 'line',
 			data: {
 			labels: labelData,

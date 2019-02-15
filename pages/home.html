@@ -102,7 +102,7 @@
         Txses = [],
         Sizes = [],
         Timestamps = [],
-        diffChart;
+        diffChart = null;
 
     currentPage = {
         destroy: function() {
@@ -679,6 +679,11 @@
                 }
             }
         };
+
+        if (diffChart) {
+            diffChart.destroy();        
+        }
+        
         diffChart = new Chart(ctx, {
             type: 'line',
             data: chartData,
