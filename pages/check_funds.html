@@ -5,56 +5,62 @@
 	}
 </style>
 
-<h2><i class="fa fa-money fa-fw" aria-hidden="true"></i>Check balance proof</h2>
+<div class="container">
+	<div class="report-summary-header">
+		<div>
+				<h4 class="tx-white mg-b-3" tkey="netStats"><i class="fa fa-money fa-fw" aria-hidden="true"></i> CHECK BALANCE PROOF</h4>
+		</div>
+	</div><!-- d-flex -->
 
-<p>Hereby you can check a signature proving that the owner of "address" holds at least this much, optionally with a challenge string "message".</p>
+	<p>Hereby you can check a signature proving that the owner of "address" holds at least this much, optionally with a challenge string "message".</p>
 
-<div class="well bs-component">
-	<form class="form-horizontal" id="check_reserve_form">
-	    <fieldset>
-			<div class="col-md-12">
-				<div class="form-group">
-					<label for="public_address">Address</label>
-					<input class="form-control" placeholder="Conceal address" id="public_address">
+	<div class="well bs-component">
+		<form class="form-horizontal" id="check_reserve_form">
+				<fieldset>
+				<div class="col-md-12 pd-l-0 pd-r-0">
+					<div class="form-group">
+						<label for="public_address">Address</label>
+						<input class="form-control" placeholder="Conceal address" id="public_address">
+					</div>
 				</div>
-			</div>
+					
+				<div class="col-md-12 pd-l-0 pd-r-0">
+					<div class="form-group">
+						<label for="message" style="margin-bottom: 10px;">Message</label>
+						<textarea class="form-control" id="message" rows="2" spellcheck="false"></textarea>
+					</div>	
+				</div>
 				
-			<div class="col-md-12">
-				<div class="form-group">
-					<label for="message" style="margin-bottom: 10px;">Message</label>
-					<textarea class="form-control" id="message" rows="2" spellcheck="false"></textarea>
-				</div>	
-			</div>
-			
-			<div class="col-md-12">
-				<div class="form-group">
-					<label for="signature" style="margin-bottom: 10px;">Signature</label>
-					<textarea class="form-control" id="signature" rows="20" spellcheck="false"></textarea>
-				</div>	
-			</div>
-			
-			<div class="col-md-12">
-				<div class="form-group">
-					<button class="btn btn-primary" type="button" id="verify">
-						<span class="fa fa-search"> Verify</span>
-					</button>
+				<div class="col-md-12 pd-l-0 pd-r-0">
+					<div class="form-group">
+						<label for="signature" style="margin-bottom: 10px;">Signature</label>
+						<textarea class="form-control" id="signature" rows="20" spellcheck="false"></textarea>
+					</div>	
 				</div>
-			</div>
-	    </fieldset>
-	</form>
+				
+				<div class="col-md-12 pd-l-0 pd-r-0">
+					<div class="form-group">
+						<button class="btn btn-primary-outline" type="button" id="verify">
+							<span class="fa fa-search"> Verify</span>
+						</button>
+					</div>
+				</div>
+				</fieldset>
+		</form>
+	</div>
+
+
+	<div class="panel panel-default" id="verification_result">
+		<div class="panel-heading">
+		<h3 class="panel-title">Verification result</h3>
+		</div>
+		<div class="panel-body">
+
+		<p id="verified"><i class="fa fa-2x"></i> <span></span></p>
+
+		</div>
+	</div>
 </div>
-
-
- <div class="panel panel-default" id="verification_result">
-  <div class="panel-heading">
-	<h3 class="panel-title">Verification result</h3>
-  </div>
-  <div class="panel-body">
-
-	<p id="verified"><i class="fa fa-2x"></i> <span></span></p>
-
-  </div>
- </div>
 
 
 
@@ -71,7 +77,7 @@
 
     currentPage = {
         destroy: function(){
-			if (xhrVerifyMessage) xhrVerifyMessage.abort();
+					//if (xhrVerifyMessage) xhrVerifyMessage.abort();
         },
         init: function(){
         },
