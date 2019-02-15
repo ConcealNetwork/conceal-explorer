@@ -3,7 +3,7 @@ Block explorer for Conceal CryptoNote based cryptocurrency.
 
 #### Installation
 
-1) It takes data from daemon turtlecoind. It should be accessible from the Internet. Run conceald with open port as follows:
+1) It takes data from daemon conceald. It should be accessible from the Internet. Run conceald with open port as follows:
 ```bash
 ./conceald --enable-cors="*" --enable_blockexplorer --rpc-bind-ip=0.0.0.0 --rpc-bind-port=11898
 ```
