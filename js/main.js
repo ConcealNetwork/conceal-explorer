@@ -331,12 +331,16 @@ var translate = function(data) {
 function loadTranslations() {
     if (langData) {
         translate(langData);
-    }
+    }    
     else if (langs && langs[langCode]) {
-        $.getJSON('lang/'+langCode+'.json', translate);
+        $.getJSON('lang/'+langCode+'.json', function(data) {
+            translate(data);
+        });
         $.getScript('lang/timeago/jquery.timeago.'+langCode+'.js');    
     } else {
-        $.getJSON('lang/'+defaultLang+'.json', translate);
+        $.getJSON('lang/'+defaultLang+'.json', function(data) {
+            translate(data);
+        });
         $.getScript('lang/timeago/jquery.timeago.'+defaultLang+'.js');    
     }
 }
