@@ -3,7 +3,7 @@ var donationAddress = "";
 var blockTargetInterval = 120;
 var coinUnits = 1000000;
 var symbol = 'CCX';
-var refreshDelay = 60;
+var refreshDelay = 5000;
 // pools stats by MainCoins
 var networkStat = {
  "ccx": [
