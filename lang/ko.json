@@ -7,7 +7,7 @@
 	"bp": "BP",
     "searchHint": "Search by block height / hash, transaction hash, payment id",
     
-    "welcome": "Bienvenido",
+    "welcome": "Welcome",
     "earnedToDate": "Interest<br>earned todate",
     "totalBanked": "Total<br>banked",
     "overview": "Overview",
