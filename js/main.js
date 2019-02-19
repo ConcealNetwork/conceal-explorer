@@ -1,4 +1,4 @@
-var blockchainExplorer 	= "?hash={id}{lang}#blockchain_block";
+var blockchainExplorer = "?hash={id}{lang}#blockchain_block";
 var transactionExplorer = "?hash={id}{lang}#blockchain_transaction";
 
 var style_cookie_name = "style";
@@ -6,7 +6,7 @@ var style_cookie_duration = 365;
 var style_domain = window.location.hostname;
 
 
-var renderDate = function(d) {
+var renderDate = function (d) {
     return d.getFullYear() + '-' +
         ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
         ('0' + d.getDate()).slice(-2) + ' ' +
@@ -14,59 +14,53 @@ var renderDate = function(d) {
         ('0' + d.getMinutes()).slice(-2);
 };
 
-function GetURLParameter(sParam)
-{
+function GetURLParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++)
-    {
+    for (var i = 0; i < sURLVariables.length; i++) {
         var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam)
-        {
+        if (sParameterName[0] == sParam) {
             return sParameterName[1];
         }
     }
 };
 
-function setParameter(paramName, paramValue)
-{
+function setParameter(paramName, paramValue) {
     var url = window.location.href;
     var hash = location.hash;
     url = url.replace(hash, '');
-    if (url.indexOf(paramName + "=") >= 0)
-    {
+    if (url.indexOf(paramName + "=") >= 0) {
         var prefix = url.substring(0, url.indexOf(paramName));
         var suffix = url.substring(url.indexOf(paramName));
         suffix = suffix.substring(suffix.indexOf("=") + 1);
         suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix.indexOf("&")) : "";
         url = prefix + paramName + "=" + paramValue + suffix;
-    }
-    else
-    {
-    if (url.indexOf("?") < 0)
-        url += "?" + paramName + "=" + paramValue;
-    else
-        url += "&" + paramName + "=" + paramValue;
+    } else {
+        if (url.indexOf("?") < 0)
+            url += "?" + paramName + "=" + paramValue;
+        else
+            url += "&" + paramName + "=" + paramValue;
     }
     window.location.href = url + hash;
 }
 
 function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
+    var timeout;
+    return function () {
+        var context = this,
+            args = arguments;
+        var later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
     if (donationAddress !== undefined && donationAddress !== "") {
         $("#donations").show();
         $("#donationAddress").html(donationAddress);
@@ -80,28 +74,28 @@ function getFinalUrl(URL) {
         return URL.replace('{lang}', "&lang=" + Language);
     } else {
         return URL.replace('{lang}', "");
-    }    
+    }
 }
 
 function getTransactionUrl(id) {
     return getFinalUrl(transactionExplorer.replace('{symbol}', symbol.toLowerCase()).replace('{id}', id))
 }
 
-$.fn.update = function(txt){
+$.fn.update = function (txt) {
     var el = this[0];
     if (el.textContent !== txt)
         el.textContent = txt;
     return this;
 };
 
-function updateTextClasses(className, text){
+function updateTextClasses(className, text) {
     var els = document.getElementsByClassName(className);
     if ($(els).html !== text) {
         $(els).html(text);
     }
 }
 
-function updateText(elementId, text){
+function updateText(elementId, text) {
     var el = document.getElementById(elementId);
     if ($(el).html !== text) {
         $(el).html(text);
@@ -109,9 +103,9 @@ function updateText(elementId, text){
     return el;
 }
 
-function updateTextLinkable(elementId, text){
+function updateTextLinkable(elementId, text) {
     var el = document.getElementById(elementId);
-    if (el.innerHTML !== text){
+    if (el.innerHTML !== text) {
         el.innerHTML = text;
     }
     return el;
@@ -125,17 +119,17 @@ function localizeNumber(number) {
     return numberFormatter.format(number);
 }
 
-function getReadableHashRateString(hashrate){
+function getReadableHashRateString(hashrate) {
     var i = 0;
-    var byteUnits = [' H', ' kH', ' MH', ' GH', ' TH', ' PH', ' EH', ' ZH', ' YH' ];
-    while (hashrate > 1000){
+    var byteUnits = [' H', ' kH', ' MH', ' GH', ' TH', ' PH', ' EH', ' ZH', ' YH'];
+    while (hashrate > 1000) {
         hashrate = hashrate / 1000;
         i++;
     }
     return localizeNumber(hashrate.toFixed(2)) + byteUnits[i];
 }
 
-function getReadableDifficultyString(difficulty, precision){
+function getReadableDifficultyString(difficulty, precision) {
     if (isNaN(parseFloat(difficulty)) || !isFinite(difficulty)) return 0;
     if (typeof precision === 'undefined') precision = 0;
     var units = ['', 'k', 'M', 'G', 'T', 'P'],
@@ -143,43 +137,43 @@ function getReadableDifficultyString(difficulty, precision){
     if (units[number] === undefined || units[number] === null) {
         return 0
     }
-    return localizeNumber((difficulty / Math.pow(1000, Math.floor(number))).toFixed(precision)) + ' ' +  units[number];
+    return localizeNumber((difficulty / Math.pow(1000, Math.floor(number))).toFixed(precision)) + ' ' + units[number];
 }
 
-function formatBlockLink(hash){
+function formatBlockLink(hash) {
     return '<a href="' + getBlockchainUrl(hash) + '">' + hash + '</a>';
 }
 
-function getReadableCoins(coins, digits, withoutSymbol){
-    var amount = (coins/ coinUnits).toFixed(digits);
+function getReadableCoins(coins, digits, withoutSymbol) {
+    var amount = (coins / coinUnits).toFixed(digits);
     return (amount) + (withoutSymbol ? '' : (' ' + symbol));
 }
 
-function getReadableCoins2(coins, digits, withoutSymbol){
+function getReadableCoins2(coins, digits, withoutSymbol) {
     var amount = (parseInt(coins || 0) / coinUnits).toFixed(digits);
     return localizeNumber(amount) + (withoutSymbol ? '' : (' ' + symbol));
 }
 
-function formatDate(time){
+function formatDate(time) {
     if (!time) return '';
     return renderDate(new Date(parseInt(time) * 1000));
 }
 
-function formatPaymentLink(hash){
+function formatPaymentLink(hash) {
     return '<a href="' + getTransactionUrl(hash) + '">' + hash + '</a>';
 }
 
-function pulseLiveUpdate(){
+function pulseLiveUpdate() {
     var stats_update = document.getElementById('stats_updated');
     stats_update.style.transition = 'opacity 100ms ease-out';
     stats_update.style.opacity = 1;
-    setTimeout(function(){
+    setTimeout(function () {
         stats_update.style.transition = 'opacity 7000ms linear';
         stats_update.style.opacity = 0;
     }, 500);
 }
 
-window.onhashchange = function(){
+window.onhashchange = function () {
     routePage();
 };
 
@@ -190,14 +184,14 @@ function fetchLiveStats() {
         dataType: 'json',
         type: 'GET',
         cache: 'false'
-    }).done(function(data){
+    }).done(function (data) {
         pulseLiveUpdate();
         lastStats = data;
         if (currentPage) {
             currentPage.update();
         }
     }).always(function () {
-        setTimeout(function() {
+        setTimeout(function () {
             fetchLiveStats();
         }, refreshDelay);
     });
@@ -209,6 +203,7 @@ function floatToString(float) {
 
 
 var xhrPageLoading;
+
 function routePage(loadedCallback) {
 
     if (currentPage) currentPage.destroy();
@@ -247,11 +242,11 @@ function getBlockchainUrl(id) {
     return getFinalUrl(blockchainExplorer.replace('{id}', id));
 }
 
-$(function(){
-    $.get(api + '/getinfo', function(data){
+$(function () {
+    $.get(api + '/getinfo', function (data) {
         try {
             lastStats = JSON.parse(data);
-        } catch(e) {
+        } catch (e) {
             lastStats = data;
         }
         routePage(fetchLiveStats);
@@ -259,22 +254,21 @@ $(function(){
 });
 
 // Blockexplorer functions
-urlParam = function(name){
+urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results==null){
+    if (results == null) {
         return null;
-    }
-    else{
+    } else {
         return results[1] || 0;
     }
 }
 
-$(function() {
+$(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
 function hex2a(hexx) {
-    var hex = hexx.toString();//force conversion
+    var hex = hexx.toString(); //force conversion
     var str = '';
     for (var i = 0; i < hex.length; i += 2)
         str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
@@ -286,62 +280,61 @@ if (typeof defaultLang == "undefined") {
 }
 
 var langCode = defaultLang;
-var langData = null; 
+var langData = null;
 
 const $_GET = {};
 const args = location.search.substr(1).split(/&/);
-for (var i=0; i<args.length; ++i) {
+for (var i = 0; i < args.length; ++i) {
     const tmp = args[i].split(/=/);
     if (tmp[0] != "") {
         $_GET[decodeURIComponent(tmp[0])] = decodeURIComponent(tmp.slice(1).join("").replace("+", " "));
-        var langCode = $_GET['lang'];    
+        var langCode = $_GET['lang'];
     }
 }
 
 function getTranslation(key) {
     if (!langData || !langData[key]) return null;
-    return langData[key];    
+    return langData[key];
 }
 
-var translate = function(data) {
+var translate = function (data) {
     langData = data;
 
-    $("[tkey]").each(function(index) {
+    $("[tkey]").each(function (index) {
         var strTr = data[$(this).attr('tkey')];
         $(this).html(strTr);
     });
 
-    $("[tplaceholder]").each(function(index) {
+    $("[tplaceholder]").each(function (index) {
         var strTr = data[$(this).attr('tplaceholder')];
-	$(this).attr('placeholder', strTr);
+        $(this).attr('placeholder', strTr);
     });
 
-    $("[tvalue]").each(function(index) {
+    $("[tvalue]").each(function (index) {
         var strTr = data[$(this).attr('tvalue')];
         $(this).attr('value', strTr);
     });
 
-    $("[tdata-original-title]").each(function(index) {
+    $("[tdata-original-title]").each(function (index) {
         var strTr = data[$(this).attr('tdata-original-title')];
         $(this).attr('data-original-title', strTr);
     });
-    
-} 
+
+}
 
 function loadTranslations() {
     if (langData) {
         translate(langData);
-    }    
-    else if (langs && langs[langCode]) {
-        $.getJSON('lang/'+langCode+'.json', function(data) {
+    } else if (langs && langs[langCode]) {
+        $.getJSON('lang/' + langCode + '.json', function (data) {
             translate(data);
         });
-        $.getScript('lang/timeago/jquery.timeago.'+langCode+'.js');    
+        $.getScript('lang/timeago/jquery.timeago.' + langCode + '.js');
     } else {
-        $.getJSON('lang/'+defaultLang+'.json', function(data) {
+        $.getJSON('lang/' + defaultLang + '.json', function (data) {
             translate(data);
         });
-        $.getScript('lang/timeago/jquery.timeago.'+defaultLang+'.js');    
+        $.getScript('lang/timeago/jquery.timeago.' + defaultLang + '.js');
     }
 }
 
@@ -354,19 +347,19 @@ function renderLangSelector() {
         for (var lang in langs) {
             var selected = lang == langCode ? ' selected="selected"' : '';
             html += '<option value="' + lang + '"' + selected + '>' + langs[lang] + '</option>';
-	    numLangs ++;
+            numLangs++;
         }
-	html += '</select>';
+        html += '</select>';
     }
     if (html && numLangs > 1) {
-        $('#langSelector').html(html);	
-        $('#newLang').each(function(){
-            $(this).change(function() {
+        $('#langSelector').html(html);
+        $('#newLang').each(function () {
+            $(this).change(function () {
                 var newLang = $(this).val();
-                setParameter("lang",newLang);
+                setParameter("lang", newLang);
             });
         });
-    }	
+    }
 
     // Mobile
     var html = '';
@@ -376,17 +369,17 @@ function renderLangSelector() {
         for (var lang in langs) {
             var selected = lang == langCode ? ' selected="selected"' : '';
             html += '<option value="' + lang + '"' + selected + '>' + langs[lang] + '</option>';
-	    numLangs ++;
+            numLangs++;
         }
-	html += '</select>';
+        html += '</select>';
     }
     if (html && numLangs > 1) {
-        $('#mLangSelector').html(html);	
-        $('#mNewLang').each(function(){
-            $(this).change(function() {
+        $('#mLangSelector').html(html);
+        $('#mNewLang').each(function () {
+            $(this).change(function () {
                 var newLang = $(this).val();
-                setParameter("lang",newLang);
+                setParameter("lang", newLang);
             });
         });
-    }	
+    }
 }
