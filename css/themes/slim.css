@@ -40309,12 +40309,14 @@ a.hover-white-8:hover, a.hover-white-8:focus {
 }
 
 .card-label {
+  margin-right: 5px;
   font-weight: bold;
   color: #FFA500;
 }
 
 #blockInfo i,
 #transactionInfo i {
+  margin-right: 5px;
   color: white;
 }
 
