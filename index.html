@@ -133,6 +133,11 @@
 	
 <script src="lang/languages.js"></script>
 <script>
+	// make sure index.html is in the URL for the explorer
+	if (window.location.href.indexOf("index.html") == -1) {
+		window.location.href = "/index.html";
+	}
+
 	renderLangSelector();
 	loadTranslations();
 
