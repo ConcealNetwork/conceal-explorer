@@ -1,11 +1,11 @@
 <div class="slim-mainpanel">
 	<div class="container pd-t-30">
-		<div class="dash-headline-two">
+		<div class="dash-headline-two" id="welcomeSection">
 			<div>
 				<h4 class="tx-white mg-b-5" tkey="welcome">Welcome</h4>
 				<p class="mg-b-0" id="currentDate"></p>
 			</div>
-			<div class="d-h-t-right">
+			<div class="d-h-t-right" id="depositsSection">
 				<div class="summary-item">
 					<h1 id="interestToDate">N/A</h1>
 					<span tkey="earnedToDate">Interest<br>earned to date</span>
@@ -23,15 +23,15 @@
 			</nav>
 		</div><!-- nav-statistics-wrapper -->
 
-		<div class="row row-statistics mg-b-30">
-			<div class="col-4 dasboard-box">
+		<div class="row row-statistics mg-b-30" id="networkDiffRow">
+			<div class="dasboard-box">
 				<h1 class="tx-white tx-56 tx-lato tx-bold"><span id="networkDifficulty">N/A</span></h1>
 				<h6 class="tx-15 tx-primary tx-bold mg-b-20" tkey="netDifficulty">Network Difficulty</h6>
 				<p tyke="netDiffInfo">Chart on the right show the network difficulty for the last 30 blocks.</p>
 				<a data-page="explorer.html" href="#explorer" class="statement-link" tkey="netExplorer">Network Explorer<i class="fa fa-angle-right mg-l-5"></i></a>
 				<p class="tx-12"></p>
 			</div><!-- col-5 -->
-			<div class="col-8 dasboard-box">
+			<div class="dasboard-box">
 				<canvas id="diffAreaChart" height="280"></canvas>
 			</div><!-- col-7 -->
 		</div><!-- row -->

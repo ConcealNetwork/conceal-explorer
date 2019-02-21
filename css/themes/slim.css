@@ -40498,3 +40498,41 @@ a {
   width: 100%;
   justify-content: space-between;
 }
+
+#networkDiffRow .dasboard-box {
+  width: 33%;
+}
+
+#networkDiffRow .dasboard-box + .dasboard-box {
+  width: 66%;
+}
+
+@media only screen and (max-width: 999px) {
+  #welcomeSection {
+    display: inline !important;
+  }
+
+  #depositsSection {
+    margin-top: 20px;
+  }
+
+  #networkDiffRow {
+    display: inline !important;
+  }
+
+  #networkDiffRow .dasboard-box {
+    width: 100% !important;
+  }  
+}
+
+@media only screen and (max-width: 600px) {
+  #depositsSection {
+    display: inline !important;
+  }
+
+  #depositsSection .summary-item {
+    position: relative;
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+}
