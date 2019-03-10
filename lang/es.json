@@ -9,7 +9,7 @@
     
     "welcome": "Welcome",
     "earnedToDate": "Interest<br>earned todate",
-    "totalBanked": "Total<br>banked",
+    "totalBanked": "Total<br> banked",
     "overview": "Overview",
     "netDifficulty": "Network Difficulty",
     "netDiffInfo": "Chart on the right show the network difficulty for the last 30 blocks.",

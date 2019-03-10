@@ -95,7 +95,6 @@
     }
 	
 	function renderBlock(block){
-		console.log("renderBlock");
 		updateText('block.hash', block.hash);
 		updateText('block.height', localizeNumber(block.height));
 		updateText('block.timestamp', formatDate(block.timestamp));
@@ -108,9 +107,9 @@
 		updateText('block.currentTxsMedian', localizeNumber(block.sizeMedian));
 		updateText('block.effectiveTxsMedian', localizeNumber(block.effectiveSizeMedian));
 		updateText('block.rewardPenalty', block.penalty*100 + "%");
-		updateText('block.baseReward', getReadableCoins(block.baseReward));
-		updateText('block.transactionsFee', getReadableCoins(block.totalFeeAmount));
-		updateText('block.reward', getReadableCoins(block.reward));
+		updateText('block.baseReward', getReadableCoins(block.baseReward, 2));
+		updateText('block.transactionsFee', getReadableCoins(block.totalFeeAmount, 4));
+		updateText('block.reward', getReadableCoins(block.reward, 2));
 		updateText('block.totalCoins', getReadableCoins(block.alreadyGeneratedCoins));
 		updateText('block.totalTransactions', localizeNumber(block.alreadyGeneratedTransactions));
 		renderTransactions(block.transactions);

@@ -134,8 +134,8 @@
 				
 				if (isvalid) {
 					result_text.html("This proves that specified address holds at least <strong>" 
-					+ getReadableCoins(res.total) + "</strong>, from which the following amount was spent: " 
-					+ getReadableCoins(res.spent));
+					+ getReadableCoins(res.total, 2) + "</strong>, from which the following amount was spent: " 
+					+ getReadableCoins(res.spent, 2));
 					result_container.addClass("panel-success");
 					result.addClass("text-success");
 					result_icon.addClass("fa-check");

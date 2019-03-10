@@ -40536,3 +40536,7 @@ a {
     margin-top: 10px;
   }
 }
+
+#totalBanked br {
+  display: none;
+}
