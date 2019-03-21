@@ -126,7 +126,7 @@
 					updateText('transaction.timestamp', formatDate(block.timestamp));
 					$(".transaction-timeago").timeago('update', new Date(block.timestamp * 1000).toISOString());
 				}
-                updateText('transaction.amount_out', getReadableCoins(details.amount_out,2));
+                updateText('transaction.amount_out', getReadableCoins(details.amount_out,4));
                 updateText('transaction.fee', getReadableCoins(details.fee,4));
                 updateText('transaction.mixin', 4);
                 if (!details.mixin)
@@ -150,7 +150,7 @@
 	}
 
     function getInputCells(input){
-        return '<td>' + getReadableCoins(input.value.amount, 2) + '</td>' +
+        return '<td>' + getReadableCoins(input.value.amount, 4) + '</td>' +
             '<td>' + input.value.k_image + '</td>';
     }
 
@@ -198,7 +198,7 @@
 
 
     function getOutputCells(output){
-        return '<td>' + getReadableCoins(output.amount, 2) + '</td>' +
+        return '<td>' + getReadableCoins(output.amount, 4) + '</td>' +
             '<td>' + output.target.data.key + '</td>';
     }
 
