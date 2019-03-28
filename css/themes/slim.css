@@ -40540,8 +40540,9 @@ a {
   display: none;
 }
 
-.dash-flex {
-  display: flex;
+.dash-market {
+  display: flex;    
+  margin-left: 5px !important;
 }
 
 .info-text {
@@ -40550,4 +40551,8 @@ a {
 
 .icon-info {
   padding-left: 20px;
+}
+
+#marketcapRank {
+  margin-left: 5px;
 }

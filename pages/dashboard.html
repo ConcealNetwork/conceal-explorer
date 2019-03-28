@@ -117,7 +117,7 @@
 		<div id="blockStats" class="card card-dash-one mg-b-20">
 			<div class="row no-gutters">
 				<div class="col-lg-3">
-					<div class="dash-content dash-small-info dash-flex">
+					<div class="dash-content dash-small-info dash-market">
 						<div class="info-text">
 							<label class="tx-primary" tkey="mktCCXToUSD">CCX to USD</label>
 							<h2><span id="CCXToUSD">N/A</h2>
@@ -128,7 +128,7 @@
 					</div><!-- dash-content -->
 				</div><!-- col-3 -->
 				<div class="col-lg-3">
-					<div class="dash-content dash-small-info dash-flex">
+					<div class="dash-content dash-small-info dash-market">
 						<div class="info-text">
 							<label class="tx-primary" tkey="mktCCXToBTC">CCX to BTC</label>
 							<h2><span id="CCXToBTC">N/A</span></h2>
@@ -139,9 +139,9 @@
 					</div><!-- dash-content -->
 				</div><!-- col-3 -->
 				<div class="col-lg-3">
-					<div class="dash-content dash-small-info dash-flex">
+					<div class="dash-content dash-small-info dash-market">
 						<div class="info-text">
-							<label class="tx-primary" tkey="mktMarketcap">Marketcap</label>
+							<label class="tx-primary" tkey="mktMarketcap">Marketcap</label><label class="tx-primary" id="marketcapRank"></label>
 							<h2><span id="marketcap">N/A</span></h2>
 						</div>
 						<div class="icon icon-info">
@@ -150,7 +150,7 @@
 					</div><!-- dash-content -->
 				</div><!-- col-3 -->
 				<div class="col-lg-3">
-					<div class="dash-content dash-small-info dash-flex">
+					<div class="dash-content dash-small-info dash-market">
 						<div class="info-text">
 							<label class="tx-primary" tkey="mktDailyVolume">Daily Volume</label>
 							<h2><span id="dailyVolume">N/A</span></h2>
@@ -275,7 +275,8 @@
 				USDperCCX = data.market_data.current_price.usd;
 				$("#CCXToUSD").html("$ " + data.market_data.current_price.usd.toFixed(2));
 				$("#CCXToBTC").html(data.market_data.current_price.btc.toFixed(8));
-				$("#marketcap").html("$ " + data.market_data.market_cap.usd.toFixed(0)); // (" + data.market_cap_rank + ")");
+				$("#marketcap").html("$ " + data.market_data.market_cap.usd.toFixed(0));
+				$("#marketcapRank").html("(RANK " + data.market_cap_rank + ")");
 				$("#dailyVolume").html("$ " + data.market_data.total_volume.usd.toFixed(0));
 
 				if (marketPriceAreaChart) {
