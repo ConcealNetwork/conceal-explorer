@@ -40544,6 +40544,10 @@ a {
   display: flex;
 }
 
+.info-text {
+  width: 100%;
+}
+
 .icon-info {
   padding-left: 20px;
 }
