@@ -241,7 +241,7 @@
 	function getCurrencyPriceText(coinAmmount) {    
 		if (USDperCCX) {
 			var price = USDperCCX * coinAmmount; 
-			return ("(" + price.toFixed(2) + "$)");
+			return ("($ " + price.toFixed(2) + ")");
 		}
 	}
 
@@ -273,10 +273,10 @@
 			// get conceal market data
 			$.getJSON( "https://api.coingecko.com/api/v3/coins/conceal?sparkline=true", function( data ) {
 				USDperCCX = data.market_data.current_price.usd;
-				$("#CCXToUSD").html(data.market_data.current_price.usd.toFixed(2) + " $");
+				$("#CCXToUSD").html("$ " + data.market_data.current_price.usd.toFixed(2));
 				$("#CCXToBTC").html(data.market_data.current_price.btc.toFixed(8));
-				$("#marketcap").html(data.market_data.market_cap.usd.toFixed(0) + " $"); // (" + data.market_cap_rank + ")");
-				$("#dailyVolume").html(data.market_data.total_volume.usd.toFixed(0) + " $");
+				$("#marketcap").html("$ " + data.market_data.market_cap.usd.toFixed(0)); // (" + data.market_cap_rank + ")");
+				$("#dailyVolume").html("$ " + data.market_data.total_volume.usd.toFixed(0));
 
 				if (marketPriceAreaChart) {
 					marketPriceAreaChart.destroy();
