@@ -33,7 +33,8 @@
     "mktMarketcap": "Tapa del mercado",
     "mktDailyVolume": "Volumen diario",
     "estimateProfit": "Estimación de ganancias mineras",
-    "perDay": "por día",	    
+	"enterYourHashrate": "Ingrese su tasa de hash",
+    "perDay": "por día",
     
     "netStats": "ESTADÍSTICAS DE RED",
     "txNetworkAmmount": "CANTIDAD",
@@ -160,6 +161,14 @@
     "txViewOutputsTitle": "Salidas",
     "txViewOutputsAmmount": "Cantidad",
     "txViewOutputsKey": "Llave",
+	
+	"bpTitle": "CHECK BALANCE PROOF",
+	"bpDescription": "Hereby you can check a signature proving that the owner of 'address' holds at least this much, optionally with a challenge string 'message'.",
+	"bpAddress": "Address",
+	"bpMessage": "Message",
+	"bpSignature": "Signature",
+	"bpVerify": "Verify",
+	"bpVerificationResult": "Verification result",
 
     "btnLoadMore": "Cargar más",
 

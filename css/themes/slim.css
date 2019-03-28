@@ -40286,7 +40286,6 @@ a.hover-white-8:hover, a.hover-white-8:focus {
 }
 
 .icon-info {
-  float: right;
   line-height: 0.6 !important;
 }
 
@@ -40539,4 +40538,13 @@ a {
 
 #totalBanked br {
   display: none;
+}
+
+.dash-flex {
+  display: flex;
+}
+
+.info-text {
+  width: 100%;
+  padding-left: 20px;
 }
