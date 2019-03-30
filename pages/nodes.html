@@ -302,7 +302,7 @@
     }
 
     function loadNodesDataToTable(initialLoad) {
-        $.getJSON( "http://node.conceal.network:3025/pool/list", function( data ) {
+        $.getJSON( "https://node.conceal.network/pool/list", function( data ) {
             var tableData = [];
 
             if (data.success) {
