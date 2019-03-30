@@ -4,7 +4,7 @@
     "miningPools": "Mining Pools",
     "txViewer": "TX Viewer",
 	"api": "API",
-	"bp": "BP",
+	"bp": "Balance Proof",
     "searchHint": "Search by block height / hash, transaction hash, payment id",
     
     "welcome": "Welcome",

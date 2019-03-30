@@ -13,12 +13,14 @@
     <link href="lib/Ionicons/css/ionicons.css" rel="stylesheet">
     <link href="lib/chartist/css/chartist.css" rel="stylesheet">
     <link href="lib/select2/css/select2.min.css" rel="stylesheet">
+    <link href="lib/datatables/css/jquery.dataTables.css" rel="stylesheet">
 
     <!-- Slim CSS -->
     <link rel="stylesheet" href="css/themes/slim.css">
     <link rel="stylesheet" href="css/themes/slim.one.css">
 
     <!-- script files -->
+    
     <script src="lib/jquery/js/jquery.js"></script>
     <script src="lib/popper.js/js/popper.js"></script>
     <script src="lib/bootstrap/js/bootstrap.js"></script>
@@ -28,6 +30,8 @@
     <script src="lib/moment/js/moment.js"></script>
     <script src="lib/chart.js/js/Chart.js"></script>
     <script src="lib/chartist/js/chartist.js"></script>
+    <script src="lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="lib/datatables-responsive/js/dataTables.responsive.js"></script>
     <script src="lib/jquery.sparkline.bower/js/jquery.sparkline.min.js"></script>
 
     <script src="js/ResizeSensor.js"></script>
@@ -107,17 +111,23 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link hot_link nav-link-last" data-page="api.html" href="#api">
-              <i class="icon ion-ios-gear-outline"></i>
-              <span tkey="api">API</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hot_link nav-link-last" data-page="check_funds.html" href="#check_funds">
+            <a class="nav-link hot_link nav-link-last" data-page="nodes.html" href="#nodes">
               <i class="icon ion-ios-chatboxes-outline"></i>
-              <span tkey="bp">BP</span>
+              <span tkey="nodes">NODES</span>
             </a>
           </li>
+          <li class="nav-item with-sub">
+              <a class="nav-link" href="#" data-toggle="dropdown" id="toolsNavItem">
+                <i class="icon ion-ios-analytics-outline"></i>
+                <span tkey="resources">TOOLS</span>
+              </a>
+              <div class="sub-item">
+                <ul>
+                    <li><a class="hot_link" data-page="api.html" href="#api"><i class="fa fa-gears icon-dropdown"></i><span tkey="api">API</span></a></li>
+                    <li><a class="hot_link" data-page="check_funds.html" href="#check_funds"><i class="fa fa-gears icon-dropdown"></i><span tkey="bp">Balance Proof</span></a></li>
+                </ul>
+             </div><!-- dropdown-menu -->
+           </li>
 
           <li class="nav-item" style="display:none;">
             <a class="hot_link" data-page="blockchain_block.html" href="#blockchain_block">

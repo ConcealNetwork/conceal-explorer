@@ -40556,3 +40556,38 @@ a {
 #marketcapRank {
   margin-left: 5px;
 }
+
+.icon-dropdown {
+  margin-right: 10px;
+}
+
+.slim-navbar .sub-item ul a {
+  color: #868ba1 !important;
+}
+
+.slim-navbar .sub-item ul a:hover {
+  color: #FFA500 !important;
+}
+
+#toolsNavItem {
+  border-right: 1px solid #343a40;
+  border-left: 0px none;
+}
+
+/******************** NODE TABLE *********************/
+
+td.ntNodeName {
+  color: #FFA500 !important;
+}
+
+td.ntNodeHeight,
+th.ntNodeHeight,
+td.ntNodeStarted,
+th.ntNodeStarted,
+td.ntNodeVersion,
+th.ntNodeVersion,
+td.ntNodePlatform,
+th.ntNodePlatform
+ {
+  text-align: center;
+}

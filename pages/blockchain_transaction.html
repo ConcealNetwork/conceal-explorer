@@ -112,40 +112,39 @@
 	}
 
 	function renderTransaction(transaction){
+        var details = transaction.txDetails;
+        inputs = transaction.tx.vin;
+        outputs = transaction.tx.vout;
+        block = transaction.block;
         
-				var details = transaction.txDetails;
-                inputs = transaction.tx.vin;
-                outputs = transaction.tx.vout;
-                block = transaction.block;
-				
-                updateText('transaction.hash', details.hash);
-                if (block.hash){
-					$('#confirmations').show();
-					updateText('transaction.confirmations', localizeNumber(lastStats.height - block.height));
-					updateText('transaction.timestamp', formatDate(block.timestamp));
-					$(".transaction-timeago").timeago('update', new Date(block.timestamp * 1000).toISOString());
-				}
-                updateText('transaction.amount_out', getReadableCoins(details.amount_out,4));
-                updateText('transaction.fee', getReadableCoins(details.fee,4));
-                updateText('transaction.mixin', 4);
-                if (!details.mixin)
-                    $('#div_transaction_mixin').hide();
-                updateText('transaction.paymentId', details.paymentId);
-                if (!details.paymentId)
-                    $('#div_transaction_paymentId').hide();
-                updateText('transaction.size', localizeNumber(details.size));
+        updateText('transaction.hash', details.hash);
+        if (block.hash){
+            $('#confirmations').show();
+            updateText('transaction.confirmations', localizeNumber(lastStats.height - block.height));
+            updateText('transaction.timestamp', formatDate(block.timestamp));
+            $(".transaction-timeago").timeago('update', new Date(block.timestamp * 1000).toISOString());
+        }
+        updateText('transaction.amount_out', getReadableCoins(details.amount_out,4));
+        updateText('transaction.fee', getReadableCoins(details.fee,4));
+        updateText('transaction.mixin', 4);
+        if (!details.mixin)
+            $('#div_transaction_mixin').hide();
+        updateText('transaction.paymentId', details.paymentId);
+        if (!details.paymentId)
+            $('#div_transaction_paymentId').hide();
+        updateText('transaction.size', localizeNumber(details.size));
 
-				if (!block.hash){
-					$('#tx_block').hide();
-					$('#tx_unconfirmed').show();
-				}
-				
-                updateTextLinkable('block.hash', formatBlockLink(block.hash));
-                updateText('block.height', localizeNumber(block.height));
-                updateText('block.timestamp', formatDate(block.timestamp));
-				
-                renderInputs(inputs);
-                renderOutputs(outputs);
+        if (!block.hash){
+            $('#tx_block').hide();
+            $('#tx_unconfirmed').show();
+        }
+        
+        updateTextLinkable('block.hash', formatBlockLink(block.hash));
+        updateText('block.height', localizeNumber(block.height));
+        updateText('block.timestamp', formatDate(block.timestamp));
+        
+        renderInputs(inputs);
+        renderOutputs(outputs);
 	}
 
     function getInputCells(input){
