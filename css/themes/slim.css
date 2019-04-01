@@ -40591,3 +40591,9 @@ th.ntNodePlatform
  {
   text-align: center;
 }
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, 
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
+  background-color: #FFA500;
+}
