@@ -1,11 +1,10 @@
-﻿
-{
+﻿{
     "dashboard": "panel de control",
     "explorer": "explorador",
     "miningPools": "Grupos de minería",
     "txViewer": "Ventana TX",
     "api": "API",
-    "bp": "Balance Proof",
+    "bp": "BP",
     "searchHint": "Buscar por altura de bloque / hash, hash de transacción, identificación de pago",
     
     "welcome": "Bienvenido",
@@ -118,10 +117,10 @@
     "blockTxFeeHint": "Suma de tarifas para todas las transacciones en el bloque.",
     "blockRewardHint": "Cantidad real de monedas que recibió el minero por encontrar el bloque. & lt; recompensa & gt; = & lt; recompensa base & gt; × (1 - & lt; penalización & gt;) + & lt; tarifa de transacciones & gt;",
     "blockHeight": "Altura:",
-    "blockTimestamp": "Timestamp:",
+    "blockTimestamp": "Zello de Tiempo:",
     "blockVersion": "Version:",
     "BlockDifficulty": "Dificultad:",
-    "blockOrphan": "Orphan:",
+    "blockOrphan": "Huerfano:",
     "blockTransactions": "Transactions:",
     "blocTotalCoins": "Total de monedas en la red:",
     "blockTotalTxCount": "Total de transacciones en la red:",
@@ -162,13 +161,13 @@
     "txViewOutputsAmmount": "Cantidad",
     "txViewOutputsKey": "Llave",
 	
-	"bpTitle": "CHECK BALANCE PROOF",
-	"bpDescription": "Hereby you can check a signature proving that the owner of 'address' holds at least this much, optionally with a challenge string 'message'.",
-	"bpAddress": "Address",
-	"bpMessage": "Message",
-	"bpSignature": "Signature",
-	"bpVerify": "Verify",
-	"bpVerificationResult": "Verification result",
+	"bpTitle": "Mira el Balance",
+	"bpDescription": "De este modo, puedes verificar una firma que demuestre que el propietario de la 'dirección' tiene al menos esta cantidad, opcionalmente con una cadena de desafío en 'mensaje'.",
+	"bpAddress": "Direccion",
+	"bpMessage": "Mensaje",
+	"bpSignature": "Firma",
+	"bpVerify": "Verifica",
+	"bpVerificationResult": "Resultado de la verificacion",
 
     "btnLoadMore": "Cargar más",
 
