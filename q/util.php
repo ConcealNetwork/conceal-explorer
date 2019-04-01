@@ -58,3 +58,9 @@ function fetch_bitstamp(string $bitstamp) {
         $response = file_get_contents($_url);
         return json_decode($response, true);
 };
+
+function fetch_coingecko(string $coingecko) {
+        $_url = $coingecko;
+        $response = file_get_contents($_url);
+        return json_decode($response, true);
+};
