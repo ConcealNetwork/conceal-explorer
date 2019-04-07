@@ -334,7 +334,7 @@
         $(data.list).each(function (idx, obj) {
           var rowData = [];
 
-          if (obj.name) {
+          if ((obj.name) && (obj.blockchain) && (obj.blockchain.fee_address)) {
             rowData.push(obj.location ? obj.location.ip + ":16000" : obj.ip.substring(7) + ":16000");
             rowData.push(obj.name);
             if ((obj.location) && (obj.location.data)) {
