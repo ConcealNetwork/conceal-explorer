@@ -327,14 +327,14 @@
   }
 
   function loadNodesDataToTable(initialLoad) {
-    $.getJSON("https://node.conceal.network/pool/list", function (data) {
+    $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true", function (data) {
       var tableData = [];
 
       if (data.success) {
         $(data.list).each(function (idx, obj) {
           var rowData = [];
 
-          if ((obj.name) && (obj.blockchain) && (obj.blockchain.fee_address)) {
+          if (obj.name) {
             rowData.push(obj.location ? obj.location.ip + ":16000" : obj.ip.substring(7) + ":16000");
             rowData.push(obj.name);
             if ((obj.location) && (obj.location.data)) {
