@@ -327,7 +327,7 @@
   }
 
   function loadNodesDataToTable(initialLoad) {
-    $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true", function (data) {
+    $.getJSON("https://explorer.conceal.network/pool/list", function (data) {
       var tableData = [];
 
       if (data.success) {
