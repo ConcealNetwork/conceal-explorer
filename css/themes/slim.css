@@ -40580,8 +40580,12 @@ td.ntNodeName {
   color: #FFA500 !important;
 }
 
+td.ntNodePeers,
+th.ntNodePeers,
 td.ntNodeHeight,
 th.ntNodeHeight,
+td.ntNodeStatus,
+th.ntNodeStatus,
 td.ntNodeStarted,
 th.ntNodeStarted,
 td.ntNodeVersion,
