@@ -94,7 +94,7 @@
             if ((obj.location) && (obj.location.data)) {
               rowData.push(getCountryName(obj.location.data.country));
             } else {
-              rowData.push(obj.ip.substring(7));
+              rowData.push("N/A");
             }
             rowData.push(moment(obj.status.startTime).fromNow());
             rowData.push(obj.blockchain ? obj.blockchain.height : "0");
