@@ -84,7 +84,7 @@
     result_container.hide();
     privateKeyType = $("[name=keyType]:checked").val();
     if (!signature.val() || !address.val()) {
-      wrongParamAlert("Fill address and signature fields!");
+      wrongParamAlert("Fill address and signature fields are mandatory.!", result_container);
       return;
     }
     checkReserve(result_container, message.val(), address.val(), signature.val());

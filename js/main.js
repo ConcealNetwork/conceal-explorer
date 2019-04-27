@@ -386,15 +386,19 @@ function renderLangSelector() {
   }
 }
 
-function wrongParamAlert(message) {
-  $('#page').after(
-    '<div class="alert alert-danger alert-dismissable fade in" style="position: fixed; right: 50px; top: 50px;">' +
-    '<button type="button" class="close" ' +
-    'data-dismiss="alert" aria-hidden="true">' +
-    '&times;' +
-    '</button>' +
-    '<strong>' + message + '</strong><br />' +
+function wrongParamAlert(message, cointainer) {
+  $(cointainer).after(
+    '<div id="paramsAlert" class="alert alert-solid alert-danger mg-b-0" role="alert" style="z-index: 999;">' +
+    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+    '<span aria-hidden="true">×</span>' +
+    '</button>' + message +
     '</div>');
+
+  setTimeout(() => {
+    $("#paramsAlert").fadeOut(2000, function () {
+      $("#paramsAlert").remove();
+    });
+  }, 3000);
 }
 
 function checkReserve(cointainer, message, address, signature) {
@@ -403,10 +407,6 @@ function checkReserve(cointainer, message, address, signature) {
   var result_text = result.find("span");
   var result_icon = result.find("i");
   result_text.empty();
-
-  console.log(message);
-  console.log(address);
-  console.log(signature);
 
   xhrCheckReserve = $.ajax({
     url: api + '/json_rpc',
@@ -425,7 +425,7 @@ function checkReserve(cointainer, message, address, signature) {
     cache: 'false',
     success: function (data) {
       if (data.error) {
-        wrongParamAlert(data.error.message);
+        wrongParamAlert(data.error.message, cointainer);
       } else {
         var res = data.result;
 
