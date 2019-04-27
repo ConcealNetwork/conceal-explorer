@@ -40642,3 +40642,7 @@ td.ntFundsPaid {
   top: 30px;
   display: none;
 }
+
+tr.fundsFooter {
+  height: 40px;
+}
