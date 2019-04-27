@@ -5,6 +5,7 @@
     "txViewer": "Ventana TX",
     "api": "API",
     "bp": "BP",
+	"txFunds": "Funds",
     "searchHint": "Buscar por altura de bloque / hash, hash de transacción, identificación de pago",
     
     "welcome": "Bienvenido",

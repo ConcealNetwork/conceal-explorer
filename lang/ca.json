@@ -5,6 +5,7 @@
     "txViewer": "TX Viewer",
 	"api": "API",
 	"bp": "Balance Proof",
+	"txFunds": "Funds",
     "searchHint": "Search by block height / hash, transaction hash, payment id",
     
     "welcome": "Welcome",

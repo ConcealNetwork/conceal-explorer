@@ -1,0 +1,131 @@
+<div class="card mg-t-20" id="fundsVerify">
+  <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
+    <h2>
+      <i class="fa fa-bank" aria-hidden="true"></i> Funds
+      <button class="btn btn-primary-outline" type="button" id="verifyFunds">
+        <span class="fa fa-search" tkey="bpVerify">Verify</span>
+      </button>
+    </h2>
+  </div>
+  <div class="card-body card-body-info">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default" id="verification_result">
+          <div class="panel-heading">
+            <h3 class="panel-title" tkey="bpVerificationResult">Verification result</h3>
+          </div>
+          <div class="panel-body">
+            <p class="verified"><i class="fa fa-2x"></i> <span></span></p>
+          </div>
+        </div>
+        <table id="fundsTable" class="table display responsive nowrap">
+          <thead>
+            <tr>
+              <th class="wd-15p ntFundsGroup">Group</th>
+              <th class="wd-15p ntFundsCategory">Category</th>
+              <th class="wd-20p ntFundsPaid">Paid</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr class="fundsFooter">
+              <th colspan="2">Total spent so far:</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var result_container = $("#verification_result");
+  result_container.hide();
+  var groupColumn = 0;
+
+  currentPage = {
+    destroy: function () { },
+    init: function () {
+      loadTranslations();
+    },
+    update: function () { }
+  };
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  $('#fundsTable').DataTable({
+    "displayLength": 300,
+    "ajax": 'funds.dat',
+    "searching": false,
+    "paging": false,
+    "ordering": false,
+    "info": true,
+    "columns": [
+      {
+        className: "ntFundsGroup",
+        "visible": false
+      }, {
+        className: "ntFundsCategory"
+      }, {
+        className: "ntFundsPaid"
+      }
+    ],
+    rowGroup: {
+      startRender: function (rows, group) {
+        return group + ' (' + rows.count() + ' categories)';
+      },
+      endRender: function (rows, group) {
+        var sumPaid = rows
+          .data()
+          .pluck(2)
+          .reduce(function (a, b) {
+            return a + b.replace(/[^\d]/g, '') * 1;
+          }, 0);
+
+        return $('<tr/>')
+          .append('<td class="sumTitle">Sumarum for ' + group + '</td>')
+          .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
+      },
+      dataSrc: 0
+    },
+    footerCallback: function (row, data, start, end, display) {
+      var api = this.api(), data;
+
+      // Remove the formatting to get integer data for summation
+      var intVal = function (i) {
+        return typeof i === 'string' ?
+          i.replace(/[\$,]/g, '') * 1 :
+          typeof i === 'number' ?
+            i : 0;
+      };
+
+      // Total over all pages
+      total = api
+        .column(2)
+        .data()
+        .reduce(function (a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Total over this page
+      pageTotal = api
+        .column(2, { page: 'current' })
+        .data()
+        .reduce(function (a, b) {
+          return intVal(a) + intVal(b);
+        }, 0);
+
+      // Update footer
+      $(api.column(2).footer()).html(numberWithCommas(pageTotal));
+    }
+  });
+
+  $("#verifyFunds").click(function () {
+    result_container.hide();
+    checkReserve(result_container, "", fundsProof.address, fundsProof.signature);
+  });
+
+</script>

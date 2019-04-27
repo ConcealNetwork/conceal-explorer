@@ -1,366 +1,379 @@
 <!DOCTYPE html>
 <html>
 
-  <head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="icon" type="image/icon" href="favicon.ico">
-    <title>Conceal.Network - Block Explorer</title>
-    <!-- vendor css -->
-    <link href="lib/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="lib/Ionicons/css/ionicons.css" rel="stylesheet">
-    <link href="lib/chartist/css/chartist.css" rel="stylesheet">
-    <link href="lib/select2/css/select2.min.css" rel="stylesheet">
-    <link href="lib/datatables/css/jquery.dataTables.css" rel="stylesheet">
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" type="image/icon" href="favicon.ico">
+  <title>Conceal.Network - Block Explorer</title>
+  <!-- vendor css -->
+  <link href="lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="lib/Ionicons/css/ionicons.css" rel="stylesheet">
+  <link href="lib/chartist/css/chartist.css" rel="stylesheet">
+  <link href="lib/select2/css/select2.min.css" rel="stylesheet">
+  <link href="lib/datatables/css/jquery.dataTables.css" rel="stylesheet">
 
-    <!-- Slim CSS -->
-    <link rel="stylesheet" href="css/themes/slim.css">
-    <link rel="stylesheet" href="css/themes/slim.one.css">
+  <!-- Slim CSS -->
+  <link rel="stylesheet" href="css/themes/slim.css">
+  <link rel="stylesheet" href="css/themes/slim.one.css">
 
-    <!-- script files -->
-    
-    <script src="lib/jquery/js/jquery.js"></script>
-    <script src="lib/popper.js/js/popper.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.js"></script>
-    <script src="lib/jquery.cookie/js/jquery.cookie.js"></script>
-    <script src="lib/jquery.timeago/js/jquery.timeago.js"></script>
-    <script src="lib/select2/js/select2.full.min.js"></script>
-    <script src="lib/moment/js/moment.js"></script>
-    <script src="lib/chart.js/js/Chart.js"></script>
-    <script src="lib/chartist/js/chartist.js"></script>
-    <script src="lib/datatables/js/jquery.dataTables.js"></script>
-    <script src="lib/datatables-responsive/js/dataTables.responsive.js"></script>
-    <script src="lib/jquery.sparkline.bower/js/jquery.sparkline.min.js"></script>
+  <!-- script files -->
 
-    <script src="js/ResizeSensor.js"></script>
-    <script src="js/slim.js"></script>
-    <script src="./countries.js"></script>
-    <script src="./config.js"></script>
-    <script src="js/main.js"></script>
-  </head>
+  <script src="lib/jquery/js/jquery.js"></script>
+  <script src="lib/popper.js/js/popper.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.js"></script>
+  <script src="lib/jquery.cookie/js/jquery.cookie.js"></script>
+  <script src="lib/jquery.timeago/js/jquery.timeago.js"></script>
+  <script src="lib/select2/js/select2.full.min.js"></script>
+  <script src="lib/moment/js/moment.js"></script>
+  <script src="lib/chart.js/js/Chart.js"></script>
+  <script src="lib/chartist/js/chartist.js"></script>
+  <script src="lib/datatables/js/jquery.dataTables.js"></script>
+  <script src="lib/jquery.sparkline.bower/js/jquery.sparkline.min.js"></script>
 
-  <body>
-    <div class="slim-header">
-      <div class="container">
-        <div class="slim-header-left">
-          <img src="img/logo.svg" width="48" height="58">
-          <div class="logoText">
-            <h2 class="slim-logo">
-              <a href="index.html">
-                <span>EXPLORER</span></a>
-            </h2>
-          </div>
+  <script src="js/ResizeSensor.js"></script>
+  <script src="js/slim.js"></script>
+  <script src="./countries.js"></script>
+  <script src="./config.js"></script>
+  <script src="js/main.js"></script>
+</head>
+
+<body>
+  <div class="slim-header">
+    <div class="container">
+      <div class="slim-header-left">
+        <img src="img/logo.svg" width="48" height="58">
+        <div class="logoText">
+          <h2 class="slim-logo">
+            <a href="index.html">
+              <span>EXPLORER</span></a>
+          </h2>
         </div>
-        <!-- slim-header-left -->
-        <div class="slim-header-right">
-          <div id="stats_updated" style="display: none;">
-            <i class="fa fa-bolt"></i>
-          </div>
-          <div class="search-box">
-            <input type="text" id="txt_search" class="form-control" tplaceholder="searchHint" placeholder="Search by block height / hash, transaction hash, payment id">
-            <button id="btn_search" class="btn btn-primary">
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-          <!-- search-box -->
-          <div id="langSelector">
-            <select id="newLang" class="form-control form-control-sm select2">
-              <option value="en" selected="selected">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-              <option value="it">Italiano</option>
-              <option value="ru">Русский</option>
-              <option value="ca">Català</option>
-              <option value="ko">한국어</option>
-              <option value="zh-CN">简体中文</option>
-            </select>
-          </div>
+      </div>
+      <!-- slim-header-left -->
+      <div class="slim-header-right">
+        <div id="stats_updated" style="display: none;">
+          <i class="fa fa-bolt"></i>
         </div>
-        <!-- header-right -->
-      </div>
-      <!-- container -->
-    </div>
-    <!-- slim-header -->
-
-    <div class="slim-navbar">
-      <div class="container">
-        <ul class="nav">
-          <li class="nav-item active">
-            <a class="nav-link hot_link" data-page="dashboard.html" href="#">
-              <i class="icon ion-ios-home-outline"></i>
-              <span tkey="dashboard">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hot_link" data-page="explorer.html" href="#explorer">
-              <i class="icon ion-ios-filing-outline"></i>
-              <span tkey="explorer">Explorer</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hot_link" data-page="pools.html" href="#pools">
-              <i class="icon ion-ios-analytics-outline"></i>
-              <span tkey="miningPools">Pools</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hot_link" data-page="txviewer.html" href="#txviewer">
-              <i class="icon ion-ios-book-outline"></i>
-              <span tkey="txViewer">TX Viewer</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link hot_link nav-link-last" data-page="nodes.html" href="#nodes">
-              <i class="icon ion-ios-chatboxes-outline"></i>
-              <span tkey="nodes">NODES</span>
-            </a>
-          </li>
-          <li class="nav-item with-sub">
-              <a class="nav-link" href="#" data-toggle="dropdown" id="toolsNavItem">
-                <i class="icon ion-ios-analytics-outline"></i>
-                <span tkey="resources">TOOLS</span>
-              </a>
-              <div class="sub-item">
-                <ul>
-                    <li><a class="hot_link" data-page="api.html" href="#api"><i class="fa fa-gears icon-dropdown"></i><span tkey="api">API</span></a></li>
-                    <li><a class="hot_link" data-page="check_funds.html" href="#check_funds"><i class="fa fa-gears icon-dropdown"></i><span tkey="bp">Balance Proof</span></a></li>
-                </ul>
-             </div><!-- dropdown-menu -->
-           </li>
-
-          <li class="nav-item" style="display:none;">
-            <a class="hot_link" data-page="blockchain_block.html" href="#blockchain_block">
-              <i class="fa fa-cubes"></i>
-              Block</a>
-          </li>
-          <li class="" style="display:none;">
-            <a class="hot_link" data-page="blockchain_transaction.html" href="#blockchain_transaction">
-              <i class="fa fa-cubes"></i>
-              Transaction</a>
-          </li>
-          <li class="nav-item" style="display:none;">
-            <a class="hot_link" data-page="blockchain_payment_id.html" href="#blockchain_payment_id">
-              <i class="fa fa-cubes"></i>
-              Transactions by Payment ID</a>
-          </li>
-        </ul>
-      </div>
-      <!-- container -->
-    </div>
-    <!-- slim-navbar -->
-
-    <div id="content">
-      <div class="container">
-        <div id="page"></div>
-        <p id="loading" class="text-center">
-          <i class="fa fa-circle-o-notch fa-spin"></i>
-        </p>
-      </div>
-    </div>
-
-    <div class="slim-footer" id="explorerFooter">
-      <div class="container">
-        <p>Copyright 2018-2019 &copy; All Rights Reserved. Conceal Network</p>
-      </div>
-      <!-- container -->
-    </div>
-    <!-- slim-footer -->
-
-    <!-- general modal error dialog -->
-    <div id="errorDialog" class="modal fade" style="display: none;" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content tx-size-sm">
-          <div class="modal-body tx-center pd-y-20 pd-x-20">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span></button>
-            <i class="fa fa-exclamation-triangle tx-100 tx-danger lh-1 mg-t-20 d-inline-block"></i>
-            <h4 class="tx-danger mg-b-20">Error searching!</h4>
-            <p class="mg-b-20 mg-x-20" id="errorReason"></p>
-            <button type="button" class="btn btn-danger pd-x-25" data-dismiss="modal" aria-label="Close">Continue</button>
-          </div>
-          <!-- modal-body -->
+        <div class="search-box">
+          <input type="text" id="txt_search" class="form-control" tplaceholder="searchHint"
+            placeholder="Search by block height / hash, transaction hash, payment id">
+          <button id="btn_search" class="btn btn-primary">
+            <i class="fa fa-search"></i>
+          </button>
         </div>
-        <!-- modal-content -->
+        <!-- search-box -->
+        <div id="langSelector">
+          <select id="newLang" class="form-control form-control-sm select2">
+            <option value="en" selected="selected">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="it">Italiano</option>
+            <option value="ru">Русский</option>
+            <option value="ca">Català</option>
+            <option value="ko">한국어</option>
+            <option value="zh-CN">简体中文</option>
+          </select>
+        </div>
       </div>
-      <!-- modal-dialog -->
+      <!-- header-right -->
     </div>
+    <!-- container -->
+  </div>
+  <!-- slim-header -->
 
-    <script src="lang/languages.js"></script>
-    <script>
-      // make sure index.html is in the URL for the explorer
-      if (window.location.href.indexOf("index.html") == -1) {
-        window.location.href = "/index.html";
+  <div class="slim-navbar">
+    <div class="container">
+      <ul class="nav">
+        <li class="nav-item active">
+          <a class="nav-link hot_link" data-page="dashboard.html" href="#">
+            <i class="icon ion-ios-home-outline"></i>
+            <span tkey="dashboard">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link hot_link" data-page="explorer.html" href="#explorer">
+            <i class="icon ion-ios-filing-outline"></i>
+            <span tkey="explorer">Explorer</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link hot_link" data-page="pools.html" href="#pools">
+            <i class="icon ion-ios-analytics-outline"></i>
+            <span tkey="miningPools">Pools</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link hot_link" data-page="funds.html" href="#funds">
+            <i class="icon ion-social-bitcoin-outline"></i>
+            <span tkey="txFunds">Funds</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link hot_link nav-link-last" data-page="nodes.html" href="#nodes">
+            <i class="icon ion-ios-chatboxes-outline"></i>
+            <span tkey="nodes">Nodes</span>
+          </a>
+        </li>
+        <li class="nav-item with-sub">
+          <a class="nav-link" href="#" data-toggle="dropdown" id="toolsNavItem">
+            <i class="icon ion-ios-analytics-outline"></i>
+            <span tkey="resources">Tools</span>
+          </a>
+          <div class="sub-item">
+            <ul>
+              <li>
+                <a class="hot_link" data-page="api.html" href="#api">
+                  <i class="fa fa-gears icon-dropdown"></i><span tkey="api">API</span>
+                </a>
+              </li>
+              <li>
+                <a class="hot_link" data-page="check_funds.html" href="#check_funds">
+                  <i class="fa ion-android-checkbox-outline icon-dropdown"></i><span tkey="bp">Balance Proof</span>
+                </a>
+              </li>
+              <li>
+                <a class="hot_link" data-page="txviewer.html" href="#txviewer">
+                  <i class="fa ion-ios-book-outline icon-dropdown"></i><span tkey="txViewer">TX Viewer</span>
+                </a>
+              </li>
+            </ul>
+          </div><!-- dropdown-menu -->
+        </li>
+
+        <li class="nav-item" style="display:none;">
+          <a class="hot_link" data-page="blockchain_block.html" href="#blockchain_block">
+            <i class="fa fa-cubes"></i>
+            Block</a>
+        </li>
+        <li class="" style="display:none;">
+          <a class="hot_link" data-page="blockchain_transaction.html" href="#blockchain_transaction">
+            <i class="fa fa-cubes"></i>
+            Transaction</a>
+        </li>
+        <li class="nav-item" style="display:none;">
+          <a class="hot_link" data-page="blockchain_payment_id.html" href="#blockchain_payment_id">
+            <i class="fa fa-cubes"></i>
+            Transactions by Payment ID</a>
+        </li>
+      </ul>
+    </div>
+    <!-- container -->
+  </div>
+  <!-- slim-navbar -->
+
+  <div id="content">
+    <div class="container">
+      <div id="page"></div>
+      <p id="loading" class="text-center">
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+      </p>
+    </div>
+  </div>
+
+  <div class="slim-footer" id="explorerFooter">
+    <div class="container">
+      <p>Copyright 2018-2019 &copy; All Rights Reserved. Conceal Network</p>
+    </div>
+    <!-- container -->
+  </div>
+  <!-- slim-footer -->
+
+  <!-- general modal error dialog -->
+  <div id="errorDialog" class="modal fade" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content tx-size-sm">
+        <div class="modal-body tx-center pd-y-20 pd-x-20">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span></button>
+          <i class="fa fa-exclamation-triangle tx-100 tx-danger lh-1 mg-t-20 d-inline-block"></i>
+          <h4 class="tx-danger mg-b-20">Error searching!</h4>
+          <p class="mg-b-20 mg-x-20" id="errorReason"></p>
+          <button type="button" class="btn btn-danger pd-x-25" data-dismiss="modal" aria-label="Close">Continue</button>
+        </div>
+        <!-- modal-body -->
+      </div>
+      <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+  </div>
+
+  <script src="lang/languages.js"></script>
+  <script>
+    // make sure index.html is in the URL for the explorer
+    if (window.location.href.indexOf("index.html") == -1) {
+      window.location.href = "/index.html";
+    }
+
+    renderLangSelector();
+    loadTranslations();
+
+    $('#btn_search').click(function (e) {
+      var text = document.getElementById('txt_search').value.trim();
+
+      function GetSearchBlockbyHeight() {
+
+        var block, xhrGetSearchBlockbyHeight;
+        if (xhrGetSearchBlockbyHeight) xhrGetSearchBlockbyHeight.abort();
+
+        xhrGetSearchBlockbyHeight = $.ajax({
+          url: api + '/json_rpc',
+          method: "POST",
+          data: JSON.stringify({
+            jsonrpc: "2.0",
+            id: "blockbyheight",
+            method: "getblockheaderbyheight",
+            params: {
+              height: parseInt(text)
+            }
+          }),
+          dataType: 'json',
+          cache: 'false',
+          success: function (data) {
+            if (data.result) {
+              block = data.result.block_header;
+              window.location.href = getBlockchainUrl(block.hash);
+            } else if (data.error) {
+              wrongSearchAlert();
+            }
+          }
+        });
       }
 
-      renderLangSelector();
-      loadTranslations();
-
-      $('#btn_search').click(function (e) {
-        var text = document.getElementById('txt_search').value.trim();
-
-        function GetSearchBlockbyHeight() {
-
-          var block,xhrGetSearchBlockbyHeight;
-          if (xhrGetSearchBlockbyHeight) xhrGetSearchBlockbyHeight.abort();
-          
-          xhrGetSearchBlockbyHeight = $.ajax({
-            url: api + '/json_rpc',
-            method: "POST",
-            data: JSON.stringify({
-              jsonrpc: "2.0",
-              id: "blockbyheight",
-              method: "getblockheaderbyheight",
-              params: {
-                height: parseInt(text)
-              }
-            }),
-            dataType: 'json',
-            cache: 'false',
-            success: function (data) {
-              if (data.result) {
-                block = data.result.block_header;
-                window.location.href = getBlockchainUrl(block.hash);
-              } else if (data.error) {
-                wrongSearchAlert();
-              }
+      function GetSearchBlock() {
+        var block, xhrGetSearchBlock;
+        if (xhrGetSearchBlock) xhrGetSearchBlock.abort();
+        xhrGetSearchBlock = $.ajax({
+          url: api + '/json_rpc',
+          method: "POST",
+          data: JSON.stringify({
+            jsonrpc: "2.0",
+            id: "GetSearchBlock",
+            method: "f_block_json",
+            params: {
+              hash: text
             }
-          });
-        }
-
-        function GetSearchBlock() {
-          var block,xhrGetSearchBlock;
-          if (xhrGetSearchBlock) xhrGetSearchBlock.abort();
-          xhrGetSearchBlock = $.ajax({
-            url: api + '/json_rpc',
-            method: "POST",
-            data: JSON.stringify({
-              jsonrpc: "2.0",
-              id: "GetSearchBlock",
-              method: "f_block_json",
-              params: {
-                hash: text
-              }
-            }),
-            dataType: 'json',
-            cache: 'false',
-            success: function (data) {
-              if (data.result) {
-                block = data.result.block;
-                sessionStorage.setItem('searchBlock', JSON.stringify(block));
-                window.location.href = getBlockchainUrl(block.hash);
-              } else if (data.error) {
-                $.ajax({
-                  url: api + '/json_rpc',
-                  method: "POST",
-                  data: JSON.stringify({
-                    jsonrpc: "2.0",
-                    id: "test",
-                    method: "f_transaction_json",
-                    params: {
-                      hash: text
-                    }
-                  }),
-                  dataType: 'json',
-                  cache: 'false',
-                  success: function (data) {
-                    if (data.result) {
-                      sessionStorage.setItem('searchTransaction', JSON.stringify(data.result));
-                      window.location.href = getFinalUrl(transactionExplorer.replace('{id}', text));
-                    } else if (data.error) {
-                      xhrGetTsx = $.ajax({
-                        url: api + '/json_rpc',
-                        method: "POST",
-                        data: JSON.stringify({
-                          jsonrpc: "2.0",
-                          id: "test",
-                          method: "k_transactions_by_payment_id",
-                          params: {
-                            payment_id: text
-                          }
-                        }),
-                        dataType: 'json',
-                        cache: 'false',
-                        success: function (data) {
-                          if (data.result) {
-                            txsByPaymentId = data.result.transactions;
-                            sessionStorage.setItem('txsByPaymentId', JSON.stringify(txsByPaymentId));
-                            window.location.href = getFinalUrl(paymentIdExplorer.replace('{id}', text));
-                          } else if (data.error) {
-                            $("#errorReason").html("We could not find anything, check if the data is correct.");
-                            $("#errorDialog").modal();
-                          }
-                        }
-                      });
-
-                    }
+          }),
+          dataType: 'json',
+          cache: 'false',
+          success: function (data) {
+            if (data.result) {
+              block = data.result.block;
+              sessionStorage.setItem('searchBlock', JSON.stringify(block));
+              window.location.href = getBlockchainUrl(block.hash);
+            } else if (data.error) {
+              $.ajax({
+                url: api + '/json_rpc',
+                method: "POST",
+                data: JSON.stringify({
+                  jsonrpc: "2.0",
+                  id: "test",
+                  method: "f_transaction_json",
+                  params: {
+                    hash: text
                   }
-                });
-              }
+                }),
+                dataType: 'json',
+                cache: 'false',
+                success: function (data) {
+                  if (data.result) {
+                    sessionStorage.setItem('searchTransaction', JSON.stringify(data.result));
+                    window.location.href = getFinalUrl(transactionExplorer.replace('{id}', text));
+                  } else if (data.error) {
+                    xhrGetTsx = $.ajax({
+                      url: api + '/json_rpc',
+                      method: "POST",
+                      data: JSON.stringify({
+                        jsonrpc: "2.0",
+                        id: "test",
+                        method: "k_transactions_by_payment_id",
+                        params: {
+                          payment_id: text
+                        }
+                      }),
+                      dataType: 'json',
+                      cache: 'false',
+                      success: function (data) {
+                        if (data.result) {
+                          txsByPaymentId = data.result.transactions;
+                          sessionStorage.setItem('txsByPaymentId', JSON.stringify(txsByPaymentId));
+                          window.location.href = getFinalUrl(paymentIdExplorer.replace('{id}', text));
+                        } else if (data.error) {
+                          $("#errorReason").html("We could not find anything, check if the data is correct.");
+                          $("#errorDialog").modal();
+                        }
+                      }
+                    });
+
+                  }
+                }
+              });
             }
-          });
-        }
-
-        if (text.length < 64) {
-          GetSearchBlockbyHeight();
-        } else if (text.length == 64) {
-          GetSearchBlock();
-        } else {
-          wrongSearchAlert();
-        }
-
-        e.preventDefault();
-      });
-
-      function wrongSearchAlert() {
-        $("#errorReason").html("Wrong search query!</strong><br /> Please enter block height or hash, transaction hash, or payment id.");
-        $("#errorDialog").modal();
+          }
+        });
       }
 
-      $('#txt_search').keyup(function (e) {
-        if (e.keyCode === 13) 
-          $('#btn_search').click();
-        }
-      );
-    </script>
+      if (text.length < 64) {
+        GetSearchBlockbyHeight();
+      } else if (text.length == 64) {
+        GetSearchBlock();
+      } else {
+        wrongSearchAlert();
+      }
 
-    <script type="text/javascript">
-      jQuery(function ($) {
-        $(document).ready(function () {
-          $(window).scroll(function () {
-            if ($(this).scrollTop() > 500) {
-              $('.scrollup').fadeIn();
-            } else {
-              $('.scrollup').fadeOut();
-            }
-          });
+      e.preventDefault();
+    });
 
-          $('.scrollup').click(function () {
-            $("html, body").animate({
-              scrollTop: 0
-            }, 600);
-            return false;
-          });
+    function wrongSearchAlert() {
+      $("#errorReason").html("Wrong search query!</strong><br /> Please enter block height or hash, transaction hash, or payment id.");
+      $("#errorDialog").modal();
+    }
 
-          $('.scrollup').css('opacity', '0.3');
+    $('#txt_search').keyup(function (e) {
+      if (e.keyCode === 13)
+        $('#btn_search').click();
+    }
+    );
+  </script>
 
-          $('.scrollup').hover(function () {
-            $(this)
-              .stop()
-              .animate({
-                opacity: 0.9
-              }, 400);
-          }, function () {
-            $(this)
-              .stop()
-              .animate({
-                opacity: 0.3
-              }, 400);
-          });
+  <script type="text/javascript">
+    jQuery(function ($) {
+      $(document).ready(function () {
+        $(window).scroll(function () {
+          if ($(this).scrollTop() > 500) {
+            $('.scrollup').fadeIn();
+          } else {
+            $('.scrollup').fadeOut();
+          }
+        });
+
+        $('.scrollup').click(function () {
+          $("html, body").animate({
+            scrollTop: 0
+          }, 600);
+          return false;
+        });
+
+        $('.scrollup').css('opacity', '0.3');
+
+        $('.scrollup').hover(function () {
+          $(this)
+            .stop()
+            .animate({
+              opacity: 0.9
+            }, 400);
+        }, function () {
+          $(this)
+            .stop()
+            .animate({
+              opacity: 0.3
+            }, 400);
         });
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 
 </html>

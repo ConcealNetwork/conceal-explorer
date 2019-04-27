@@ -40601,3 +40601,44 @@ th.ntNodePlatform
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
   background-color: #FFA500 !important;
 }
+
+.dtrg-group.dtrg-start td
+{
+    color: white !important;
+    font-weight: bold;
+    background-color: orange !important;
+}
+
+table.dataTable tbody tr {
+  background-color: transparent !important;
+}
+
+.sumTitle, .sumPaid, .sumDiff {
+  color: green !important;
+  font-weight: bold !important;
+}
+
+td.sumPaid,
+th.ntFundsPaid,
+td.ntFundsPaid {
+  text-align: center;
+}
+
+.ntFundsGroup{
+  text-align: left;
+}
+
+#verifyFunds {
+  float: right;
+}
+
+#bpTextSuccess i {
+  color: #23BF08 !important;
+}
+
+#refreshNodes {
+  position: absolute;
+  z-index: 999;
+  top: 30px;
+  display: none;
+}
