@@ -86,9 +86,14 @@
             return a + b.replace(/[^\d]/g, '') * 1;
           }, 0);
 
-        return $('<tr/>')
-          .append('<td class="sumTitle">Sumarum for ' + group + '</td>')
-          .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
+        if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
+          return $('<tr/>')
+            .append('<td class="sumTitle">Sumarum for ' + group + '</td>')
+            .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
+        } else {
+          return $('<tr/>')
+            .append('<td class="sumTitle">Sumarum: ' + numberWithCommas(sumPaid) + '</td>');
+        }
       },
       dataSrc: 0
     },
@@ -120,7 +125,12 @@
         }, 0);
 
       // Update footer
-      $(api.column(2).footer()).html(numberWithCommas(pageTotal));
+      if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
+        $(api.column(1).footer()).html("Total spent so far:");
+        $(api.column(2).footer()).html(numberWithCommas(pageTotal));
+      } else {
+        $(api.column(1).footer()).html("Total spent: " + numberWithCommas(pageTotal));
+      }
     }
   });
 
