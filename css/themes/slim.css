@@ -40604,7 +40604,7 @@ th.ntNodePlatform
 
 .dtrg-group.dtrg-start td
 {
-    color: white !important;
+    color: #eee !important;
     font-weight: bold;
     background-color: orange !important;
 }
@@ -40614,7 +40614,7 @@ table.dataTable tbody tr {
 }
 
 .sumTitle, .sumPaid, .sumDiff {
-  color: green !important;
+  color: #32CD32 !important;
   font-weight: bold !important;
 }
 
