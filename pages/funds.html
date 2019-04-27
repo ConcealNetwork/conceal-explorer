@@ -44,6 +44,13 @@
   result_container.hide();
   var groupColumn = 0;
 
+  var categories = {
+    Operations: "Operations Management",
+    Development: "Research & Development",
+    Marketing: "Marketing & PR",
+    Exchanges: "Echanges & Partnetships"
+  }
+
   currentPage = {
     destroy: function () { },
     init: function () {
@@ -76,7 +83,7 @@
     ],
     rowGroup: {
       startRender: function (rows, group) {
-        return group + ' (' + rows.count() + ' categories)';
+        return categories[group] + ' (' + rows.count() + ' categories)';
       },
       endRender: function (rows, group) {
         var sumPaid = rows
@@ -88,7 +95,7 @@
 
         if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
           return $('<tr/>')
-            .append('<td class="sumTitle">Sumarum for ' + group + '</td>')
+            .append('<td class="sumTitle">Sumarum for ' + categories[group] + '</td>')
             .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
         } else {
           return $('<tr/>')
