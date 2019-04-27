@@ -40637,10 +40637,7 @@ td.ntFundsPaid {
 }
 
 #refreshNodes {
-  position: absolute;
-  z-index: 999;
-  top: 30px;
-  display: none;
+  float: right;
 }
 
 tr.fundsFooter {
