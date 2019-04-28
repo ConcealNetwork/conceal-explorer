@@ -40674,3 +40674,11 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 #nodesTable {
   width: 100% !important;
 }
+
+.dataTables_filter label {
+  color: #ccc;
+}
+
+.dataTables_filter input {
+  border-color: #666;
+}
