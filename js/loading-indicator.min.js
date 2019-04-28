@@ -1,0 +1,9 @@
+/*
+ *  jQuery Boilerplate - v3.3.1
+ *  A jump-start for jQuery plugins development.
+ *  http://jqueryboilerplate.com
+ *
+ *  Made by Zeno Rocha
+ *  Under MIT License
+ */
+!function(a){function b(b,e){this.element=b,this.$wrapper=null,this.options=a.extend({},d,e),this._defaults=d,this._name=c,this.init()}var c="loadingIndicator",d={useImage:!1,showOnInit:!0,loadingImage:"../src/images/loader.gif",loadingClass:"loader",wrapperClass:"loading-indicator-wrapper"};b.prototype={init:function(){this.addLoader(),this.options.showOnInit?this.show():this.hide()},addLoader:function(){var b=this.createDOM();this.$wrapper=b,a(this.element).append(b)},createDOM:function(){var b=a('<div class="'+this.options.wrapperClass+'"></div>'),c=a('<span class="loading-indicator-helper"></span>'),d=a(this.options.useImage?'<img src="'+this.options.loadingImage+'" />':'<div class="'+this.options.loadingClass+'"></div>');return b.append(c),b.append(d),b},show:function(){a(this.$wrapper).removeClass("loader-hidden").addClass("loader-visible")},hide:function(){a(this.$wrapper).removeClass("loader-visible").addClass("loader-hidden")}},a.fn[c]=function(d){return this.each(function(){a.data(this,c)||a.data(this,c,new b(this,d))})}}(jQuery,window,document);

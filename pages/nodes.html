@@ -59,6 +59,11 @@
     update: function () { }
   };
 
+  var nodeLoadingIndicator = $('#blockInfo').loadingIndicator({
+    useImage: false,
+    showOnInit: false
+  }).data("loadingIndicator");
+
   function getCountryName(countryCode) {
     if (isoCountries.hasOwnProperty(countryCode)) {
       return isoCountries[countryCode];
@@ -152,10 +157,13 @@
           .add(tableData)
           .draw();
       }
+
+      nodeLoadingIndicator.hide();
     });
   }
 
   $("#refreshNodes").click(function () {
+    nodeLoadingIndicator.show();
     loadNodesDataToTable(false);
   });
 
