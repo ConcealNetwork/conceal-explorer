@@ -40676,9 +40676,9 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 }
 
 .dataTables_filter label {
-  color: #ccc;
+  color: #ccc !important;
 }
 
 .dataTables_filter input {
-  border-color: #666;
+  border-color: #666 !important;
 }
