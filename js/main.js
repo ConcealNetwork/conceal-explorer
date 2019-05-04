@@ -459,3 +459,24 @@ function checkReserve(cointainer, message, address, signature) {
     }
   });
 }
+
+function smooth(arr, windowSize) {
+  var result = [];
+
+  for (i = 0; i < arr.length; i += 1) {
+    var leftOffeset = i - windowSize;
+    var from = leftOffeset >= 0 ? leftOffeset : 0;
+    var to = i + windowSize + 1;
+
+    var count = 0
+    var sum = 0
+    for (j = from; j < to && j < arr.length; j += 1) {
+      sum += arr[j];
+      count += 1;
+    }
+
+    result[i] = sum / count;
+  }
+
+  return result;
+}

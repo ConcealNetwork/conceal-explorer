@@ -305,7 +305,7 @@
           data: {
             labels: timeLabels,
             datasets: [{
-              data: data.market_data.sparkline_7d.price,
+              data: smooth(data.market_data.sparkline_7d.price, 2),
               backgroundColor: 'rgba(255,165,0,0.2)',
               fill: true,
               borderWidth: 0,
