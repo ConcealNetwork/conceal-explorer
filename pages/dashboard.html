@@ -444,7 +444,7 @@
       data: {
         labels: labelData,
         datasets: [{
-          data: diffData,
+          data: smooth(diffData, 2),
           backgroundColor: 'rgba(255,165,0,0.2)',
           fill: true,
           borderWidth: 0,
