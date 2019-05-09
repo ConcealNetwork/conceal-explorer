@@ -19,7 +19,7 @@
               <th class="wd-15p ntNodeStarted">Started</th>
               <th class="wd-10p ntNodeHeight">Height</th>
               <th class="wd-10p ntNodeStatus">Status</th>
-              <th class="wd-10p ntNodePeers">Peers</th>
+              <th class="wd-10p ntNodeUptime">Uptime</th>
               <th class="wd-10p ntNodePlatform">Platform</th>
               <th class="wd-25p ntNodeVersion">Version</th>
             </tr>
@@ -105,7 +105,7 @@
             rowData.push(moment(obj.status.startTime).fromNow());
             rowData.push(obj.blockchain ? obj.blockchain.height : "0");
             rowData.push(obj.blockchain ? obj.blockchain.status : "n/a");
-            rowData.push(obj.blockchain ? obj.blockchain.white_peerlist_size : "0");
+            rowData.push(obj.status ? obj.status.uptime : "0");
             rowData.push(obj.os);
             rowData.push(obj.blockchain ? obj.blockchain.version : "n/a");
             tableData.push(rowData);
@@ -134,7 +134,10 @@
             }, {
               className: "ntNodeStatus"
             }, {
-              className: "ntNodePeers"
+              className: "ntNodeUptime",
+              render: function (data, type, row) {
+                return data + "%";
+              }
             }, {
               className: "ntNodePlatform",
               orderable: false
