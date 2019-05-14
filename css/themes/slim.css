@@ -40682,3 +40682,17 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 .dataTables_filter input {
   border-color: #666 !important;
 }
+
+#uploadFundsDialog .modal-dialog {
+  min-width: 800px;
+}
+
+#fundsData {
+  height: 400px;
+}
+
+#uploadError {
+  margin-bottom: 10px;
+  display: none;
+  color: red;
+}

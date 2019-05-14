@@ -37,12 +37,59 @@
       </div>
     </div>
   </div>
+  <p class="text-center">
+    <a href="funds.dat" target="_blank" download="funds.dat">
+      <button type="button" class="btn btn-primary-outline" id="downloadFunds" tkey="btnDownloadFunds">
+        Download Funds
+      </button>
+    </a>
+    <button type="button" class="btn btn-primary-outline" id="uploadFunds" tkey="btnUploadFunds">Update Funds</button>
+  </p>
 </div>
+
+
+<div id="uploadFundsDialog" class="modal fade" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content bd-0 bg-transparent rounded overflow-hidden">
+      <div class="modal-body pd-0">
+        <div class="row no-gutters">
+          <div class="col-lg-12 bg-gray-900">
+            <div class="pd-y-30 pd-xl-x-30">
+              <button type="button" class="close tx-white" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+              <div class="pd-x-30 pd-y-10">
+                <h3 class="tx-gray-300 tx-normal mg-b-5">Upload the funds data</h3>
+                <p>Paste the correctly formatted funds.dat JSON file into the field</p>
+                <div class="form-group">
+                  <label for="uploadKey">Upload key</label>
+                  <input name="uploadKey" class="form-control" id="uploadKey" placeholder="Enther the upload key"
+                    type="password">
+                </div>
+                <div class="form-group mg-b-20">
+                  <label for="fundsData">Funds data...</label>
+                  <textarea name="fundsData" class="form-control" id="fundsData"></textarea>
+                </div><!-- form-group -->
+                <div class="form-group mg-b-20">
+                  <label id="uploadError">The upload key is wrong or not specified!</label>
+                </div><!-- form-group -->
+
+                <button class="btn btn-primary btn-block" id="btnUploadFundsData">Upload</button>
+              </div>
+            </div><!-- pd-20 -->
+          </div><!-- col-6 -->
+        </div><!-- row -->
+      </div><!-- modal-body -->
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div>
+
 
 <script>
   var result_container = $("#verification_result");
   result_container.hide();
   var groupColumn = 0;
+  var fundsProof = null;
 
   var categories = {
     Operations: "Operations Management",
@@ -63,87 +110,109 @@
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  $('#fundsTable').DataTable({
-    "displayLength": 300,
-    "ajax": 'funds.dat',
-    "searching": false,
-    "paging": false,
-    "ordering": false,
-    "responsive": true,
-    "info": true,
-    "columns": [
-      {
-        className: "ntFundsGroup",
-        "visible": false
-      }, {
-        className: "ntFundsCategory"
-      }, {
-        className: "ntFundsPaid"
-      }
-    ],
-    rowGroup: {
-      startRender: function (rows, group) {
-        return categories[group] + ' (' + rows.count() + ' categories)';
+
+  $.getJSON("funds.dat", function (result) {
+    fundsProof = result;
+
+    $('#fundsTable').DataTable({
+      "displayLength": 300,
+      "data": fundsProof.data,
+      "searching": false,
+      "paging": false,
+      "ordering": false,
+      "responsive": true,
+      "info": true,
+      "columns": [
+        {
+          className: "ntFundsGroup",
+          "visible": false
+        }, {
+          className: "ntFundsCategory"
+        }, {
+          className: "ntFundsPaid"
+        }
+      ],
+      rowGroup: {
+        startRender: function (rows, group) {
+          return categories[group] + ' (' + rows.count() + ' categories)';
+        },
+        endRender: function (rows, group) {
+          var sumPaid = rows
+            .data()
+            .pluck(2)
+            .reduce(function (a, b) {
+              return a + b.replace(/[^\d]/g, '') * 1;
+            }, 0);
+
+          if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
+            return $('<tr/>')
+              .append('<td class="sumTitle">Sumarum for ' + categories[group] + '</td>')
+              .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
+          } else {
+            return $('<tr/>')
+              .append('<td class="sumTitle">Sumarum: ' + numberWithCommas(sumPaid) + '</td>');
+          }
+        },
+        dataSrc: 0
       },
-      endRender: function (rows, group) {
-        var sumPaid = rows
+      footerCallback: function (row, data, start, end, display) {
+        var api = this.api(), data;
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function (i) {
+          return typeof i === 'string' ?
+            i.replace(/[\$,]/g, '') * 1 :
+            typeof i === 'number' ?
+              i : 0;
+        };
+
+        // Total over all pages
+        total = api
+          .column(2)
           .data()
-          .pluck(2)
           .reduce(function (a, b) {
-            return a + b.replace(/[^\d]/g, '') * 1;
+            return intVal(a) + intVal(b);
           }, 0);
 
+        // Total over this page
+        pageTotal = api
+          .column(2, { page: 'current' })
+          .data()
+          .reduce(function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0);
+
+        // Update footer
         if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
-          return $('<tr/>')
-            .append('<td class="sumTitle">Sumarum for ' + categories[group] + '</td>')
-            .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
+          $(api.column(1).footer()).html("Total spent so far:");
+          $(api.column(2).footer()).html(numberWithCommas(pageTotal));
         } else {
-          return $('<tr/>')
-            .append('<td class="sumTitle">Sumarum: ' + numberWithCommas(sumPaid) + '</td>');
+          $(api.column(1).footer()).html("Total spent: " + numberWithCommas(pageTotal));
         }
-      },
-      dataSrc: 0
-    },
-    footerCallback: function (row, data, start, end, display) {
-      var api = this.api(), data;
-
-      // Remove the formatting to get integer data for summation
-      var intVal = function (i) {
-        return typeof i === 'string' ?
-          i.replace(/[\$,]/g, '') * 1 :
-          typeof i === 'number' ?
-            i : 0;
-      };
-
-      // Total over all pages
-      total = api
-        .column(2)
-        .data()
-        .reduce(function (a, b) {
-          return intVal(a) + intVal(b);
-        }, 0);
-
-      // Total over this page
-      pageTotal = api
-        .column(2, { page: 'current' })
-        .data()
-        .reduce(function (a, b) {
-          return intVal(a) + intVal(b);
-        }, 0);
-
-      // Update footer
-      if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
-        $(api.column(1).footer()).html("Total spent so far:");
-        $(api.column(2).footer()).html(numberWithCommas(pageTotal));
-      } else {
-        $(api.column(1).footer()).html("Total spent: " + numberWithCommas(pageTotal));
       }
-    }
+    });
   });
 
   $("#verifyFunds").click(function () {
     result_container.hide();
-    checkReserve(result_container, "", fundsProof.address, fundsProof.signature);
+    checkReserve(result_container, "", fundsProof.keys.address, fundsProof.keys.signature);
+  });
+
+  $("#uploadFunds").click(function () {
+    $("#uploadError").hide();
+    $("#uploadKey").val("");
+    $("#fundsData").val(JSON.stringify(fundsProof, null, 2));
+    $('#uploadFundsDialog').modal('show');
+  });
+
+  $("#btnUploadFundsData").click(function () {
+    $.post("funds.php", { fundsData: $("#fundsData").val(), uploadKey: $("#uploadKey").val() }).done(function (data) {
+      if (data == "true") {
+        $('#uploadFundsDialog').modal('hide');
+      } else {
+        $("#uploadError").show();
+      }
+    });
   });
 
 </script>
