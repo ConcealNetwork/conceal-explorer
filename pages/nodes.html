@@ -1,7 +1,7 @@
 <div class="card mg-t-20" id="blockInfo">
   <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
     <h2>
-      <i class="fa fa-binoculars" aria-hidden="true"></i> Nodes
+      <i class="fa fa-binoculars" aria-hidden="true"></i> Nodes <span id="nodesNumber"></span>
       <button class="btn btn-primary-outline" type="button" id="refreshNodes">
         <span class="fa fa-search" tkey="refreshNodes"> Refresh list</span>
       </button>
@@ -105,12 +105,14 @@
             rowData.push(moment(obj.status.startTime).fromNow());
             rowData.push(obj.blockchain ? obj.blockchain.height : "0");
             rowData.push(obj.blockchain ? obj.blockchain.status : "n/a");
-            rowData.push(obj.status ? obj.status.uptime : "0");
+            rowData.push(obj.status ? (obj.status.uptime || 0) : "0");
             rowData.push(obj.os);
             rowData.push(obj.blockchain ? obj.blockchain.version : "n/a");
             tableData.push(rowData);
           }
         });
+
+        $("#nodesNumber").html("(" + tableData.length + " online)");
       }
 
       if (initialLoad) {
