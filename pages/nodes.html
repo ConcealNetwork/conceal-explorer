@@ -88,10 +88,14 @@
 
   function loadNodesDataToTable(initialLoad) {
     $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true", function (data) {
+      var correctHeightList = {};
+      var correctHeightCnt = 0;
+      var correctHeight = 0;
       var tableData = [];
 
       if (data.success) {
         $(data.list).each(function (idx, obj) {
+          var nodeHeight = obj.blockchain ? obj.blockchain.height : 0;
           var rowData = [];
 
           if (obj.name) {
@@ -103,14 +107,26 @@
               rowData.push("N/A");
             }
             rowData.push(moment(obj.status.startTime).fromNow());
-            rowData.push(obj.blockchain ? obj.blockchain.height : "0");
+            rowData.push(nodeHeight);
             rowData.push(obj.blockchain ? obj.blockchain.status : "n/a");
             rowData.push(obj.status ? (obj.status.uptime || 0) : "0");
             rowData.push(obj.os);
             rowData.push(obj.blockchain ? obj.blockchain.version : "n/a");
             tableData.push(rowData);
+
+            // increase the node height for the current node
+            correctHeightList[nodeHeight] = (correctHeightList[nodeHeight] || 0) + 1;
           }
         });
+
+        // find the correct height
+        for (var propertyName in correctHeightList) {
+          // you can get the value like this: myObject[propertyName]
+          if (correctHeightList[propertyName] > correctHeightCnt) {
+            correctHeightCnt = correctHeightList[propertyName];
+            correctHeight = propertyName;
+          }
+        }
 
         $("#nodesNumber").html("(" + tableData.length + " online)");
       }
@@ -145,7 +161,14 @@
               orderable: false
             }, {
               className: "ntNodeVersion",
-              orderable: false
+              orderable: false,
+              render: function (data, type, row) {
+                if ((row[5] != "OK") || (row[8] != "5.3.0") || (correctHeight < (row[4] - 2))) {
+                  return data + '<span class="nodeStatus square-8 bg-warning mg-r-5 rounded-circle"></span>';
+                } else {
+                  return data + '<span class="nodeStatus square-8 bg-success mg-r-5 rounded-circle"></span>';
+                }
+              }
             }
           ]
         });

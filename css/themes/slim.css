@@ -40696,3 +40696,8 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   display: none;
   color: red;
 }
+
+.nodeStatus {
+  margin-left: 5px;
+  margin-bottom: 1px;
+}
