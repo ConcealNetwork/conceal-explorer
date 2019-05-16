@@ -51,6 +51,8 @@
 </div>
 
 <script>
+  var correctHeight = 0;
+
   currentPage = {
     destroy: function () { },
     init: function () {
@@ -90,8 +92,8 @@
     $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true", function (data) {
       var correctHeightList = {};
       var correctHeightCnt = 0;
-      var correctHeight = 0;
       var tableData = [];
+      correctHeight = 0;
 
       if (data.success) {
         $(data.list).each(function (idx, obj) {
