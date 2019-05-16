@@ -40703,3 +40703,7 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   margin-left: 5px;
   margin-bottom: 1px;
 }
+
+.btnIcon {
+  margin-right: 5px;
+}
