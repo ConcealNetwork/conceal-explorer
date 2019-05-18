@@ -110,8 +110,17 @@
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
 
-  $.getJSON("funds.dat", function (result) {
+  $.getJSON("funds.dat?" + makeid(20), function (result) {
     fundsProof = result;
 
     $('#fundsTable').DataTable({
