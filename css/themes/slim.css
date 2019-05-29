@@ -40319,6 +40319,10 @@ a.hover-white-8:hover, a.hover-white-8:focus {
   color: white;
 }
 
+#blockInfo {
+  min-height: 500px;
+}
+
 .card h2,
 .card h3 {
   margin-bottom: 0px !important;
