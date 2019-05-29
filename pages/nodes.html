@@ -89,108 +89,110 @@
   }
 
   function loadNodesDataToTable(initialLoad) {
-    $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true", function (data) {
-      var correctHeightList = {};
-      var correctHeightCnt = 0;
-      var tableData = [];
-      correctHeight = 0;
+    $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest", function (release) {
+      $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true", function (data) {
+        var correctHeightList = {};
+        var correctHeightCnt = 0;
+        var tableData = [];
+        correctHeight = 0;
 
-      if (data.success) {
-        $(data.list).each(function (idx, obj) {
-          var nodeHeight = obj.blockchain ? obj.blockchain.height : 0;
-          var rowData = [];
+        if (data.success) {
+          $(data.list).each(function (idx, obj) {
+            var nodeHeight = obj.blockchain ? obj.blockchain.height : 0;
+            var rowData = [];
 
-          if (obj.name) {
-            rowData.push(obj.location ? (obj.location.ip + ":" + (obj.nodePort || "16000")) : (obj.ip.substring(7) + ":" + (obj.nodePort || "16000")));
-            rowData.push(obj.name);
-            if ((obj.location) && (obj.location.data)) {
-              rowData.push(getCountryName(obj.location.data.country));
-            } else {
-              rowData.push("N/A");
+            if (obj.name) {
+              rowData.push(obj.location ? (obj.location.ip + ":" + (obj.nodePort || "16000")) : (obj.ip.substring(7) + ":" + (obj.nodePort || "16000")));
+              rowData.push(obj.name);
+              if ((obj.location) && (obj.location.data)) {
+                rowData.push(getCountryName(obj.location.data.country));
+              } else {
+                rowData.push("N/A");
+              }
+              rowData.push(moment(obj.status.startTime).fromNow());
+              rowData.push(nodeHeight);
+              rowData.push(obj.blockchain ? obj.blockchain.status : "n/a");
+              rowData.push(obj.status ? (obj.status.uptime || 0) : "0");
+              rowData.push(obj.os);
+              rowData.push(obj.blockchain ? obj.blockchain.version : "n/a");
+              tableData.push(rowData);
+
+              // increase the node height for the current node
+              correctHeightList[nodeHeight] = (correctHeightList[nodeHeight] || 0) + 1;
             }
-            rowData.push(moment(obj.status.startTime).fromNow());
-            rowData.push(nodeHeight);
-            rowData.push(obj.blockchain ? obj.blockchain.status : "n/a");
-            rowData.push(obj.status ? (obj.status.uptime || 0) : "0");
-            rowData.push(obj.os);
-            rowData.push(obj.blockchain ? obj.blockchain.version : "n/a");
-            tableData.push(rowData);
+          });
 
-            // increase the node height for the current node
-            correctHeightList[nodeHeight] = (correctHeightList[nodeHeight] || 0) + 1;
+          // find the correct height
+          for (var propertyName in correctHeightList) {
+            // you can get the value like this: myObject[propertyName]
+            if (correctHeightList[propertyName] > correctHeightCnt) {
+              correctHeightCnt = correctHeightList[propertyName];
+              correctHeight = propertyName;
+            }
           }
-        });
 
-        // find the correct height
-        for (var propertyName in correctHeightList) {
-          // you can get the value like this: myObject[propertyName]
-          if (correctHeightList[propertyName] > correctHeightCnt) {
-            correctHeightCnt = correctHeightList[propertyName];
-            correctHeight = propertyName;
-          }
+          $("#nodesNumber").html("(" + tableData.length + " online)");
         }
 
-        $("#nodesNumber").html("(" + tableData.length + " online)");
-      }
-
-      if (initialLoad) {
-        $('#nodesTable').DataTable({
-          data: tableData,
-          responsive: true,
-          "columns": [
-            {
-              className: "ntNodeConnectURL",
-              render: function (data, type, row) {
-                return '<a href="#" data-toggle="modal" data-target="#dlgCopiedToClipboard" onclick="onConnectURLClick(event)">' + data + '</a>';
-              }
-            }, {
-              className: "ntNodeName"
-            }, {
-              className: "ntNodeLocation"
-            }, {
-              className: "ntNodeStarted"
-            }, {
-              className: "ntNodeHeight"
-            }, {
-              className: "ntNodeStatus"
-            }, {
-              className: "ntNodeUptime",
-              render: function (data, type, row) {
-                return data + "%";
-              }
-            }, {
-              className: "ntNodePlatform",
-              orderable: false
-            }, {
-              className: "ntNodeVersion",
-              orderable: false,
-              render: function (data, type, row) {
-                if ((row[5] != "OK") || (row[4] < (correctHeight - 2))) {
-                  return data + '<span class="nodeStatus square-8 bg-danger mg-r-5 rounded-circle"></span>';
-                } else if (row[8] != "5.3.3") {
-                  return data + '<span class="nodeStatus square-8 bg-warning mg-r-5 rounded-circle"></span>';
-                } else {
-                  return data + '<span class="nodeStatus square-8 bg-success mg-r-5 rounded-circle"></span>';
+        if (initialLoad) {
+          $('#nodesTable').DataTable({
+            data: tableData,
+            responsive: true,
+            "columns": [
+              {
+                className: "ntNodeConnectURL",
+                render: function (data, type, row) {
+                  return '<a href="#" data-toggle="modal" data-target="#dlgCopiedToClipboard" onclick="onConnectURLClick(event)">' + data + '</a>';
+                }
+              }, {
+                className: "ntNodeName"
+              }, {
+                className: "ntNodeLocation"
+              }, {
+                className: "ntNodeStarted"
+              }, {
+                className: "ntNodeHeight"
+              }, {
+                className: "ntNodeStatus"
+              }, {
+                className: "ntNodeUptime",
+                render: function (data, type, row) {
+                  return data + "%";
+                }
+              }, {
+                className: "ntNodePlatform",
+                orderable: false
+              }, {
+                className: "ntNodeVersion",
+                orderable: false,
+                render: function (data, type, row) {
+                  if ((row[5] != "OK") || (row[4] < (correctHeight - 2))) {
+                    return data + '<span class="nodeStatus square-8 bg-danger mg-r-5 rounded-circle"></span>';
+                  } else if (row[8] != release.tag_name) {
+                    return data + '<span class="nodeStatus square-8 bg-warning mg-r-5 rounded-circle"></span>';
+                  } else {
+                    return data + '<span class="nodeStatus square-8 bg-success mg-r-5 rounded-circle"></span>';
+                  }
                 }
               }
-            }
-          ]
-        });
+            ]
+          });
 
-        // show refresh button
-        $("#refreshNodes").show();
-      } else {
-        $("#nodesTable")
-          .DataTable()
-          .clear();
-        $("#nodesTable")
-          .DataTable()
-          .rows
-          .add(tableData)
-          .draw();
-      }
+          // show refresh button
+          $("#refreshNodes").show();
+        } else {
+          $("#nodesTable")
+            .DataTable()
+            .clear();
+          $("#nodesTable")
+            .DataTable()
+            .rows
+            .add(tableData)
+            .draw();
+        }
 
-      nodeLoadingIndicator.hide();
+        nodeLoadingIndicator.hide();
+      });
     });
   }
 
