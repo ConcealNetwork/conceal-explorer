@@ -46,7 +46,7 @@ function checkTxn(transactionResponse, privateKey, address, privateKeyType) {
         } else {
             var der = cnUtil.generate_key_derivation(pub, privateKey);
             var spk = addrHex.slice(t,m);
-            for (i = 0; i < txn.vout.length; i++) {
+            for (let i = 0; i < txn.vout.length; i++) {
                 var pubkey = cnUtil.derive_public_key(der, i, spk);
                 var amount = txn.vout[i].amount / 1000000;
                 if (pubkey === txn.vout[i].target.data.key) {
