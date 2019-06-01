@@ -40312,13 +40312,15 @@ a.hover-white-8:hover, a.hover-white-8:focus {
   color: #FFA500;
 }
 
+#apiInfo i,
+#nodeInfo i,
 #blockInfo i,
 #transactionInfo i {
   margin-right: 5px;
   color: white;
 }
 
-#blockInfo {
+#nodeInfo {
   min-height: 500px;
 }
 

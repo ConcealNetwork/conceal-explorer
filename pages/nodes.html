@@ -1,4 +1,4 @@
-<div class="card mg-t-20" id="blockInfo">
+<div class="card mg-t-20" id="nodeInfo">
   <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
     <h2>
       <i class="fa fa-binoculars" aria-hidden="true"></i> Nodes <span id="nodesNumber"></span>
@@ -61,7 +61,7 @@
     update: function () { }
   };
 
-  var nodeLoadingIndicator = $('#blockInfo').loadingIndicator({
+  var nodeLoadingIndicator = $('#nodeInfo').loadingIndicator({
     useImage: false,
     showOnInit: false
   }).data("loadingIndicator");
