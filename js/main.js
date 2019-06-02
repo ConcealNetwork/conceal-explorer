@@ -437,23 +437,23 @@ function checkReserve(cointainer, message, address, signature) {
         result_icon.removeClass("fa-check");
         result_icon.removeClass("fa-times");
 
-        var isvalid = true;
-
-        if (isvalid) {
-          result_text.html("This proves that specified address holds at least <strong>"
-            + getReadableCoins(res.total, 2) + "</strong>, from which the following amount was spent: "
-            + getReadableCoins(res.spent, 2));
-          cointainer.addClass("panel-success");
-          result.addClass("text-success");
-          result.attr("id", "bpTextSuccess");
-          result_icon.addClass("fa-check");
-        } else {
-          result_text.text("Signature is invalid!");
-          cointainer.addClass("panel-warning");
-          result.addClass("text-warning");
-          result.attr("id", "bpTextWarning");
-          result_icon.addClass("fa-times");
-        }
+		result_text.html("This proves that specified address holds at least <strong>"
+		  + getReadableCoins(res.total, 2) + "</strong>, from which the following amount was spent: "
+		  + getReadableCoins(res.spent, 2));
+		cointainer.addClass("panel-success");
+		result.addClass("text-success");
+		result.attr("id", "bpTextSuccess");
+		result_icon.addClass("fa-check");
+		
+		// TO-DO: Find when the result is not ok.
+		
+        //} else {
+        //  result_text.text("Signature is invalid!");
+        //  cointainer.addClass("panel-warning");
+        //  result.addClass("text-warning");
+        //  result.attr("id", "bpTextWarning");
+        //  result_icon.addClass("fa-times");
+        //}
         cointainer.show();
       }
     }

@@ -217,7 +217,7 @@ function getReadableHashRateString(hashrate, decimals) {
 function getCoinDecimalPlaces() {
   if (typeof coinDecimalPlaces != "undefined") return coinDecimalPlaces;
   else if (lastStats.config.coinDecimalPlaces) return lastStats.config.coinDecimalPlaces;
-  else lastStats.config.coinUnits.toString().length - 1;
+  else return lastStats.config.coinUnits.toString().length - 1;
 }
 
 // Get readable coins
@@ -278,19 +278,6 @@ function getBlockchainUrl(id) {
 /**
  * Tables
  **/
-
-// Sort table cells
-function sortTable() {
-  var table = $(this).parents('table').eq(0),
-    rows = table.find('tr:gt(0)').toArray().sort(compareTableRows($(this).index()));
-  this.asc = !this.asc;
-  if (!this.asc) {
-    rows = rows.reverse()
-  }
-  for (var i = 0; i < rows.length; i++) {
-    table.append(rows[i])
-  }
-}
 
 // Compare table rows
 function compareTableRows(index) {
