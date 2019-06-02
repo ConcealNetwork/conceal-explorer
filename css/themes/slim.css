@@ -40712,3 +40712,8 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 .btnIcon {
   margin-right: 5px;
 }
+
+.verificationNum {
+  font-weight: bold;
+  text-decoration: underline;
+}
