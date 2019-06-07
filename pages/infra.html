@@ -1,0 +1,207 @@
+<div class="card mg-t-20" id="nodeInfo">
+  <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
+    <h2>
+      <i class="fa fa-binoculars" aria-hidden="true"></i> Nodes <span id="nodesNumber"></span>
+      <button class="btn btn-primary-outline" type="button" id="refreshNodes">
+        <span class="btnIcon fa fa-search"></span><span tkey="refreshNodes">Refresh list</span>
+      </button>
+    </h2>
+  </div>
+  <div class="card-body card-body-info">
+    <div class="row">
+      <div class="col-lg-12">
+        <table id="nodesTable" class="table display responsive nowrap">
+          <thead>
+            <tr>
+              <th class="wd-15p ntNodeConnectURL">Connect URL</th>
+              <th class="wd-15p ntNodeName">Node Name</th>
+              <th class="wd-20p ntNodeLocation">Location</th>
+              <th class="wd-15p ntNodeStarted">Started</th>
+              <th class="wd-10p ntNodeHeight">Height</th>
+              <th class="wd-10p ntNodeStatus">Status</th>
+              <th class="wd-10p ntNodeUptime">Uptime</th>
+              <th class="wd-10p ntNodePlatform">Platform</th>
+              <th class="wd-25p ntNodeVersion">Version</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dlgCopiedToClipboard" class="modal fade">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content bd-0">
+      <div class="modal-header pd-x-20 dlgBgDarker">
+        <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Copied</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body pd-20">
+        <p class="mg-b-5">The connection URL was copied to clipboard
+        </p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-primary-outline" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var correctHeight = 0;
+
+  currentPage = {
+    destroy: function () { },
+    init: function () {
+      loadTranslations();
+    },
+    update: function () { }
+  };
+
+  var nodeLoadingIndicator = $('#nodeInfo').loadingIndicator({
+    useImage: false,
+    showOnInit: false
+  }).data("loadingIndicator");
+
+  function getCountryName(countryCode) {
+    if (isoCountries.hasOwnProperty(countryCode)) {
+      return isoCountries[countryCode];
+    } else {
+      return countryCode;
+    }
+  }
+
+  function copyToClipboard(textToCopy) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp
+      .val(textToCopy)
+      .select();
+    document.execCommand("copy");
+    $temp.remove();
+  }
+
+  function onConnectURLClick(e) {
+    copyToClipboard($(e.target).html());
+  }
+
+  function loadNodesDataToTable(initialLoad) {
+    $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest", function (release) {
+      $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=false&isReachable=false", function (data) {
+        var correctHeightList = {};
+        var correctHeightCnt = 0;
+        var tableData = [];
+        correctHeight = 0;
+
+        if (data.success) {
+          $(data.list).each(function (idx, obj) {
+            var nodeHeight = obj.blockchain ? obj.blockchain.height : 0;
+            var rowData = [];
+
+            if (obj.name) {
+              rowData.push(obj.location ? (obj.location.ip + ":" + (obj.nodePort || "16000")) : (obj.ip.substring(7) + ":" + (obj.nodePort || "16000")));
+              rowData.push(obj.name);
+              if ((obj.location) && (obj.location.data)) {
+                rowData.push(getCountryName(obj.location.data.country));
+              } else {
+                rowData.push("N/A");
+              }
+              rowData.push(moment(obj.status.startTime).fromNow());
+              rowData.push(nodeHeight);
+              rowData.push(obj.blockchain ? obj.blockchain.status : "n/a");
+              rowData.push(obj.status ? (obj.status.uptime || 0) : "0");
+              rowData.push(obj.os);
+              rowData.push(obj.blockchain ? obj.blockchain.version : "n/a");
+              tableData.push(rowData);
+
+              // increase the node height for the current node
+              correctHeightList[nodeHeight] = (correctHeightList[nodeHeight] || 0) + 1;
+            }
+          });
+
+          // find the correct height
+          for (var propertyName in correctHeightList) {
+            // you can get the value like this: myObject[propertyName]
+            if (correctHeightList[propertyName] > correctHeightCnt) {
+              correctHeightCnt = correctHeightList[propertyName];
+              correctHeight = propertyName;
+            }
+          }
+
+          $("#nodesNumber").html("(" + tableData.length + " online)");
+        }
+
+        if (initialLoad) {
+          $('#nodesTable').DataTable({
+            data: tableData,
+            responsive: true,
+            "columns": [
+              {
+                className: "ntNodeConnectURL",
+                render: function (data, type, row) {
+                  return '<a href="#" data-toggle="modal" data-target="#dlgCopiedToClipboard" onclick="onConnectURLClick(event)">' + data + '</a>';
+                }
+              }, {
+                className: "ntNodeName"
+              }, {
+                className: "ntNodeLocation"
+              }, {
+                className: "ntNodeStarted"
+              }, {
+                className: "ntNodeHeight"
+              }, {
+                className: "ntNodeStatus"
+              }, {
+                className: "ntNodeUptime",
+                render: function (data, type, row) {
+                  return data + "%";
+                }
+              }, {
+                className: "ntNodePlatform",
+                orderable: false
+              }, {
+                className: "ntNodeVersion",
+                orderable: false,
+                render: function (data, type, row) {
+                  if ((row[5] != "OK") || (row[4] < (correctHeight - 2))) {
+                    return data + '<span class="nodeStatus square-8 bg-danger mg-r-5 rounded-circle"></span>';
+                  } else if (row[8] != release.tag_name) {
+                    return data + '<span class="nodeStatus square-8 bg-warning mg-r-5 rounded-circle"></span>';
+                  } else {
+                    return data + '<span class="nodeStatus square-8 bg-success mg-r-5 rounded-circle"></span>';
+                  }
+                }
+              }
+            ]
+          });
+
+          // show refresh button
+          $("#refreshNodes").show();
+        } else {
+          $("#nodesTable")
+            .DataTable()
+            .clear();
+          $("#nodesTable")
+            .DataTable()
+            .rows
+            .add(tableData)
+            .draw();
+        }
+
+        nodeLoadingIndicator.hide();
+      });
+    });
+  }
+
+  $("#refreshNodes").click(function () {
+    nodeLoadingIndicator.show();
+    loadNodesDataToTable(false);
+  });
+
+  // do the intial load
+  nodeLoadingIndicator.show();
+  loadNodesDataToTable(true);
+</script>
