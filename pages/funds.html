@@ -235,15 +235,22 @@
 
   $("#btnUploadFundsData").click(function () {
     $.post("funds.php", { fundsData: $("#fundsData").val(), uploadKey: $("#uploadKey").val() }).done(function (data) {
-      var responseData = JSON.parse(data);
-
-      if (responseData.success) {
-        $('#uploadFundsDialog').modal('hide');
-        $('#uploadSuccessDialog').modal('show');
-      } else {
-        $("#uploadError").html(responseData.reason);
+	  try {
+		console.log(data);
+		
+		var responseData = JSON.parse(data);
+        if (responseData.success) {
+          $('#uploadFundsDialog').modal('hide');
+          $('#uploadSuccessDialog').modal('show');
+        } else {
+          $("#uploadError").html(responseData.reason);
+          $("#uploadError").show();
+        }
+	  }
+	  catch(err) {
+	    $("#uploadError").html(err.message);
         $("#uploadError").show();
-      }
+	  }
     });
   });
 

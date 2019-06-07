@@ -1,8 +1,9 @@
 <?php
-  if  ($_POST['uploadKey'] == "c394f380-c7df-479f-b312-0b4a6fc3a357")
+  define("REASON", "reason");
+  define("SUCCESS", "success");
+  
+  if (hash('ripemd160', $_POST['uploadKey']) == "01855f7552595d8ab056318471ac5e0a0421a906")
   {
-	define("REASON", "reason");
-	define("SUCCESS", "success");
 	
 	if (!unlink('funds.dat.old')) {
       echo json_encode(array(SUCCESS => false, REASON => 'Failed to delete the old funds.dat!'));
