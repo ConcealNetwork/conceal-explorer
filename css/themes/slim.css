@@ -40627,6 +40627,7 @@ table.dataTable tbody tr {
 
 td.sumPaid,
 th.ntFundsPaid,
+th.footerValue,
 td.ntFundsPaid {
   text-align: center;
 }
@@ -40716,4 +40717,12 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 .verificationNum {
   font-weight: bold;
   text-decoration: underline;
+}
+
+.footerSpent {
+  color: red !important;
+}
+
+.footerAvailable {
+  color: green !important;
 }

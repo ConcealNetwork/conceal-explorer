@@ -30,7 +30,11 @@
           <tfoot>
             <tr class="fundsFooter">
               <th colspan="2">Total spent so far:</th>
-              <th></th>
+              <th class="footerValue footerSpent"></th>
+            </tr>
+            <tr class="fundsFooter">
+              <th colspan="2">Funds available:</th>
+              <th class="footerValue footerAvailable"></th>
             </tr>
           </tfoot>
         </table>
@@ -114,7 +118,8 @@
     Operations: "Operations Management",
     Development: "Research & Development",
     Marketing: "Marketing & PR",
-    Exchanges: "Echanges & Partnetships"
+    Exchanges: "Echanges & Partnetships",
+    CCXLabs: "CCX Labs"
   }
 
   currentPage = {
@@ -172,7 +177,7 @@
               return a + b.replace(/[^\d]/g, '') * 1;
             }, 0);
 
-          if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
+          if (!$('#fundsTable').DataTable().responsive.hasHidden()) {
             return $('<tr/>')
               .append('<td class="sumTitle">Sumarum for ' + categories[group] + '</td>')
               .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
@@ -210,13 +215,18 @@
             return intVal(a) + intVal(b);
           }, 0);
 
-        // Update footer
-        if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
-          $(api.column(1).footer()).html("Total spent so far:");
-          $(api.column(2).footer()).html(numberWithCommas(pageTotal));
-        } else {
-          $(api.column(1).footer()).html("Total spent: " + numberWithCommas(pageTotal));
-        }
+        checkReserveRaw("", fundsProof.keys.address, fundsProof.keys.signature, function (data) {
+          // Update footer
+          if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
+            $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent so far:");
+            $('tr:eq(0) th:eq(1)', api.table().footer()).html(numberWithCommas(pageTotal) + " CCX");
+            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available:");
+            $('tr:eq(1) th:eq(1)', api.table().footer()).html(formatNumber(getReadableCoins(data.result.total, 0)));
+          } else {
+            $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent: " + numberWithCommas(pageTotal) + " CCX");
+            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available: " + getReadableCoins(data.result.total, 0));
+          }
+        });
       }
     });
   });
@@ -235,10 +245,8 @@
 
   $("#btnUploadFundsData").click(function () {
     $.post("funds.php", { fundsData: $("#fundsData").val(), uploadKey: $("#uploadKey").val() }).done(function (data) {
-	  try {
-		console.log(data);
-		
-		var responseData = JSON.parse(data);
+      try {
+        var responseData = JSON.parse(data);
         if (responseData.success) {
           $('#uploadFundsDialog').modal('hide');
           $('#uploadSuccessDialog').modal('show');
@@ -246,11 +254,11 @@
           $("#uploadError").html(responseData.reason);
           $("#uploadError").show();
         }
-	  }
-	  catch(err) {
-	    $("#uploadError").html(err.message);
+      }
+      catch (err) {
+        $("#uploadError").html(err.message);
         $("#uploadError").show();
-	  }
+      }
     });
   });
 

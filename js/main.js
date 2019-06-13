@@ -405,13 +405,7 @@ function wrongParamAlert(message, cointainer) {
   }, 3000);
 }
 
-function checkReserve(cointainer, message, address, signature) {
-  if (xhrCheckReserve) xhrCheckReserve.abort();
-  var result = $(cointainer).find(".verified");
-  var result_text = result.find("span");
-  var result_icon = result.find("i");
-  result_text.empty();
-
+function checkReserveRaw(message, address, signature, callback) {
   xhrCheckReserve = $.ajax({
     url: api + '/json_rpc',
     method: "POST",
@@ -428,7 +422,20 @@ function checkReserve(cointainer, message, address, signature) {
     dataType: 'json',
     cache: 'false',
     success: function (data) {
-      if (data.error) {
+      callback(data);
+    }
+  });
+}
+
+function checkReserve(cointainer, message, address, signature) {
+  if (xhrCheckReserve) xhrCheckReserve.abort();
+  var result = $(cointainer).find(".verified");
+  var result_text = result.find("span");
+  var result_icon = result.find("i");
+  result_text.empty();
+
+  checkReserveRaw(message, address, signature, function(data) {
+  if (data.error) {
         wrongParamAlert(data.error.message, cointainer);
       } else {
         var res = data.result;
@@ -460,7 +467,6 @@ function checkReserve(cointainer, message, address, signature) {
         //}
         cointainer.show();
       }
-    }
   });
 }
 
