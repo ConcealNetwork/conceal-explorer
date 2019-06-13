@@ -119,6 +119,7 @@
     Development: "Research & Development",
     Marketing: "Marketing & PR",
     Exchanges: "Echanges & Partnetships",
+    Business: "Business Development",
     CCXLabs: "CCX Labs"
   }
 
@@ -177,7 +178,7 @@
               return a + b.replace(/[^\d]/g, '') * 1;
             }, 0);
 
-          if (!$('#fundsTable').DataTable().responsive.hasHidden()) {
+          if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
             return $('<tr/>')
               .append('<td class="sumTitle">Sumarum for ' + categories[group] + '</td>')
               .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
