@@ -1,6 +1,7 @@
 <div class="card mg-t-20" id="transactionInfo">
   <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
-    <h2><i class="fa fa-exchange fa-fw" aria-hidden="true"></i><span tkey="txViewTxTitle">Transaction</span></h2>
+    <h2><i class="fa fa-exchange fa-fw" aria-hidden="true"></i><span tkey="txViewTxTitle">Transaction</span><span
+        id="txType"></span></h2>
   </div>
   <div class="card-body card-body-info">
     <div class="row" id="tx_info">
@@ -154,6 +155,7 @@
     inputs = transaction.tx.vin;
     outputs = transaction.tx.vout;
     block = transaction.block;
+    $("#txType").html("");
 
     updateText('transaction.hash', details.hash);
     if (block.hash) {
@@ -186,94 +188,84 @@
   }
 
   function getInputCells(input) {
-    return '<td>' + getReadableCoins(input.value.amount, 4) + '</td>' +
-      '<td>' + input.value.k_image + '</td>';
+    if (!input.value.k_image) {
+      $("#txType").html("[ &#8689; withdrawal ]");
+      $("#txType").attr("class", "txWidtrawal");
+    }
+
+    return '<td>' + getReadableCoins(input.value.amount, 4) + '</td>' + '<td>' + (input.value.k_image || "withdrawn") + '</td>';
   }
 
 
   function getInputRowElement(input, jsonString) {
-
     var row = document.createElement('tr');
     row.setAttribute('data-json', jsonString);
     row.setAttribute('data-k_image', input.value.k_image);
     row.setAttribute('id', 'inputRow' + input.value.k_image);
-
     row.innerHTML = getInputCells(input);
-
     return row;
   }
 
   function renderInputs(inputResults) {
-
     var $inputsRows = $('#inputs_rows');
 
     for (var i = 0; i < inputResults.length; i++) {
-
       var input = inputResults[i];
 
       if (!input.value.amount)
         continue;
 
       var inputJson = JSON.stringify(input);
-
       var existingRow = document.getElementById('inputRow' + input.value.k_image);
 
       if (existingRow && existingRow.getAttribute('data-json') !== inputJson) {
         $(existingRow).replaceWith(getInputRowElement(input, inputJson));
       }
       else if (!existingRow) {
-
         var inputElement = getInputRowElement(input, inputJson);
         $inputsRows.append(inputElement);
       }
-
     }
-
     updateText('inputs_count', document.querySelectorAll('#inputs_rows tr').length);
   }
 
 
   function getOutputCells(output) {
-    return '<td>' + getReadableCoins(output.amount, 4) + '</td>' +
-      '<td>' + output.target.data.key + '</td>';
+    if (!output.target.data.key) {
+      $("#txType").html("[ &#8690; deposit ]");
+      $("#txType").attr("class", "txDeposit");
+    }
+
+    return '<td>' + getReadableCoins(output.amount, 4) + '</td>' + '<td>' + (output.target.data.key || "deposited") + '</td>';
   }
 
 
   function getOutputRowElement(output, jsonString) {
-
     var row = document.createElement('tr');
     row.setAttribute('data-json', jsonString);
     row.setAttribute('data-k_image', output.target.data.key);
     row.setAttribute('id', 'outputRow' + output.target.data.key);
-
     row.innerHTML = getOutputCells(output);
-
     return row;
   }
 
   function renderOutputs(outputResults) {
-
     var $outputsRows = $('#outputs_rows');
 
     for (var i = 0; i < outputResults.length; i++) {
 
       var output = outputResults[i];
-
       var outputJson = JSON.stringify(output);
-
       var existingRow = document.getElementById('outputRow' + output.target.data.key);
 
       if (existingRow && existingRow.getAttribute('data-json') !== outputJson) {
         $(existingRow).replaceWith(getOutputRowElement(output, outputJson));
       }
       else if (!existingRow) {
-
         var outputElement = getOutputRowElement(output, outputJson);
         $outputsRows.append(outputElement);
       }
-
     }
-
     updateText('outputs_count', document.querySelectorAll('#outputs_rows tr').length);
   }
 

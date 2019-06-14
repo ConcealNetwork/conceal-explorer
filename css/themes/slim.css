@@ -40726,3 +40726,7 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 .footerAvailable {
   color: green !important;
 }
+
+#txType {
+  margin-left: 15px;
+}
