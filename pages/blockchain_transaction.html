@@ -193,7 +193,7 @@
       $("#txType").attr("class", "txWidtrawal");
     }
 
-    return '<td>' + getReadableCoins(input.value.amount, 4) + '</td>' + '<td>' + (input.value.k_image || "withdrawn") + '</td>';
+    return '<td>' + getReadableCoins(input.value.amount, 4) + '</td>' + '<td>' + (input.value.k_image || "withdrawal") + '</td>';
   }
 
 
@@ -236,7 +236,7 @@
       $("#txType").attr("class", "txDeposit");
     }
 
-    return '<td>' + getReadableCoins(output.amount, 4) + '</td>' + '<td>' + (output.target.data.key || "deposited") + '</td>';
+    return '<td>' + getReadableCoins(output.amount, 4) + '</td>' + '<td>' + (output.target.data.key || "deposit") + '</td>';
   }
 
 
