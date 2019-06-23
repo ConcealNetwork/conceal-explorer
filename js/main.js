@@ -434,39 +434,39 @@ function checkReserve(cointainer, message, address, signature) {
   var result_icon = result.find("i");
   result_text.empty();
 
-  checkReserveRaw(message, address, signature, function(data) {
-  if (data.error) {
-        wrongParamAlert(data.error.message, cointainer);
-      } else {
-        var res = data.result;
+  checkReserveRaw(message, address, signature, function (data) {
+    if (data.error) {
+      wrongParamAlert(data.error.message, cointainer);
+    } else {
+      var res = data.result;
 
-        cointainer.removeClass("panel-default");
-        cointainer.removeClass("panel-success");
-        cointainer.removeClass("panel-warning");
-        result.removeClass("text-success");
-        result.removeClass("text-warning");
-        result_icon.removeClass("fa-check");
-        result_icon.removeClass("fa-times");
+      cointainer.removeClass("panel-default");
+      cointainer.removeClass("panel-success");
+      cointainer.removeClass("panel-warning");
+      result.removeClass("text-success");
+      result.removeClass("text-warning");
+      result_icon.removeClass("fa-check");
+      result_icon.removeClass("fa-times");
 
-		result_text.html("This proves that specified address holds at least <span class='verificationNum'>"
-		  + formatNumber(getReadableCoins(res.total, 2)) + "</span>, from which the following amount was spent: <span class='verificationNum'>"
-		  + formatNumber(getReadableCoins(res.spent, 2))) + "</span>";
-		cointainer.addClass("panel-success");
-		result.addClass("text-success");
-		result.attr("id", "bpTextSuccess");
-		result_icon.addClass("fa-check");
-		
-		// TO-DO: Find when the result is not ok.
-		
-        //} else {
-        //  result_text.text("Signature is invalid!");
-        //  cointainer.addClass("panel-warning");
-        //  result.addClass("text-warning");
-        //  result.attr("id", "bpTextWarning");
-        //  result_icon.addClass("fa-times");
-        //}
-        cointainer.show();
-      }
+      result_text.html("This proves that specified address holds at least <span class='verificationNum'>"
+        + formatNumber(getReadableCoins(res.total, 2)) + "</span>, from which the following amount was spent: <span class='verificationNum'>"
+        + formatNumber(getReadableCoins(res.spent, 2))) + "</span>";
+      cointainer.addClass("panel-success");
+      result.addClass("text-success");
+      result.attr("id", "bpTextSuccess");
+      result_icon.addClass("fa-check");
+
+      // TO-DO: Find when the result is not ok.
+
+      //} else {
+      //  result_text.text("Signature is invalid!");
+      //  cointainer.addClass("panel-warning");
+      //  result.addClass("text-warning");
+      //  result.attr("id", "bpTextWarning");
+      //  result_icon.addClass("fa-times");
+      //}
+      cointainer.show();
+    }
   });
 }
 

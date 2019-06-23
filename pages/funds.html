@@ -41,6 +41,14 @@
       </div>
     </div>
   </div>
+  <div class="row pd-15">
+    <div class="col-xl-6">
+      <div class="bd bd-gray-800 pd-t-30 pd-b-20 pd-x-20"><canvas id="chartDivisionBars" height="250"></canvas></div>
+    </div><!-- col-6 -->
+    <div class="col-xl-6 mg-t-20 mg-xl-t-0">
+      <div class="bd bd-gray-800 pd-t-30 pd-b-20 pd-x-20"><canvas id="chartDivisionPie" height="250"></canvas></div>
+    </div><!-- col-6 -->
+  </div><!-- row -->
   <p class="text-center">
     <a href="funds.dat" target="_blank" download="funds.dat">
       <button type="button" class="btn btn-primary-outline" id="downloadFunds" tkey="btnDownloadFunds">
@@ -50,7 +58,6 @@
     <button type="button" class="btn btn-primary-outline" id="uploadFunds" tkey="btnUploadFunds">Update Funds</button>
   </p>
 </div>
-
 
 <div id="uploadFundsDialog" class="modal fade" style="display: none;" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -112,6 +119,7 @@
   var result_container = $("#verification_result");
   result_container.hide();
   var groupColumn = 0;
+  var reserveData = null;
   var fundsProof = null;
 
   var categories = {
@@ -140,91 +148,167 @@
     return result;
   }
 
-  $.getJSON("funds.dat?" + makeid(20), function (result) {
-    fundsProof = result;
+  $.getJSON("funds.dat?" + makeid(20), function (resultFunds) {
+    fundsProof = resultFunds;
 
-    $('#fundsTable').DataTable({
-      "displayLength": 300,
-      "data": fundsProof.data,
-      "searching": false,
-      "paging": false,
-      "ordering": false,
-      "responsive": true,
-      "info": true,
-      "columns": [
-        {
-          className: "ntFundsGroup",
-          "visible": false
-        }, {
-          className: "ntFundsCategory"
-        }, {
-          className: "ntFundsPaid"
-        }
-      ],
-      rowGroup: {
-        startRender: function (rows, group) {
-          return categories[group] + ' (' + rows.count() + ' categories)';
+    checkReserveRaw("", fundsProof.keys.address, fundsProof.keys.signature, function (resultReserve) {
+      reserveData = resultReserve;
+
+      $('#fundsTable').DataTable({
+        "displayLength": 300,
+        "data": fundsProof.data,
+        "searching": false,
+        "paging": false,
+        "ordering": false,
+        "responsive": true,
+        "info": true,
+        "columns": [
+          {
+            className: "ntFundsGroup",
+            "visible": false
+          }, {
+            className: "ntFundsCategory"
+          }, {
+            className: "ntFundsPaid"
+          }
+        ],
+        rowGroup: {
+          startRender: function (rows, group) {
+            return categories[group] + ' (' + rows.count() + ' categories)';
+          },
+          endRender: function (rows, group) {
+            var sumPaid = rows
+              .data()
+              .pluck(2)
+              .reduce(function (a, b) {
+                return a + b.replace(/[^\d]/g, '') * 1;
+              }, 0);
+
+            if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
+              return $('<tr/>')
+                .append('<td class="sumTitle">Sumarum for "' + categories[group] + '"</td>')
+                .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
+            } else {
+              return $('<tr/>')
+                .append('<td class="sumTitle">Sumarum: ' + numberWithCommas(sumPaid) + '</td>');
+            }
+          },
+          dataSrc: 0
         },
-        endRender: function (rows, group) {
-          var sumPaid = rows
+        footerCallback: function (row, data, start, end, display) {
+          var api = this.api(), data;
+
+          // Remove the formatting to get integer data for summation
+          var intVal = function (i) {
+            return typeof i === 'string' ?
+              i.replace(/[\$,]/g, '') * 1 :
+              typeof i === 'number' ?
+                i : 0;
+          };
+
+          // Total over all pages
+          total = api
+            .column(2)
             .data()
-            .pluck(2)
             .reduce(function (a, b) {
-              return a + b.replace(/[^\d]/g, '') * 1;
+              return intVal(a) + intVal(b);
             }, 0);
 
-          if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
-            return $('<tr/>')
-              .append('<td class="sumTitle">Sumarum for ' + categories[group] + '</td>')
-              .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
-          } else {
-            return $('<tr/>')
-              .append('<td class="sumTitle">Sumarum: ' + numberWithCommas(sumPaid) + '</td>');
-          }
-        },
-        dataSrc: 0
-      },
-      footerCallback: function (row, data, start, end, display) {
-        var api = this.api(), data;
+          // Total over this page
+          pageTotal = api
+            .column(2, { page: 'current' })
+            .data()
+            .reduce(function (a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
 
-        // Remove the formatting to get integer data for summation
-        var intVal = function (i) {
-          return typeof i === 'string' ?
-            i.replace(/[\$,]/g, '') * 1 :
-            typeof i === 'number' ?
-              i : 0;
-        };
-
-        // Total over all pages
-        total = api
-          .column(2)
-          .data()
-          .reduce(function (a, b) {
-            return intVal(a) + intVal(b);
-          }, 0);
-
-        // Total over this page
-        pageTotal = api
-          .column(2, { page: 'current' })
-          .data()
-          .reduce(function (a, b) {
-            return intVal(a) + intVal(b);
-          }, 0);
-
-        checkReserveRaw("", fundsProof.keys.address, fundsProof.keys.signature, function (data) {
           // Update footer
           if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
             $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent so far:");
             $('tr:eq(0) th:eq(1)', api.table().footer()).html(numberWithCommas(pageTotal) + " CCX");
             $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available:");
-            $('tr:eq(1) th:eq(1)', api.table().footer()).html(formatNumber(getReadableCoins(data.result.total, 0)));
+            $('tr:eq(1) th:eq(1)', api.table().footer()).html(formatNumber(getReadableCoins(reserveData.result.total, 0)));
           } else {
             $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent: " + numberWithCommas(pageTotal) + " CCX");
-            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available: " + getReadableCoins(data.result.total, 0));
+            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available: " + getReadableCoins(reserveData.result.total, 0));
           }
-        });
+        }
+      });
+
+      var dataSeries = [];
+      var dataTitles = [];
+
+      fundsProof.data.forEach(function (value, index, array) {
+        dataSeries.push(parseFloat(value[2].replace(/,/g, '')));
+        dataTitles.push(value[1]);
+      });
+
+      var spentSoFar = dataSeries.reduce(function (total, num) {
+        return total + Math.round(num);
+      }, 0);
+      var availableFunds = parseInt(getReadableCoins(reserveData.result.total, 0, true));
+      var totalFunds = spentSoFar + availableFunds;
+
+      // get the ideal palette colors for the divisions chart
+      var dataColors = palette('tol-rainbow', dataSeries.length);
+      dataColors = dataColors.map(function (e) { return '#' + e });
+      // append the percentages to the data titles array
+      for (var i = 0; i < dataTitles.length; i++) {
+        dataTitles[i] = dataTitles[i] + " (" + Math.round(dataSeries[i] / spentSoFar * 100) + "%)";
       }
+
+      var chartDivisionBars = new Chart(document.getElementById('chartDivisionBars'), {
+        type: 'doughnut',
+        data: {
+          labels: [
+            "Spent so far (" + Math.round(spentSoFar / totalFunds * 100) + "%)",
+            "Funds available (" + Math.round(availableFunds / totalFunds * 100) + "%)"
+          ],
+          datasets: [
+            {
+              label: "CCX",
+              backgroundColor: ["#8B0000", "#006400"],
+              data: [spentSoFar, availableFunds]
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'CCX spent so far and CCX still available'
+          }
+        }
+      });
+
+      var chartDivisionPie = new Chart(document.getElementById('chartDivisionPie'), {
+        type: 'doughnut',
+        data: {
+          labels: dataTitles,
+          datasets: [
+            {
+              label: "CCX",
+              backgroundColor: dataColors,
+              data: dataSeries
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'CCX spent by divisions so far'
+          }
+        }
+      });
     });
+  });
+
+  var ctx = document.getElementById("pie-chart").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      datasets: data
+    },
+    options: options
   });
 
   $("#verifyFunds").click(function () {
