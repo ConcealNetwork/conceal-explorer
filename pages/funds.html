@@ -302,15 +302,6 @@
     });
   });
 
-  var ctx = document.getElementById("pie-chart").getContext('2d');
-  var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-      datasets: data
-    },
-    options: options
-  });
-
   $("#verifyFunds").click(function () {
     result_container.hide();
     checkReserve(result_container, "", fundsProof.keys.address, fundsProof.keys.signature);
