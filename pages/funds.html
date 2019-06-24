@@ -267,12 +267,15 @@
           datasets: [
             {
               label: "CCX",
-              backgroundColor: ["#4169E1", "#FF4500"],
+              backgroundColor: ["#00008B", "#4169E1"],
               data: [spentSoFar, availableFunds]
             }
           ]
         },
         options: {
+          legend: {
+            position: 'left'
+          },
           title: {
             display: true,
             text: 'CCX spent so far and CCX still available'
@@ -293,6 +296,9 @@
           ]
         },
         options: {
+          legend: {
+            position: 'left'
+          },
           title: {
             display: true,
             text: 'CCX spent by divisions so far'
