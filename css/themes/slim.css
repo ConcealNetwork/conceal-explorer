@@ -40730,3 +40730,7 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 #txType {
   margin-left: 15px;
 }
+
+.chartDivisionPieWrapper {
+  margin: auto;
+}

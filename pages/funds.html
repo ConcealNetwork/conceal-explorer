@@ -42,11 +42,10 @@
     </div>
   </div>
   <div class="row pd-15">
-    <div class="col-xl-6">
-      <div class="bd bd-gray-800 pd-t-30 pd-b-20 pd-x-20"><canvas id="chartDivisionBars" height="250"></canvas></div>
-    </div><!-- col-6 -->
-    <div class="col-xl-6 mg-t-20 mg-xl-t-0">
-      <div class="bd bd-gray-800 pd-t-30 pd-b-20 pd-x-20"><canvas id="chartDivisionPie" height="250"></canvas></div>
+    <div class="col-xl-8 mg-t-20 mg-xl-t-0 chartDivisionPieWrapper">
+      <div class="pd-t-30 pd-b-20 pd-x-20">
+        <canvas id="chartDivisionPie" height="250"></canvas>
+      </div>
     </div><!-- col-6 -->
   </div><!-- row -->
   <p class="text-center">
@@ -257,32 +256,6 @@
         dataTitles[i] = dataTitles[i] + " (" + Math.round(dataSeries[i] / spentSoFar * 100) + "%)";
       }
 
-      var chartDivisionBars = new Chart(document.getElementById('chartDivisionBars'), {
-        type: 'doughnut',
-        data: {
-          labels: [
-            "Spent so far (" + Math.round(spentSoFar / totalFunds * 100) + "%)",
-            "Funds available (" + Math.round(availableFunds / totalFunds * 100) + "%)"
-          ],
-          datasets: [
-            {
-              label: "CCX",
-              backgroundColor: ["#00008B", "#4169E1"],
-              data: [spentSoFar, availableFunds]
-            }
-          ]
-        },
-        options: {
-          legend: {
-            position: 'left'
-          },
-          title: {
-            display: true,
-            text: 'CCX spent so far and CCX still available'
-          }
-        }
-      });
-
       var chartDivisionPie = new Chart(document.getElementById('chartDivisionPie'), {
         type: 'doughnut',
         data: {
@@ -297,7 +270,7 @@
         },
         options: {
           legend: {
-            position: 'left'
+            position: 'right'
           },
           title: {
             display: true,
