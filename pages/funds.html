@@ -42,9 +42,9 @@
     </div>
   </div>
   <div class="row pd-15">
-    <div class="col-xl-8 mg-t-20 mg-xl-t-0 chartDivisionPieWrapper">
+    <div class="col-xl-12 mg-t-20 mg-xl-t-0 chartDivisionPieWrapper">
       <div class="pd-t-30 pd-b-20 pd-x-20">
-        <canvas id="chartDivisionPie" height="250"></canvas>
+        <div id="chartDivisionPie" style="width: 100%; min-height: 600px;"></div>
       </div>
     </div><!-- col-6 -->
   </div><!-- row -->
@@ -238,44 +238,82 @@
       var dataTitles = [];
 
       fundsProof.data.forEach(function (value, index, array) {
-        dataSeries.push(parseFloat(value[2].replace(/,/g, '')));
+        dataSeries.push({ value: parseFloat(value[2].replace(/,/g, '')), name: "" });
         dataTitles.push(value[1]);
       });
 
       var spentSoFar = dataSeries.reduce(function (total, num) {
-        return total + Math.round(num);
+        return total + Math.round(num.value);
       }, 0);
       var availableFunds = parseInt(getReadableCoins(reserveData.result.total, 0, true));
       var totalFunds = spentSoFar + availableFunds;
+
+      console.log(dataSeries);
+      console.log(spentSoFar);
 
       // get the ideal palette colors for the divisions chart
       var dataColors = palette('cb-Dark2', dataSeries.length);
       dataColors = dataColors.map(function (e) { return '#' + e });
       // append the percentages to the data titles array
       for (var i = 0; i < dataTitles.length; i++) {
-        dataTitles[i] = dataTitles[i] + " (" + Math.round(dataSeries[i] / spentSoFar * 100) + "%)";
+        dataTitles[i] = dataTitles[i] + ' (' + Math.round(dataSeries[i].value / spentSoFar * 100) + '%)';
+        dataSeries[i].name = dataTitles[i];
       }
 
-      var chartDivisionPie = new Chart(document.getElementById('chartDivisionPie'), {
-        type: 'doughnut',
-        data: {
-          labels: dataTitles,
-          datasets: [
-            {
-              label: "CCX",
-              backgroundColor: dataColors,
-              data: dataSeries
-            }
-          ]
-        },
-        options: {
-          legend: {
-            position: 'right'
-          },
-          title: {
-            display: true,
-            text: 'CCX spent by divisions so far'
+      var chartDivisionPie = echarts.init(document.getElementById('chartDivisionPie'));
+      chartDivisionPie.setOption({
+        title: {
+          text: 'CCX spend by divisions so far',
+          left: 'center',
+          textStyle: {
+            color: '#ccc'
           }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} CCX ({d}%)"
+        },
+        legend: {
+          x: 'left',
+          top: 40,
+          orient: 'vertical',
+          data: dataTitles,
+          textStyle: {
+            color: '#ccc'
+          }
+        },
+        calculable: true,
+        series: [{
+          name: 'Spent by divison',
+          type: 'pie',
+          radius: ['30%', '65%'],
+          center: ['50%', '60%'],
+          data: dataSeries,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 20,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          lableLine: {
+            normal: {
+              show: false
+            }
+          },
+          animationType: 'scale',
+          animationEasing: 'elasticOut'
+        }],
+      });
+
+      $(window).on('resize', function () {
+        if (chartDivisionPie) {
+          chartDivisionPie.resize();
         }
       });
     });
