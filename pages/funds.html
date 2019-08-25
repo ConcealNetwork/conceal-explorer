@@ -159,7 +159,7 @@
         "searching": false,
         "paging": false,
         "ordering": false,
-        "responsive": true,
+        "responsive": false,
         "info": true,
         "columns": [
           {
@@ -183,13 +183,13 @@
                 return a + b.replace(/[^\d]/g, '') * 1;
               }, 0);
 
-            if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
+            if ($('#fundsTable').width() > 400) {
               return $('<tr/>')
                 .append('<td class="sumTitle">Sumarum for "' + categories[group] + '"</td>')
                 .append('<td class="sumPaid">' + numberWithCommas(sumPaid) + '</td>');
             } else {
               return $('<tr/>')
-                .append('<td class="sumTitle">Sumarum: ' + numberWithCommas(sumPaid) + '</td>');
+                .append('<td class="sumTitle" colspan="2">Sumarum: ' + numberWithCommas(sumPaid) + '</td>');
             }
           },
           dataSrc: 0
@@ -247,9 +247,6 @@
       }, 0);
       var availableFunds = parseInt(getReadableCoins(reserveData.result.total, 0, true));
       var totalFunds = spentSoFar + availableFunds;
-
-      console.log(dataSeries);
-      console.log(spentSoFar);
 
       // get the ideal palette colors for the divisions chart
       var dataColors = palette('cb-Dark2', dataSeries.length);
@@ -348,6 +345,25 @@
         $("#uploadError").show();
       }
     });
+  });
+
+  var waitForFinalEvent = (function () {
+    var timers = {};
+    return function (callback, ms, uniqueId) {
+      if (!uniqueId) {
+        uniqueId = "Don't call this twice without a uniqueId";
+      }
+      if (timers[uniqueId]) {
+        clearTimeout(timers[uniqueId]);
+      }
+      timers[uniqueId] = setTimeout(callback, ms);
+    };
+  })();
+
+  $(window).resize(function () {
+    waitForFinalEvent(function () {
+      $('#fundsTable').DataTable().draw();
+    }, 500, "OnFundsResize");
   });
 
 </script>

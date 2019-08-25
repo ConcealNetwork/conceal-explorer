@@ -459,7 +459,7 @@
                 }
                 updateText('mempool_count', document.querySelectorAll('#mem_pool_rows tr').length);
             },
-            error: function(data) {console.log(data);}
+            error: function(data) { }
         });
     };
 
@@ -659,8 +659,6 @@
                         var size        = data.datasets[2].data[tooltipItem.index];
 
                         var diff_swatch_color = data.datasets[0].borderColor;
-
-                        console.log(diff_swatch_color);
 
                         var diff_swatch = '<span style="color="'+ diff_swatch_color +'">&bullet;</span>';
 
