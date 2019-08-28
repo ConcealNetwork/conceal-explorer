@@ -9,8 +9,8 @@
     "searchHint": "Search by block height / hash, transaction hash, payment id",
     
     "welcome": "Welcome",
-    "earnedToDate": "Interest earned to date",
-    "interestEarnedInfo": "All the interest earned from deposits",
+    "earnedToDate": "Interest paid to date",
+    "interestEarnedInfo": "All the interest paid from deposits",
     "maxSupplyInfo": "Max CCX that will ever be minted",
     "totalBanked": "Total banked",
     "overview": "Overview",
