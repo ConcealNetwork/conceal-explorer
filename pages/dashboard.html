@@ -95,7 +95,7 @@
 
     <div class="report-summary-header">
       <div>
-        <h4 class="tx-white mg-b-3" tkey="supplyAndBanking">Supply & Banking</h4>
+        <h4 class="tx-white mg-b-3" tkey="supplyAndBanking">Banking</h4>
       </div>
       <div>
         <a href="https://conceal.network/#features" class="btn btn-primary-outline" tkey="aboutConcealBanking">About
@@ -124,10 +124,9 @@
         </div><!-- col-4 -->
         <div class="col-lg-4">
           <div class="dash-content dash-small-info">
-            <label class="tx-primary" tkey="totalSupply">Total Supply</label>
-            <label class="tx-primary" id="totalCoinsPct">(100%)</label><BR>
-            <label class="tx-secondary" tkey="totalSupplyInfo">The total supply minted to date.</label>
-            <h2><span id="totalBanked">N/A</span></h2>
+            <label class="tx-primary" tkey="bankedVsTotal">Banked vs Total</label>
+            <label class="tx-secondary" tkey="bankedVsTotalInfo">Banked versus total supply ratio</label>
+            <h2><span id="bankedVsTotal">N/A</span></h2>
           </div><!-- dash-content -->
         </div><!-- col-4 -->
       </div><!-- row -->
@@ -399,6 +398,7 @@
     $.getJSON("https://explorer.conceal.network/daemon/getinfo", function (infoData) {
       updateText('interestToDate', getReadableCoins2(infoData.full_deposit_interest, 0));
       updateText('totalBanked', getReadableCoins2(infoData.full_deposit_amount, 0));
+      console.log(infoData);
 
       $.ajax({
         url: api + '/json_rpc',
@@ -432,6 +432,7 @@
               var circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
               var circulating_supply_pct = ((circulating_supply / block.alreadyGeneratedCoins) * 100).toFixed(2);
               var last_block_deposts_pct = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(2);
+              var last_block_deposts_pct4 = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(4);
               var last_block_interest_pct = ((infoData.full_deposit_interest / block.alreadyGeneratedCoins) * 100).toFixed(2);
               updateText('maxCoins', getReadableCoins2(200000000000000, 0));
               updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
@@ -441,6 +442,8 @@
               updateText('depositCoins', getReadableCoins2(last_block_deposts, 0));
               updateText('depositCoinsPct', "(" + last_block_deposts_pct + "%)");
               updateText('interestPercentPct', "(" + last_block_interest_pct + "%)");
+              updateText('bankedVsTotal', last_block_deposts_pct4 + "%");
+
             }
           });
         }
