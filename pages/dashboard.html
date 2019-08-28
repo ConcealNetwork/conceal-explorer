@@ -1,21 +1,40 @@
 <div class="slim-mainpanel">
   <div class="container pd-t-30">
+
     <div class="dash-headline-two" id="welcomeSection">
       <div>
         <h4 class="tx-white mg-b-5" tkey="welcome">Welcome</h4>
         <p class="mg-b-0" id="currentDate"></p>
       </div>
-      <div class="d-h-t-right" id="depositsSection">
-        <div class="summary-item">
-          <h1 id="interestToDate">N/A</h1>
-          <span tkey="earnedToDate">Interest<br>earned to date</span>
-        </div>
-        <div class="summary-item">
-          <h1 id="totalBanked">N/A</h1>
-          <span tkey="totalBanked">Total<br>banked</span>
-        </div>
-      </div>
     </div><!-- dash-headline-two -->
+
+    <div class="card card-dash-one mg-t-20">
+      <div class="row no-gutters">
+        <div class="col-lg-4">
+          <div class="dash-content dash-small-info">
+            <label class="tx-primary" tkey="circulatingSuppy">Circulating Supply</label>
+            <label class="tx-primary" id="emissionPercentPct""></label><BR>
+            <label class=" tx-secondary" tkey="circulatingSuppyInfo">The total number of coins not banked.</label>
+            <h2><span id="emissionPercent">N/A</span></h2>
+          </div><!-- dash-content -->
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+          <div class="dash-content dash-small-info">
+            <label class="tx-primary" tkey="totalSupply">Total Supply</label>
+            <label class="tx-primary" id="totalCoinsPct">(100%)</label><BR>
+            <label class="tx-secondary" tkey="totalSupplyInfo">The total supply minted to date.</label>
+            <h2><span id="totalCoins">N/A</span></h2>
+          </div><!-- dash-content -->
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+          <div class="dash-content">
+            <label class="tx-primary" id="maxSuply" tkey="maxSuply">Max Supply</label><BR>
+            <label class="tx-secondary" tkey="maxSupplyInfo">Max CCX that will ever be minted</label>
+            <h2><span id="maxCoins">N/A</span></h2>
+          </div><!-- dash-content -->
+        </div><!-- col-4 -->
+      </div><!-- row -->
+    </div>
 
     <div class="nav-statistics-wrapper">
       <nav class="nav">
@@ -23,7 +42,7 @@
       </nav>
     </div><!-- nav-statistics-wrapper -->
 
-    <div class="row row-statistics mg-b-30" id="networkDiffRow">
+    <div class="row no-gutters row-statistics mg-b-30" id="networkDiffRow">
       <div class="dasboard-box">
         <h1 class="tx-white tx-56 tx-lato tx-bold"><span id="networkDifficulty">N/A</span></h1>
         <h6 class="tx-15 tx-primary tx-bold mg-b-20" tkey="netDifficulty">Network Difficulty</h6>
@@ -88,18 +107,19 @@
       <div class="row no-gutters">
         <div class="col-lg-4">
           <div class="dash-content">
-            <label class="tx-primary" id="totalBanked" tkey="totalBanked">Total Banked</label>
+            <label class="tx-primary" tkey="totalBanked">Total Banked</label>
             <label class="tx-primary" id="depositCoinsPct"></label><BR>
             <label class="tx-secondary" tkey="totalBankedInfo">Total funds locked in deposits and investments</label>
             <h2><span id="depositCoins">N/A</span></h2>
           </div><!-- dash-content -->
         </div><!-- col-4 -->
+
         <div class="col-lg-4">
           <div class="dash-content dash-small-info">
-            <label class="tx-primary" tkey="circulatingSuppy">Circulating Supply</label>
-            <label class="tx-primary" id="emissionPercentPct""></label><BR>
-            <label class=" tx-secondary" tkey="circulatingSuppyInfo">The total number of coins not banked.</label>
-            <h2><span id="emissionPercent">N/A</span></h2>
+            <label class="tx-primary" tkey="earnedToDate">Interest earned to date</label>
+            <label class="tx-primary" id="interestPercentPct"></label><BR>
+            <label class=" tx-secondary" tkey="interestEarnedInfo">All the interest earned from deposits</label>
+            <h2><span id="interestToDate">N/A</span></h2>
           </div><!-- dash-content -->
         </div><!-- col-4 -->
         <div class="col-lg-4">
@@ -107,7 +127,7 @@
             <label class="tx-primary" tkey="totalSupply">Total Supply</label>
             <label class="tx-primary" id="totalCoinsPct">(100%)</label><BR>
             <label class="tx-secondary" tkey="totalSupplyInfo">The total supply minted to date.</label>
-            <h2><span id="totalCoins">N/A</span></h2>
+            <h2><span id="totalBanked">N/A</span></h2>
           </div><!-- dash-content -->
         </div><!-- col-4 -->
       </div><!-- row -->
@@ -376,9 +396,9 @@
   };
 
   function renderLastBlock() {
-    $.getJSON("https://explorer.conceal.network/daemon/getinfo", function (data) {
-      updateText('interestToDate', getReadableCoins2(data.full_deposit_interest, 0));
-      updateText('totalBanked', getReadableCoins2(data.full_deposit_amount, 0));
+    $.getJSON("https://explorer.conceal.network/daemon/getinfo", function (infoData) {
+      updateText('interestToDate', getReadableCoins2(infoData.full_deposit_interest, 0));
+      updateText('totalBanked', getReadableCoins2(infoData.full_deposit_amount, 0));
 
       $.ajax({
         url: api + '/json_rpc',
@@ -408,17 +428,19 @@
             dataType: 'json',
             cache: 'false',
             success: function (data) {
-              block = data.result.block;
-              circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
-              circulating_supply_pct = ((circulating_supply / block.alreadyGeneratedCoins) * 100).toFixed(2);
-              last_block_deposts_pct = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(2);
+              var block = data.result.block;
+              var circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
+              var circulating_supply_pct = ((circulating_supply / block.alreadyGeneratedCoins) * 100).toFixed(2);
+              var last_block_deposts_pct = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(2);
+              var last_block_interest_pct = ((infoData.full_deposit_interest / block.alreadyGeneratedCoins) * 100).toFixed(2);
+              updateText('maxCoins', getReadableCoins2(200000000000000, 0));
               updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
               updateText('emissionPercent', getReadableCoins2(circulating_supply, 0));
               updateText('emissionPercentPct', "(" + circulating_supply_pct + "%)");
               updateText('currentReward', getReadableCoins(block.baseReward, 0));
               updateText('depositCoins', getReadableCoins2(last_block_deposts, 0));
               updateText('depositCoinsPct', "(" + last_block_deposts_pct + "%)");
-
+              updateText('interestPercentPct', "(" + last_block_interest_pct + "%)");
             }
           });
         }

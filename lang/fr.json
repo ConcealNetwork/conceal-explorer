@@ -9,8 +9,9 @@
     "searchHint": "Search by block height / hash, transaction hash, payment id",
     
     "welcome": "Welcome",
-    "earnedToDate": "Interest<br>earned to date",
-    "totalBanked": "Total<br> banked",
+    "earnedToDate": "Interest earned to date",
+    "interestEarnedInfo": "All the interest earned from deposits",
+    "totalBanked": "Total banked",
     "overview": "Overview",
     "netDifficulty": "Network Difficulty",
     "netDiffInfo": "Chart on the right show the network difficulty for the last 30 blocks.",

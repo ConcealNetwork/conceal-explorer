@@ -40503,6 +40503,10 @@ a {
   justify-content: space-between;
 }
 
+#networkDiffRow {
+  margin-right: -15px;
+}
+
 #networkDiffRow .dasboard-box {
   width: 33%;
 }
