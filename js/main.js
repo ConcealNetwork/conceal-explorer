@@ -448,7 +448,7 @@ function checkReserve(cointainer, message, address, signature) {
       result_icon.removeClass("fa-check");
       result_icon.removeClass("fa-times");
 
-      result_text.html("This proves that specified address holds at least <span class='verificationNum'>" + formatNumber(getReadableCoins(res.total, 2)) + "</span>"; /*, from which the following amount was spent: <span class='verificationNum'>" + formatNumber(getReadableCoins(res.spent, 2))) + "</span>"; */
+      result_text.html("This proves that specified address holds at least <span class='verificationNum'>" + formatNumber(getReadableCoins(res.total, 2)) + "</span>"); /*, from which the following amount was spent: <span class='verificationNum'>" + formatNumber(getReadableCoins(res.spent, 2))) + "</span>"; */
       cointainer.addClass("panel-success");
       result.addClass("text-success");
       result.attr("id", "bpTextSuccess");
