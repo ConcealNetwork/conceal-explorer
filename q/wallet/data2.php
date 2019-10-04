@@ -4,7 +4,7 @@ require '../util.php';
 $config = (require '../../config.php');
 
 $bitstamp = fetch_bitstamp($config['bitstamp']);
-$bitstampeur = fetch_bitstamp($config["https://www.bitstamp.net/api/v2/ticker/btceur/"]);
+$bitstampeur = fetch_bitstamp("https://www.bitstamp.net/api/v2/ticker/btceur/");
 $btc = number_format($bitstamp['last'],2,".",",");
 $btceur = number_format($bitstampeur['last'],2,".",",");
 
