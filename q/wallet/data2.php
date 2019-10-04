@@ -16,5 +16,5 @@ $ccxbtc = number_format(($coingecko['market_data']['current_price']['btc'])*1000
 $ccxeur = number_format($coingecko['market_data']['current_price']['eur'],2,".",",");
 $marketcapeur = number_format($coingecko['market_data']['market_cap']['eur'],2,".",",");
 $totalvolumeeur = number_format($coingecko['market_data']['total_volume']['eur'],2,".",",");
-print_r($ccxbtc." ".$ccxusd." ".$btc." ".$marketcap." ".$totalvolume." ".$ccxeur." "$btceur." ".$marketcapeur." ".$totalvolumeeur;
+print_r($ccxbtc." ".$ccxusd." ".$btc." ".$marketcap." ".$totalvolume." ".$ccxeur." "$btceur." ".$marketcapeur." ".$totalvolumeeur);
 
