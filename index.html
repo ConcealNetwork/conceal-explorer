@@ -101,7 +101,7 @@
 
   <div class="slim-navbar">
     <div class="container">
-      <ul class="nav">
+      <ul class="nav" id="mainNavigation">
         <li class="nav-item active">
           <a class="nav-link hot_link" data-page="dashboard.html" href="#">
             <i class="icon ion-ios-home-outline"></i>
@@ -392,6 +392,26 @@
             }, 400);
         });
       });
+    });
+
+    $('#mainNavigation .nav-link').click(function() {
+      var newURL = window.location.href.split( '?' ).map( ( url, i ) => !i ? url : url.split( '&' ).filter( p => !p.startsWith( 'hash' + '=' ) ).join( '&' ) ).join( '?' );
+
+      if ((newURL.lastIndexOf('?') == (newURL.lastIndexOf('#') - 1)) || (newURL.substring(newURL.length-1) == "?")) {
+        newURL = newURL.replace("?", "");
+      }
+      
+      if (newURL.search("#") > -1) {
+        newURL = newURL.substring(0, newURL.lastIndexOf('#'));
+      }
+
+      if (($(this).attr("href") == "") || ($(this).attr("href") == "#")) {
+        window.location.href = newURL;
+      } else {
+        window.location.href = newURL + $(this).attr("href");
+      }
+      
+      return false;
     });
   </script>
 </body>
