@@ -69,7 +69,7 @@
     "poolsTotalFee": "Total Fee",
     "poolsMinPayout": "Min. Payout",
     "poolsLastBlockFound": "Last Block Found",
-	"poolsChartTitle": "Network Hashrate Visualization",
+    "poolsChartTitle": "Network Hashrate Visualization",
 
     "txText1": "This page allows viewing of private data in a transaction not viewable using the <a href='http://explorer.conceal.network/' target = '_blank'>Conceal Block Explorer</a>, if you have the transaction hash, the recipient wallet address and either the secret transaction key (provided by the sender and valid for only a single transaction) or the recipient's secret view key.",
     "txText2": "Select the type of secret key, complete the form, then click on <i>SHOW TRANSACTION</i>. If you omit the address and/or secret key, the transaction will be displayed without private data. The transaction can be viewed only after it is included in a block, which may take a few minutes.",
@@ -99,6 +99,10 @@
     "apiTotalBankedText": "current total banked coins",
     "apiMaxSupplyLabel": "maxsupply",
     "apiMaxSupplyText": "max supply for the coin",
+    "apiDifficultyLabel": "difficulty",
+    "apiDifficultyText": "current difficulty",
+    "apiNodeCountLabel": "nodecount",
+    "apiNodeCountText": "current node count",
 
     "blockHeightHint": "Block index in the chain, counting from zero (i.e. genesis block).",
     "blockTimestampHint": "Block timestamp displayed as UTC. The timestamp correctness it up to miner, who mined the block.",

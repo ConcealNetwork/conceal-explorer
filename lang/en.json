@@ -102,6 +102,10 @@
     "apiTotalBankedText": "current total banked coins",
     "apiMaxSupplyLabel": "maxsupply",
     "apiMaxSupplyText": "max supply for the coin",
+    "apiDifficultyLabel": "difficulty",
+    "apiDifficultyText": "current difficulty",
+    "apiNodeCountLabel": "nodecount",
+    "apiNodeCountText": "current node count",
 
     "blockHeightHint": "Block index in the chain, counting from zero (i.e. genesis block).",
     "blockTimestampHint": "Block timestamp displayed as UTC. The timestamp correctness it up to miner, who mined the block.",

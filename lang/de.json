@@ -102,6 +102,10 @@
     "apiTotalBankedText": "Aktuell insgesamt angelegte Coins",
     "apiMaxSupplyLabel": "maxsupply",
     "apiMaxSupplyText": "Maximale Anzahl an Coins, die jemals existieren wird.",
+    "apiDifficultyLabel": "difficulty",
+    "apiDifficultyText": "current difficulty",
+    "apiNodeCountLabel": "nodecount",
+    "apiNodeCountText": "current node count",
 
     "blockHeightHint": "Block-Index in der Chain, gezählt von Null (i.e. dem Genesis Block).",
     "blockTimestampHint": "Blockzeitstempel angezeigt in UTC. Die Korrektheit des Zeitstempels liegt beim Miner, der den entsprechenden Block geminet hat.",

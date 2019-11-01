@@ -1,30 +1,44 @@
 <div class="card mg-t-20" id="apiInfo">
-	<div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h2><i class="fa fa-code" aria-hidden="true"></i> API <small id="paymend_id" style="word-break: break-all;"></small></h2></div>
-	<div class="card-body card-body-info">				
-		<div class="row">
-			<div class="col-lg-12">		
-				<h4><span tkey="apiTitle">Supported APIs</h4>				
-				<ul>
-					<li><strong><a href="/q/hashrate"><span tkey="apiHashrateLabel">hashrate</span></a></strong> &ndash; <span tkey="apiHashrateText">current estimated network hashrate</span></li>
-					<li><strong><a href="/q/height"><span tkey="apiHeightLabel">height</span></a></strong> &ndash; <span tkey="apiHeightText">current height (incl. genesis block)</span></li>
-					<li><strong><a href="/q/reward"><span tkey="apiRewardLabel">reward</span></a></strong> &ndash; <span tkey="apiRewardText">current block reward</span></li>
-					<li><strong><a href="/q/supply"><span tkey="apiSupplyLabel">supply</span></a></strong> &ndash; <span tkey="apiSupplyText">circulating supply</span></li>
-					<li><strong><a href="/q/totalsupply"><span tkey="apiTotalSupplyLabel">totalsupply</span></a></strong> &ndash; <span tkey="apiTotalSupplyText">current total supply of coins</span></li>
-					<li><strong><a href="/q/totalbanked"><span tkey="apiTotalBankedLabel">totalbanked</span></a></strong> &ndash; <span tkey="apiTotalBankedText">current total banked coins</span></li>
-					<li><strong><a href="/q/maxsupply"><span tkey="apiMaxSupplyLabel">maxsupply</span></a></strong> &ndash; <span tkey="apiMaxSupplyText">Max supply for the coin</span></li>
-				</ul>				
-			</div>
-		</div>
-	</div>
+  <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
+    <h2><i class="fa fa-code" aria-hidden="true"></i> API <small id="paymend_id" style="word-break: break-all;"></small>
+    </h2>
+  </div>
+  <div class="card-body card-body-info">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4><span tkey="apiTitle">Supported APIs</h4>
+        <ul>
+          <li><strong><a href="/q/hashrate"><span tkey="apiHashrateLabel">hashrate</span></a></strong> &ndash; <span
+              tkey="apiHashrateText">current estimated network hashrate</span></li>
+          <li><strong><a href="/q/height"><span tkey="apiHeightLabel">height</span></a></strong> &ndash; <span
+              tkey="apiHeightText">current height (incl. genesis block)</span></li>
+          <li><strong><a href="/q/reward"><span tkey="apiRewardLabel">reward</span></a></strong> &ndash; <span
+              tkey="apiRewardText">current block reward</span></li>
+          <li><strong><a href="/q/supply"><span tkey="apiSupplyLabel">supply</span></a></strong> &ndash; <span
+              tkey="apiSupplyText">circulating supply</span></li>
+          <li><strong><a href="/q/totalsupply"><span tkey="apiTotalSupplyLabel">totalsupply</span></a></strong> &ndash;
+            <span tkey="apiTotalSupplyText">current total supply of coins</span></li>
+          <li><strong><a href="/q/totalbanked"><span tkey="apiTotalBankedLabel">totalbanked</span></a></strong> &ndash;
+            <span tkey="apiTotalBankedText">current total banked coins</span></li>
+          <li><strong><a href="/q/maxsupply"><span tkey="apiMaxSupplyLabel">maxsupply</span></a></strong> &ndash; <span
+              tkey="apiMaxSupplyText">Max supply for the coin</span></li>
+          <li><strong><a href="/q/difficulty"><span tkey="apiDifficultyLabel">difficulty</span></a></strong> &ndash;
+            <span tkey="apiDifficultyText">current difficulty</span></li>
+          <li><strong><a href="/q/nodecount"><span tkey="apiNodeCountLabel">nodecount</span></a></strong> &ndash;
+            <span tkey="apiNodeCountText">current node count</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-currentPage = {
-    destroy: function(){},
-    init: function(){
-        loadTranslations();
+  currentPage = {
+    destroy: function () { },
+    init: function () {
+      loadTranslations();
     },
-    update: function(){
+    update: function () {
     }
-};
+  };
 </script>

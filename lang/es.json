@@ -37,7 +37,7 @@
     "mktMarketcap": "Tapa del mercado",
     "mktDailyVolume": "Volumen diario",
     "estimateProfit": "Estimación de ganancias mineras",
-	"enterYourHashrate": "Ingrese su tasa de hash",
+    "enterYourHashrate": "Ingrese su tasa de hash",
     "perDay": "por día",
     
     "netStats": "ESTADÍSTICAS DE RED",
@@ -103,7 +103,10 @@
     "apiTotalBankedText": "total de monedas bancarias actuales",
     "apiMaxSupplyLabel": "maximosuministro",
     "apiMaxSupplyText": "suministro máximo para la moneda",
-
+    "apiDifficultyLabel": "difficulty",
+    "apiDifficultyText": "current difficulty",
+    "apiNodeCountLabel": "nodecount",
+    "apiNodeCountText": "current node count",
 
     "blockHeightHint": "Índice de bloque en la cadena, contando desde cero (es decir, bloque de genesis)",
     "blockTimestampHint": "La marca de tiempo del bloque se muestra como UTC. La marca de tiempo lo corrige hasta el minero, que extrajo el bloque",
