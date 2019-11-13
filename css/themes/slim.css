@@ -40727,7 +40727,8 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   color: red !important;
 }
 
-.footerAvailable {
+.footerAvailable,
+.footerReserve {
   color: green !important;
 }
 

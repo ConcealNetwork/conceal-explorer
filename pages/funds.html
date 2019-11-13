@@ -36,6 +36,10 @@
               <th colspan="2">Funds available:</th>
               <th class="footerValue footerAvailable"></th>
             </tr>
+            <tr class="fundsFooter">
+              <th colspan="2">Funds in reserve:</th>
+              <th class="footerValue footerReserve"></th>
+            </tr>
           </tfoot>
         </table>
       </div>
@@ -45,6 +49,13 @@
     <div class="col-xl-12 mg-t-20 mg-xl-t-0 chartDivisionPieWrapper">
       <div class="pd-t-30 pd-b-20 pd-x-20">
         <div id="chartDivisionPie" style="width: 100%; min-height: 600px;"></div>
+      </div>
+    </div><!-- col-6 -->
+  </div><!-- row -->
+  <div class="row pd-15">
+    <div class="col-xl-12 mg-t-20 mg-xl-t-0 chartOverallPieWrapper">
+      <div class="pd-t-30 pd-b-20 pd-x-20">
+        <div id="chartOverallPie" style="width: 100%; min-height: 600px;"></div>
       </div>
     </div><!-- col-6 -->
   </div><!-- row -->
@@ -153,9 +164,12 @@
     checkReserveRaw("", fundsProof.keys.address, fundsProof.keys.signature, function (resultReserve) {
       reserveData = resultReserve;
 
+      // unspent funds calculated
+      var unspentFunds = (parseFloat(fundsProof.wallet.total) * coinUnits) - (reserveData.result.total / coinUnits);
+
       $('#fundsTable').DataTable({
         "displayLength": 300,
-        "data": fundsProof.data,
+        "data": fundsProof.wallet.data,
         "searching": false,
         "paging": false,
         "ordering": false,
@@ -221,15 +235,21 @@
               return intVal(a) + intVal(b);
             }, 0);
 
+          // calculate the unspent funds from the data
+          var currUnspentFunds = Math.trunc(unspentFunds - pageTotal);
+
           // Update footer
           if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
             $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent so far:");
             $('tr:eq(0) th:eq(1)', api.table().footer()).html(numberWithCommas(pageTotal) + " CCX");
             $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available:");
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(formatNumber(getReadableCoins(reserveData.result.total, 0)));
+            $('tr:eq(2) th:eq(0)', api.table().footer()).html("Funds in reserve:");
+            $('tr:eq(2) th:eq(1)', api.table().footer()).html(numberWithCommas(currUnspentFunds) + " CCX");
           } else {
             $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent: " + numberWithCommas(pageTotal) + " CCX");
             $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available: " + getReadableCoins(reserveData.result.total, 0));
+            $('tr:eq(2) th:eq(0)', api.table().footer()).html("Funds in reserve: " + numberWithCommas(currUnspentFunds) + " CCX");
           }
         }
       });
@@ -237,7 +257,7 @@
       var dataSeries = [];
       var dataTitles = [];
 
-      fundsProof.data.forEach(function (value, index, array) {
+      fundsProof.wallet.data.forEach(function (value, index, array) {
         dataSeries.push({ value: parseFloat(value[2].replace(/,/g, '')), name: "" });
         dataTitles.push(value[1]);
       });
@@ -245,8 +265,6 @@
       var spentSoFar = dataSeries.reduce(function (total, num) {
         return total + Math.round(num.value);
       }, 0);
-      var availableFunds = parseInt(getReadableCoins(reserveData.result.total, 0, true));
-      var totalFunds = spentSoFar + availableFunds;
 
       // get the ideal palette colors for the divisions chart
       var dataColors = palette('cb-Dark2', dataSeries.length);
@@ -260,7 +278,7 @@
       var chartDivisionPie = echarts.init(document.getElementById('chartDivisionPie'));
       chartDivisionPie.setOption({
         title: {
-          text: 'Funds Allocation',
+          text: 'Funds Spend by Divisions',
           left: 'center',
           textStyle: {
             color: '#ccc'
@@ -268,7 +286,7 @@
         },
         tooltip: {
           trigger: 'item',
-          formatter: "{a} <br/>{b} : {c} CCX ({d}%)"
+          formatter: "{b} : {c} CCX"
         },
         legend: {
           x: 'left',
@@ -282,6 +300,84 @@
         calculable: true,
         series: [{
           name: 'Spent by divison',
+          type: 'pie',
+          radius: ['30%', '65%'],
+          center: ['50%', '60%'],
+          data: dataSeries,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 20,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          lableLine: {
+            normal: {
+              show: false
+            }
+          },
+          animationType: 'scale',
+          animationEasing: 'elasticOut'
+        }],
+      });
+
+      var dataSeries = [];
+      var dataTitles = [];
+
+      // unspent funds calculated and total funds      
+      var totalFundsAvailable = parseFloat(fundsProof.wallet.total) * coinUnits;
+      var currUnspentFunds = Math.trunc(unspentFunds - spentSoFar);
+
+      // push the available funds into the array
+      dataSeries.push({ value: Math.trunc(reserveData.result.total / coinUnits), name: "" });
+      dataTitles.push("Available funds");
+      // push the reserve funds into the array
+      dataSeries.push({ value: currUnspentFunds, name: "" });
+      dataTitles.push("Funds in reserve");
+      // push the spent funds into the array
+      dataSeries.push({ value: spentSoFar, name: "" });
+      dataTitles.push("Spent funds");
+
+      // get the ideal palette colors for the divisions chart
+      var dataColors = palette('cb-Dark2', dataSeries.length);
+      dataColors = dataColors.map(function (e) { return '#' + e });
+      // append the percentages to the data titles array
+      for (var i = 0; i < dataTitles.length; i++) {
+        dataTitles[i] = dataTitles[i] + ' (' + Math.round(dataSeries[i].value / totalFundsAvailable * 100) + '%)';
+        dataSeries[i].name = dataTitles[i];
+      }
+
+
+      var chartOverallPie = echarts.init(document.getElementById('chartOverallPie'));
+      chartOverallPie.setOption({
+        title: {
+          text: 'Current Funds Distribution',
+          left: 'center',
+          textStyle: {
+            color: '#ccc'
+          }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: "{b} : {c} CCX"
+        },
+        legend: {
+          x: 'left',
+          top: 40,
+          orient: 'vertical',
+          data: dataTitles,
+          textStyle: {
+            color: '#ccc'
+          }
+        },
+        calculable: true,
+        series: [{
+          name: 'Funds distribution',
           type: 'pie',
           radius: ['30%', '65%'],
           center: ['50%', '60%'],
