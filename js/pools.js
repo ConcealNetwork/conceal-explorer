@@ -158,7 +158,6 @@ $.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
 
     if (version == "1") {
       $.getJSON(url + '/stats', function (data, textStatus, jqXHR) {
-
         var d = new Date(parseInt(data.pool.lastBlockFound));
         var index = host.indexOf('/');
         var poolName;
@@ -219,10 +218,34 @@ $.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
       }).always(function () {
         lazyRefreshChart();
       });
+    } else if (version == "3") {
+      $.getJSON(url + '/stats', function (data, textStatus, jqXHR) {
+        var d = new Date(parseInt(data.pool.lastBlockFound));
+        var index = host.indexOf('/');
+        var poolName;
+
+        if (index < 0) {
+          poolName = host;
+        } else {
+          poolName = host.substr(0, index);
+        }
+
+        $('#pools_rows').append(renderPoolRow(host, poolName, data, d));
+
+        totalHashrate += parseInt(data.pool.hashrate);
+        totalMiners += parseInt(data.pool.miners);
+
+        updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
+        updateText('total_miners', localizeNumber(totalMiners));
+
+        poolStats.push([poolName, parseInt(data.pool.hashrate), colorHash.hex(poolName)]);
+
+      }).always(function () {
+        lazyRefreshChart();
+      });
     }
   });
 });
-
 
 setInterval(function () {
 
