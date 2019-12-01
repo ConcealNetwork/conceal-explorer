@@ -398,7 +398,6 @@
     $.getJSON("https://explorer.conceal.network/daemon/getinfo", function (infoData) {
       updateText('interestToDate', getReadableCoins2(infoData.full_deposit_interest, 0));
       updateText('totalBanked', getReadableCoins2(infoData.full_deposit_amount, 0));
-      console.log(infoData);
 
       $.ajax({
         url: api + '/json_rpc',
