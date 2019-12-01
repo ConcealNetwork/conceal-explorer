@@ -32,40 +32,27 @@ var calculateTotalFee = function (config) {
   return Math.round(totalFee * 1000) / 1000;
 };
 
-var renderPoolRow = function (host, name, data, d) {
-
-  var agostring = $.timeago(d);
-  var datestring = renderDate(d);
-  var poolHashrate = data.pool.soloHashrate ? parseInt(data.pool.hashrate) + parseInt(data.pool.soloHashrate) : parseInt(data.pool.hashrate);
+var renderPoolRow = function (data) {
+  console.log(data);
+  var agostring = $.timeago(new Date(data.pool.lastBlockFound));
+  var datestring = renderDate(new Date(data.pool.lastBlockFound));
+  var poolHashrate = data.pool.soloHashrate ? (data.pool.hashrate + data.pool.soloHashrate) : data.pool.hashrate;
+  console.log(agostring);
+  console.log(datestring);
 
   var pools_row = [];
 
   pools_row.push('<tr>');
-  pools_row.push('<td id=host-' + name + '><a target=blank href=http://' + host + '>' + name + '</a></td>');
-  pools_row.push('<td class="height" id=height-' + name + '>' + localizeNumber(data.network.height) + '</td>');
-  pools_row.push('<td id=hashrate-' + name + '>' + localizeNumber(poolHashrate) + ' H/s</td>');
-  pools_row.push('<td id=miners-' + name + '>' + localizeNumber(data.pool.miners) + '</td>');
-  pools_row.push('<td id=totalFee-' + name + '>' + calculateTotalFee(data) + '%</td>');
-  pools_row.push('<td id=minPayout-' + name + '>' + getReadableCoins(data.config.minPaymentThreshold, 2) + '</td>');
-  pools_row.push('<td><span id=lastFound-' + name + '>' + datestring + '</span> (<span class="timeago" id="ago-' + name + '">' + agostring + '</span>)</td>');
+  pools_row.push('<td id=host-' + data.info.name + '><a target=blank href=http://' + data.info.host + '>' + data.info.name + '</a></td>');
+  pools_row.push('<td class="height" id=height-' + data.info.name + '>' + localizeNumber(data.network.height) + '</td>');
+  pools_row.push('<td id=hashrate-' + data.info.name + '>' + localizeNumber(poolHashrate) + ' H/s</td>');
+  pools_row.push('<td id=miners-' + data.info.name + '>' + localizeNumber(data.pool.miners) + '</td>');
+  pools_row.push('<td id=totalFee-' + data.info.name + '>' + data.config.poolFee + '%</td>');
+  pools_row.push('<td id=minPayout-' + data.info.name + '>' + getReadableCoins(data.config.minPaymentThreshold, 2) + '</td>');
+  pools_row.push('<td><span id=lastFound-' + data.info.name + '>' + datestring + '</span> (<span class="timeago" id="ago-' + data.info.name + '">' + agostring + '</span>)</td>');
   pools_row.push('</tr>');
 
   return pools_row.join('');
-};
-
-var translateAPI2 = function (data) {
-  return {
-    'network': {
-      'height': '',
-    },
-    'pool': {
-      'hashrate': data.pool_statistics.hashRate,
-      'miners': data.pool_statistics.miners,
-    },
-    'config': {
-      'minPaymentThreshold': ''
-    }
-  };
 };
 
 var displayChart = function displayChart() {
@@ -149,79 +136,21 @@ var displayChart = function displayChart() {
 
 var lazyRefreshChart = debounce(displayChart, 50, true);
 
-$.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
-  poolList = data;
+$.getJSON(poolListUrl, function (data, textStatus, jqXHR) {  
+  data.forEach(function (element) {
+    $('#pools_rows').append(renderPoolRow(element));
 
-  poolList.forEach(function (element) {
-    var url = element[1];
-    var host = element[0];
-    var version = element[3];
+    totalHashrate += element.pool.hashrate;
+    totalMiners += element.pool.miners;
 
-    if ((version == "1") || (version == "3")) {
-      $.getJSON(url + '/stats', function (data, textStatus, jqXHR) {
-        var poolHashrate = data.pool.soloHashrate ? parseInt(data.pool.hashrate) + parseInt(data.pool.soloHashrate) : parseInt(data.pool.hashrate);
-        var d = new Date(parseInt(data.pool.lastBlockFound));
-        var index = host.indexOf('/');
-        var poolName;
-
-        if (index < 0) {
-          poolName = host;
-        } else {
-          poolName = host.substr(0, index);
-        }
-
-        $('#pools_rows').append(renderPoolRow(host, poolName, data, d));
-
-        totalHashrate += poolHashrate;
-        totalMiners += parseInt(data.pool.miners);
-
-        updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
-        updateText('total_miners', localizeNumber(totalMiners));
-        
-        poolStats.push([poolName, poolHashrate, colorHash.hex(poolName)]);
-
-      }).always(function () {
-        lazyRefreshChart();
-      });
-    } else if (version == "2") {
-      var index = host.indexOf("/");
-      var poolName;
-
-      if (index < 0) {
-        poolName = host;
-      } else {
-        poolName = host.substr(0, index);
-      }
-
-      $.getJSON(url + '/pool/stats', function (data, textStatus, jqXHR) {
-        var d = new Date(data.pool_statistics.lastBlockFoundTime * 1000);
-        var tdata = translateAPI2(data);
-
-        $('#pools_rows').append(renderPoolRow(host, poolName, tdata, d));
-
-        var poolHashrate = tdata.pool.soloHashrate ? parseInt(tdata.pool.hashrate) + parseInt(tdata.pool.soloHashrate) : parseInt(tdata.pool.hashrate);
-        totalHashrate += poolHashrate;
-        totalMiners += parseInt(data.pool_statistics.miners);
-
-        updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
-        updateText('total_miners', localizeNumber(totalMiners));
-
-        poolStats.push([poolName, poolHashrate, colorHash.hex(poolName)]);
-
-        $.getJSON(url + '/network/stats', function (data, textStatus, jqXHR) {
-          properHeight = data.height + 1;
-          updateText('height-' + poolName, localizeNumber(properHeight));
-        });
-
-        $.getJSON(url + '/config', function (data, textStatus, jqXHR) {
-          updateText('totalFee-' + poolName, "PPLNS: " + data.pplns_fee + "%,\nPPS: " + data.pps_fee + "%,\nSolo: " + data.solo_fee + "%");
-          updateText('minPayout-' + poolName, "Wallet: " + getReadableCoins(data.min_wallet_payout, 2) + ",\nExchange: " + getReadableCoins(data.min_exchange_payout, 2));
-        });
-      }).always(function () {
-        lazyRefreshChart();
-      });
-    }
+    updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
+    updateText('total_miners', localizeNumber(totalMiners));
+    
+    poolStats.push([element.info.name, element.pool.hashrate, colorHash.hex(element.info.name)]);
   });
+  
+  // refresh chart once
+  lazyRefreshChart();
 });
 
 setInterval(function () {
@@ -230,78 +159,32 @@ setInterval(function () {
   totalMiners = 0;
   poolStats = [];
 
-  poolList.forEach(function (element) {
-    var url = element[1];
-    var host = element[0];
-    var version = element[3];
+  $.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
+    data.forEach(function (element) {
+      var poolName = element.info.name;
+      var d = new Date(parseInt(element.pool.lastBlockFound));
+      var datestring = renderDate(d);
+      var agostring = $.timeago(d);
 
-    if ((version == "1") || (version == "3")) {
-      var index = host.indexOf("/");
-      var poolName;
-      if (index < 0) {
-        poolName = host;
-      } else {
-        poolName = host.substr(0, index);
-      }
+      totalHashrate += element.pool.hashrate;
+      totalMiners += parseInt(data.pool.miners);
 
-      $.getJSON(url + '/stats', (data, textStatus, jqXHR) => {
-        var poolHashrate = data.pool.soloHashrate ? (parseInt(data.pool.hashrate) + parseInt(data.pool.soloHashrate)) : parseInt(data.pool.hashrate);
-        var d = new Date(parseInt(data.pool.lastBlockFound));
-        var datestring = renderDate(d);
-        var agostring = $.timeago(d);
+      updateText('height-' + poolName, localizeNumber(data.network.height));
+      updateText('hashrate-' + poolName, localizeNumber(data.pool.hashrate) + ' H/s');
+      updateText('miners-' + poolName, localizeNumber(data.pool.miners));
+      updateText('lastFound-' + poolName, datestring);
+      updateText('ago-' + poolName, agostring);
+      updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
+      updateText('total_miners', localizeNumber(totalMiners));
+      updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval) + '/sec');
+      updateText('networkDifficulty', getReadableDifficultyString(lastStats.difficulty, 0).toString());
 
-        totalHashrate += poolHashrate;
-        totalMiners += parseInt(data.pool.miners);
-
-        updateText('height-' + poolName, localizeNumber(data.network.height));
-        updateText('hashrate-' + poolName, localizeNumber(data.pool.hashrate) + ' H/s');
-        updateText('miners-' + poolName, localizeNumber(data.pool.miners));
-        updateText('lastFound-' + poolName, datestring);
-        updateText('ago-' + poolName, agostring);
-        updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
-        updateText('total_miners', localizeNumber(totalMiners));
-        updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval) + '/sec');
-        updateText('networkDifficulty', getReadableDifficultyString(lastStats.difficulty, 0).toString());
-
-        poolStats.push([poolName, poolHashrate, colorHash.hex(poolName)]);
-      }).always(function () {
-        lazyRefreshChart();
-      });
-    } else {
-      var index = host.indexOf("/");
-      var poolName;
-      if (index < 0) {
-        poolName = host;
-      } else {
-        poolName = host.substr(0, index);
-      }
-
-      $.getJSON(url + '/pool/stats', (data, textStatus, jqXHR) => {
-        var poolHashrate = data.pool_statistics.soloHashrate ? (parseInt(data.pool_statistics.hashrate) + parseInt(data.pool_statistics.soloHashrate)) : parseInt(data.pool_statistics.hashrate);
-        var d = new Date(data.pool_statistics.lastBlockFoundTime * 1000);
-        var datestring = renderDate(d);
-        var agostring = $.timeago(d);
-
-        updateText('hashrate-' + poolName, localizeNumber(data.pool_statistics.hashRate) + ' H/s');
-        updateText('miners-' + poolName, localizeNumber(data.pool_statistics.miners));
-        // updateText('totalFee'+poolName, calculateTotalFee(data)+'%');
-
-        totalHashrate += poolHashrate;
-        totalMiners += parseInt(data.pool_statistics.miners);
-        updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
-        updateText('total_miners', localizeNumber(totalMiners));
-
-        poolStats.push([poolName, poolHashrate, colorHash.hex(poolName)]);
-      }).always(function () {
-        lazyRefreshChart();
-      });
-
-      $.getJSON(url + '/network/stats', (data, textStatus, jqXHR) => {
-        updateText('height-' + poolName, localizeNumber(data.height));
-      });
-    }
+      poolStats.push([poolName, element.pool.hashrate, colorHash.hex(poolName)]);
+    });
+    
+    // refresh chart once
+    lazyRefreshChart();
   });
-
 }, 120000);
 
 
