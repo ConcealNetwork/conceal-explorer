@@ -132,7 +132,7 @@ var displayChart = function displayChart() {
 
 var lazyRefreshChart = debounce(displayChart, 50, true);
 
-$.getJSON(poolListUrl, function (data, textStatus, jqXHR) {  
+$.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
   data.forEach(function (element) {
     $('#pools_rows').append(renderPoolRow(element));
 
@@ -141,10 +141,10 @@ $.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
 
     updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
     updateText('total_miners', localizeNumber(totalMiners));
-    
+
     poolStats.push([element.info.name, element.pool.hashrate, colorHash.hex(element.info.name)]);
   });
-  
+
   // refresh chart once
   lazyRefreshChart();
 });
@@ -163,11 +163,11 @@ setInterval(function () {
       var agostring = $.timeago(d);
 
       totalHashrate += element.pool.hashrate;
-      totalMiners += parseInt(data.pool.miners);
+      totalMiners += parseInt(element.pool.miners);
 
-      updateText('height-' + poolName, localizeNumber(data.network.height));
-      updateText('hashrate-' + poolName, localizeNumber(data.pool.hashrate) + ' H/s');
-      updateText('miners-' + poolName, localizeNumber(data.pool.miners));
+      updateText('height-' + poolName, localizeNumber(element.network.height));
+      updateText('hashrate-' + poolName, localizeNumber(element.pool.hashrate) + ' H/s');
+      updateText('miners-' + poolName, localizeNumber(element.pool.miners));
       updateText('lastFound-' + poolName, datestring);
       updateText('ago-' + poolName, agostring);
       updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
@@ -177,7 +177,7 @@ setInterval(function () {
 
       poolStats.push([poolName, element.pool.hashrate, colorHash.hex(poolName)]);
     });
-    
+
     // refresh chart once
     lazyRefreshChart();
   });
