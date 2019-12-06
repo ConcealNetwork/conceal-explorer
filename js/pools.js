@@ -17,6 +17,7 @@ var totalMiners = 0;
 var lastReward = 0;
 var avgDiff = 0;
 
+var poolsLoadingIndicator = null;
 var poolsRefreshed = 0;
 
 var poolsTable = document.getElementById('network-hash');
@@ -132,25 +133,33 @@ var displayChart = function displayChart() {
 
 var lazyRefreshChart = debounce(displayChart, 50, true);
 
-$.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
-  data.forEach(function (element) {
-    $('#pools_rows').append(renderPoolRow(element));
+function initializePoolList() {
+  poolsLoadingIndicator = $('#poolList').loadingIndicator({
+    useImage: false,
+    showOnInit: true
+  }).data("loadingIndicator");
 
-    totalHashrate += element.pool.hashrate;
-    totalMiners += element.pool.miners;
+  $.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
+    data.forEach(function (element) {
+      $('#pools_rows').append(renderPoolRow(element));
 
-    updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
-    updateText('total_miners', localizeNumber(totalMiners));
+      totalHashrate += element.pool.hashrate;
+      totalMiners += element.pool.miners;
 
-    poolStats.push([element.info.name, element.pool.hashrate, colorHash.hex(element.info.name)]);
+      updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
+      updateText('total_miners', localizeNumber(totalMiners));
+
+      poolStats.push([element.info.name, element.pool.hashrate, colorHash.hex(element.info.name)]);
+    });
+
+    // hide the pools loading indicator
+    poolsLoadingIndicator.hide();
+    // refresh chart once
+    lazyRefreshChart();
   });
-
-  // refresh chart once
-  lazyRefreshChart();
-});
+}
 
 setInterval(function () {
-
   totalHashrate = 0;
   totalMiners = 0;
   poolStats = [];
@@ -303,6 +312,7 @@ currentPage = {
     getBlocks();
     renderLastBlock();
     loadTranslations();
+    initializePoolList();
   },
   update: function () {
     updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval) + '/sec');
