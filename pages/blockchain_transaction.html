@@ -188,12 +188,7 @@
   }
 
   function getInputCells(input) {
-    if (!input.value.k_image) {
-      $("#txType").html("[ &#8689; withdrawal ]");
-      $("#txType").attr("class", "txWidtrawal");
-    }
-
-    return '<td>' + getReadableCoins(input.value.amount, 4) + '</td>' + '<td>' + (input.value.k_image || "withdrawal") + '</td>';
+    return '<td>' + getReadableCoins(input.value.amount, 6) + '</td>' + '<td>' + (input.value.k_image) + '</td>';
   }
 
 
@@ -231,12 +226,7 @@
 
 
   function getOutputCells(output) {
-    if (!output.target.data.key) {
-      $("#txType").html("[ &#8690; deposit ]");
-      $("#txType").attr("class", "txDeposit");
-    }
-
-    return '<td>' + getReadableCoins(output.amount, 6) + '</td>' + '<td>' + (output.target.data.key || "deposit") + '</td>';
+    return '<td>' + getReadableCoins(output.amount, 6) + '</td>' + '<td>' + (output.target.data.key) + '</td>';
   }
 
 
