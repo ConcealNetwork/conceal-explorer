@@ -145,7 +145,7 @@
             circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
             updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 6));
             updateText('emissionPercent', getReadableCoins2(circulating_supply, 6));
-            updateText('currentReward', getReadableCoins(block.baseReward, 4));
+            updateText('currentReward', getReadableCoins(block.baseReward, 6));
             updateText('depositCoins', getReadableCoins2(last_block_deposts, 6));
           }
         });
