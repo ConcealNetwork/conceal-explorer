@@ -266,12 +266,20 @@
         return total + Math.round(num.value);
       }, 0);
 
+      // unspent funds calculated and total funds      
+      var totalFundsAvailable = parseFloat(fundsProof.wallet.total) * coinUnits;
+      var currUnspentFunds = Math.trunc(unspentFunds - spentSoFar);
+
+      // push the total available funds for the project
+      dataSeries.push({ value: currUnspentFunds + (reserveData.result.total / coinUnits), itemStyle: { color: 'blue' }, name: "" });
+      dataTitles.push("Unspent");
+
       // get the ideal palette colors for the divisions chart
-      var dataColors = palette('cb-Dark2', dataSeries.length);
+      var dataColors = palette('cb-BrBG', dataSeries.length);
       dataColors = dataColors.map(function (e) { return '#' + e });
       // append the percentages to the data titles array
       for (var i = 0; i < dataTitles.length; i++) {
-        dataTitles[i] = dataTitles[i] + ' (' + Math.round(dataSeries[i].value / spentSoFar * 100) + '%)';
+        dataTitles[i] = dataTitles[i] + ' (' + Math.round((dataSeries[i].value / (parseFloat(fundsProof.wallet.total) * coinUnits)) * 100) + '%)';
         dataSeries[i].name = dataTitles[i];
       }
 
@@ -301,6 +309,7 @@
         series: [{
           name: 'Spent by divison',
           type: 'pie',
+          color: dataColors,
           radius: ['30%', '65%'],
           center: ['50%', '60%'],
           data: dataSeries,
@@ -329,10 +338,6 @@
       var dataSeries = [];
       var dataTitles = [];
 
-      // unspent funds calculated and total funds      
-      var totalFundsAvailable = parseFloat(fundsProof.wallet.total) * coinUnits;
-      var currUnspentFunds = Math.trunc(unspentFunds - spentSoFar);
-
       // push the available funds into the array
       dataSeries.push({ value: Math.trunc(reserveData.result.total / coinUnits), name: "" });
       dataTitles.push("Available funds");
@@ -344,14 +349,13 @@
       dataTitles.push("Spent funds");
 
       // get the ideal palette colors for the divisions chart
-      var dataColors = palette('cb-Dark2', dataSeries.length);
+      var dataColors = palette('cb-BrBG', dataSeries.length);
       dataColors = dataColors.map(function (e) { return '#' + e });
       // append the percentages to the data titles array
       for (var i = 0; i < dataTitles.length; i++) {
         dataTitles[i] = dataTitles[i] + ' (' + Math.round(dataSeries[i].value / totalFundsAvailable * 100) + '%)';
         dataSeries[i].name = dataTitles[i];
       }
-
 
       var chartOverallPie = echarts.init(document.getElementById('chartOverallPie'));
       chartOverallPie.setOption({
@@ -379,6 +383,7 @@
         series: [{
           name: 'Funds distribution',
           type: 'pie',
+          color: dataColors,
           radius: ['30%', '65%'],
           center: ['50%', '60%'],
           data: dataSeries,
