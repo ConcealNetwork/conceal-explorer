@@ -271,7 +271,7 @@
       var currUnspentFunds = Math.trunc(unspentFunds - spentSoFar);
 
       // push the total available funds for the project
-      dataSeries.push({ value: currUnspentFunds + (reserveData.result.total / coinUnits), itemStyle: { color: 'blue' }, name: "" });
+      dataSeries.push({ value: Math.trunc(currUnspentFunds + (reserveData.result.total / coinUnits)), itemStyle: { color: 'blue' }, name: "" });
       dataTitles.push("Unspent");
 
       // get the ideal palette colors for the divisions chart
