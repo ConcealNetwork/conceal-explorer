@@ -40739,3 +40739,8 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 .chartDivisionPieWrapper {
   margin: auto;
 }
+
+.panel-subttitle {
+  font-style: italic;
+  font-size: 12px;
+}

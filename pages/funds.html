@@ -45,6 +45,35 @@
       </div>
     </div>
   </div>
+
+  <div class="card-body card-body-info">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default" id="verification_result">
+          <div class="panel-heading">
+            <h3 class="panel-title" tkey="bpVerificationResult">Funds unlocking details</h3>
+            <h6 class="panel-subttitle" tkey="bpVerificationResult">The amount may contain more then just the unlocked
+              funds. Please check the explorer</h6>
+          </div>
+          <div class="panel-body">
+            <p class="verified"><i class="fa fa-2x"></i> <span></span></p>
+          </div>
+        </div>
+        <table id="fundsUnlockTable" class="table table-hover">
+          <thead>
+            <tr>
+              <th><span tkey="txHash">TX Hash</span></th>
+              <th><span tkey="txTimestamp">Timestamp</span></th>
+              <th><span tkey="txAmount">Amount</span></th>
+            </tr>
+          </thead>
+          <tbody id="premine_rows">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <div class="row pd-15">
     <div class="col-xl-12 mg-t-20 mg-xl-t-0 chartDivisionPieWrapper">
       <div class="pd-t-30 pd-b-20 pd-x-20">
@@ -412,6 +441,40 @@
       $(window).on('resize', function () {
         if (chartDivisionPie) {
           chartDivisionPie.resize();
+        }
+      });
+    });
+
+    // set the funds unlock TX data
+    var fundsTable = $('#fundsUnlockTable').DataTable({
+      "displayLength": 300,
+      "searching": false,
+      "paging": false,
+      "ordering": false,
+      "responsive": false,
+      "info": true
+    });
+
+    fundsProof.transactions.forEach(function (hash, index) {
+      xhrGetTransaction = $.ajax({
+        url: api + '/json_rpc',
+        method: "POST",
+        data: JSON.stringify({
+          jsonrpc: "2.0",
+          id: "test",
+          method: "f_transaction_json",
+          params: {
+            hash: hash
+          }
+        }),
+        dataType: 'json',
+        cache: 'false',
+        success: function (data) {
+          fundsTable.row.add([
+            "<a href='https://explorer.conceal.network/index.html?hash=" + data.result.txDetails.hash + "#blockchain_transaction'>" + data.result.txDetails.hash + "</a>",
+            formatDate(data.result.block.timestamp),
+            getReadableCoins(data.result.txDetails.amount_out, 0)
+          ]).draw(false);
         }
       });
     });
