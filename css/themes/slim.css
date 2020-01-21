@@ -11590,15 +11590,12 @@ textarea.parsley-success:focus {
       margin-right: 60px; } }
 
 .search-box {
-  display: none;
+  display: flex;
   align-items: center;
   border: 1px solid #dee2e6;
   background-color: #f8f9fa;
   padding: 2px;
   border-radius: 50px; }
-  @media (min-width: 992px) {
-    .search-box {
-      display: flex; } }
   .search-box .form-control, .search-box .dataTables_filter input, .dataTables_filter .search-box input {
     border: 0;
     width: 250px;
@@ -40743,4 +40740,23 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 .panel-subttitle {
   font-style: italic;
   font-size: 12px;
+}
+
+@media (max-width: 992px) {
+  .search-box {
+    display: flex; 
+    width: 100%
+  }
+  
+  .headerLogo {
+    display: none;
+  }
+  
+  .headerSearch {
+    width: 100%;
+  }
+  
+  #txt_search {
+    width: 100%
+  }
 }

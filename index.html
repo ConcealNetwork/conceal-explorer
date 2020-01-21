@@ -3,7 +3,9 @@
 
 <head lang="en">
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144985314-2" integrity="sha384-VVNBSb/jL3iwe8/LEDaIx5Y94UVf1WXE8hxT2SZ2taUtCRFpWLNVhB17ZwszqshL" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144985314-2"
+    integrity="sha384-VVNBSb/jL3iwe8/LEDaIx5Y94UVf1WXE8hxT2SZ2taUtCRFpWLNVhB17ZwszqshL"
+    crossorigin="anonymous"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
@@ -57,7 +59,7 @@
 <body>
   <div class="slim-header">
     <div class="container">
-      <div class="slim-header-left">
+      <div class="slim-header-left headerLogo">
         <img src="img/logo.svg" width="48" height="58">
         <div class="logoText">
           <h2 class="slim-logo">
@@ -67,10 +69,11 @@
         </div>
       </div>
       <!-- slim-header-left -->
-      <div class="slim-header-right">
+      <div class="slim-header-right headerSearch">
         <div id="stats_updated" style="display: none;">
           <i class="fa fa-bolt"></i>
         </div>
+        <!-- search-box -->
         <div class="search-box">
           <input type="text" id="txt_search" class="form-control" tplaceholder="searchHint"
             placeholder="Search by block height / hash, transaction hash, payment id">
@@ -78,7 +81,7 @@
             <i class="fa fa-search"></i>
           </button>
         </div>
-        <!-- search-box -->
+        <!-- language selector -->
         <div id="langSelector">
           <select id="newLang" class="form-control form-control-sm select2">
             <option value="en" selected="selected">English</option>
@@ -333,7 +336,7 @@
         wrongSearchAlert();
       }
     }
-  
+
     // make sure index.html is in the URL for the explorer
     if (window.location.href.indexOf("index.html") == -1) {
       window.location.href = "/index.html";
@@ -397,13 +400,13 @@
       });
     });
 
-    $('#mainNavigation .nav-link').click(function() {
-      var newURL = window.location.href.split( '?' ).map( ( url, i ) => !i ? url : url.split( '&' ).filter( p => !p.startsWith( 'hash' + '=' ) ).join( '&' ) ).join( '?' );
+    $('#mainNavigation .nav-link').click(function () {
+      var newURL = window.location.href.split('?').map((url, i) => !i ? url : url.split('&').filter(p => !p.startsWith('hash' + '=')).join('&')).join('?');
 
-      if ((newURL.lastIndexOf('?') == (newURL.lastIndexOf('#') - 1)) || (newURL.substring(newURL.length-1) == "?")) {
+      if ((newURL.lastIndexOf('?') == (newURL.lastIndexOf('#') - 1)) || (newURL.substring(newURL.length - 1) == "?")) {
         newURL = newURL.replace("?", "");
       }
-      
+
       if (newURL.search("#") > -1) {
         newURL = newURL.substring(0, newURL.lastIndexOf('#'));
       }
@@ -413,7 +416,7 @@
       } else {
         window.location.href = newURL + $(this).attr("href");
       }
-      
+
       return false;
     });
   </script>
