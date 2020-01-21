@@ -40759,4 +40759,8 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   #txt_search {
     width: 100%
   }
+  
+  #langSelector {
+    min-width: 90px;
+  }
 }
