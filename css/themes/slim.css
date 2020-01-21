@@ -40761,6 +40761,6 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   }
   
   #langSelector {
-    min-width: 90px;
+    min-width: 80px;
   }
 }
