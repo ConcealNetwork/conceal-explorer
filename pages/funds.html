@@ -473,7 +473,7 @@
           fundsTable.row.add([
             "<a href='https://explorer.conceal.network/index.html?hash=" + data.result.txDetails.hash + "#blockchain_transaction'>" + data.result.txDetails.hash + "</a>",
             formatDate(data.result.block.timestamp),
-            getReadableCoins(data.result.txDetails.amount_out, 0)
+            getReadableCoins2(400000000000, 0)
           ]).draw(false);
         }
       });
