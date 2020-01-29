@@ -234,7 +234,7 @@
     if (nodesType == 0) {
       loadNodesDataToTable(false);
     } else {
-      CCX_GlobalNodeMap.load(function (success) {
+      CCX_GlobalNodeMap.load('globalNodeMap', function (success) {
         nodeLoadingIndicator.hide();
       });
     }
@@ -250,7 +250,7 @@
 
       $("#remoteNodesRow").hide();
       $("#globalNodesRow").show();
-      CCX_GlobalNodeMap.load(function (success) {
+      CCX_GlobalNodeMap.load('globalNodeMap', function (success) {
         nodeLoadingIndicator.hide();
       });
     } else {

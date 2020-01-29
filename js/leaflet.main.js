@@ -8,9 +8,9 @@ var CCX_GlobalNodeMap = (function () {
     var self = this;
   }
 
-  Initialize.load = function (callback) {
+  Initialize.load = function (container, callback) {
     if (!map) {
-      map = L.map('globalNodeMap', {
+      map = L.map(container, {
         center: [10.0, 5.0],
         minZoom: 2,
         zoom: 2
