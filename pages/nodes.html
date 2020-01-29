@@ -145,6 +145,7 @@
       });
 
       markerClusters = L.markerClusterGroup();
+      map.addControl(new L.Control.Fullscreen());
     }
 
     $.getJSON("https://explorer.conceal.network/services/nodes/geodata", function (data) {
