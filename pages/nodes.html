@@ -74,11 +74,6 @@
   var correctHeight = 0;
   var nodesType = 0;
 
-  var markerClusters = null;
-  var myIcon = null;
-  var mbAttr = null;
-  var map = null;
-
   currentPage = {
     destroy: function () { },
     init: function () {
@@ -114,63 +109,6 @@
     copyToClipboard($(e.target).html());
   }
 
-  function loadGlobalNodeMap() {
-    if (!map) {
-      map = L.map('globalNodeMap', {
-        center: [10.0, 5.0],
-        minZoom: 2,
-        zoom: 2
-      });
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: ['a', 'b', 'c']
-      }).addTo(map);
-
-
-      mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-
-      L.tileLayer(mbUrl, { id: 'mapbox.light', attribution: mbAttr }).addTo(map);
-      //L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
-
-      myIcon = L.icon({
-        iconUrl: 'img/pin24.png',
-        iconRetinaUrl: 'img/pin48.png',
-        iconSize: [29, 24],
-        iconAnchor: [9, 21],
-        popupAnchor: [0, -14]
-      });
-
-      markerClusters = L.markerClusterGroup();
-      map.addControl(new L.Control.Fullscreen());
-    }
-
-    $.getJSON("https://explorer.conceal.network/services/nodes/geodata", function (data) {
-      $("#nodesNumber").html("(" + data.length + " online)");
-
-      if (markerClusters) {
-        markerClusters.clearLayers();
-        map.removeLayer(markerClusters);
-      }
-
-      for (var i = 0; i < data.length; ++i) {
-        if (data[i].geoData) {
-          var popup = '<b>city:</b> ' + data[i].geoData.city + '<br/>' +
-            '<b>region:</b> ' + data[i].geoData.region + '<br/>' +
-            '<b>country:</b> ' + data[i].geoData.country;
-
-          var m = L.marker([data[i].geoData.ll[0], data[i].geoData.ll[1]], { icon: myIcon }).bindPopup(popup);
-          markerClusters.addLayer(m);
-        }
-      }
-
-      map.addLayer(markerClusters);
-      nodeLoadingIndicator.hide();
-    });
-  }
 
   function loadNodesDataToTable(initialLoad) {
     $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest", function (release) {
@@ -296,7 +234,9 @@
     if (nodesType == 0) {
       loadNodesDataToTable(false);
     } else {
-      loadGlobalNodeMap();
+      CCX_GlobalNodeMap.load(function (success) {
+        nodeLoadingIndicator.hide();
+      });
     }
 
   });
@@ -310,7 +250,9 @@
 
       $("#remoteNodesRow").hide();
       $("#globalNodesRow").show();
-      loadGlobalNodeMap();
+      CCX_GlobalNodeMap.load(function (success) {
+        nodeLoadingIndicator.hide();
+      });
     } else {
       $("#choseNodeListTypeText").html("Nodes Map");
       nodesType = 0;
