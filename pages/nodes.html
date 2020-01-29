@@ -147,7 +147,7 @@
       markerClusters = L.markerClusterGroup();
     }
 
-    $.getJSON("http://explorer.conceal.network/services/nodes/geodata", function (data) {
+    $.getJSON("https://explorer.conceal.network/services/nodes/geodata", function (data) {
       $("#nodesNumber").html("(" + data.length + " online)");
 
       if (markerClusters) {
