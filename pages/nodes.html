@@ -6,8 +6,8 @@
       </div>
       <div class="nodeTitleButton">
         <button class="btn btn-primary-outline" type="button" id="choseNodeListType">
-          <span class="btnIcon fa fa-search"></span><span tkey="nodeListType" id="choseNodeListTypeText">Global
-            Nodes</span>
+          <span class="btnIcon fa fa-search"></span><span tkey="nodeListType" id="choseNodeListTypeText">Nodes
+            Map</span>
         </button>
         <button class="btn btn-primary-outline" type="button" id="refreshNodes">
           <span class="btnIcon fa fa-search"></span><span tkey="refreshNodes">Refresh list</span>
@@ -304,14 +304,14 @@
     nodeLoadingIndicator.show();
 
     if (nodesType == 0) {
-      $("#choseNodeListTypeText").html("Remote Nodes");
+      $("#choseNodeListTypeText").html("Smart Nodes");
       nodesType = 1;
 
       $("#remoteNodesRow").hide();
       $("#globalNodesRow").show();
       loadGlobalNodeMap();
     } else {
-      $("#choseNodeListTypeText").html("Global Nodes");
+      $("#choseNodeListTypeText").html("Nodes Map");
       nodesType = 0;
 
       $("#remoteNodesRow").show();
