@@ -40759,6 +40759,27 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   display: none;
 }
 
+@media (max-width: 680px) {
+  .nodesTitleBar {
+    flex-direction: column;
+  }
+  
+  .nodeTitleText {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .nodeTitleButton {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #choseNodeListType {
+    margin-bottom: 10px;
+    margin-right: 0px;
+  }
+}
+
 @media (max-width: 992px) {
   .search-box {
     display: flex; 
