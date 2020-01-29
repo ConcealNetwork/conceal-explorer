@@ -40645,8 +40645,8 @@ td.ntFundsPaid {
   color: #23BF08 !important;
 }
 
-#refreshNodes {
-  float: right;
+#choseNodeListType {
+  margin-right: 10px;
 }
 
 tr.fundsFooter {
@@ -40740,6 +40740,23 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
 .panel-subttitle {
   font-style: italic;
   font-size: 12px;
+}
+
+.nodesTitleBar {
+  display: flex;
+}
+
+.nodeTitleText {
+  flex-grow: 1;
+}
+
+#globalNodeMap {
+  width: 100%;
+  height: 70vh;
+}
+
+#globalNodesRow {
+  display: none;
 }
 
 @media (max-width: 992px) {

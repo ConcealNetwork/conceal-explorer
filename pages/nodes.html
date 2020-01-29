@@ -1,14 +1,22 @@
 <div class="card mg-t-20" id="nodeInfo">
   <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
-    <h2>
-      <i class="fa fa-binoculars" aria-hidden="true"></i> Nodes <span id="nodesNumber"></span>
-      <button class="btn btn-primary-outline" type="button" id="refreshNodes">
-        <span class="btnIcon fa fa-search"></span><span tkey="refreshNodes">Refresh list</span>
-      </button>
+    <h2 class="nodesTitleBar">
+      <div class="nodeTitleText">
+        <i class="fa fa-binoculars" aria-hidden="true"></i> Nodes <span id="nodesNumber"></span>
+      </div>
+      <div class="nodeTitleButton">
+        <button class="btn btn-primary-outline" type="button" id="choseNodeListType">
+          <span class="btnIcon fa fa-search"></span><span tkey="nodeListType" id="choseNodeListTypeText">Global
+            Nodes</span>
+        </button>
+        <button class="btn btn-primary-outline" type="button" id="refreshNodes">
+          <span class="btnIcon fa fa-search"></span><span tkey="refreshNodes">Refresh list</span>
+        </button>
+      </div>
     </h2>
   </div>
   <div class="card-body card-body-info">
-    <div class="row">
+    <div class="row" id="remoteNodesRow">
       <div class="col-lg-12">
         <table id="nodesTable" class="table display responsive nowrap">
           <thead>
@@ -36,6 +44,9 @@
         </div>
       </div>
     </div>
+    <div class="row" id="globalNodesRow">
+      <div id="globalNodeMap"></div>
+    </div>
   </div>
 </div>
 
@@ -61,6 +72,12 @@
 
 <script>
   var correctHeight = 0;
+  var nodesType = 0;
+
+  var markerClusters = null;
+  var myIcon = null;
+  var mbAttr = null;
+  var map = null;
 
   currentPage = {
     destroy: function () { },
@@ -95,6 +112,63 @@
 
   function onConnectURLClick(e) {
     copyToClipboard($(e.target).html());
+  }
+
+  function loadGlobalNodeMap() {
+    if (!map) {
+      map = L.map('globalNodeMap', {
+        center: [10.0, 5.0],
+        minZoom: 2,
+        zoom: 2
+      });
+
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: ['a', 'b', 'c']
+      }).addTo(map);
+
+
+      mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+      L.tileLayer(mbUrl, { id: 'mapbox.light', attribution: mbAttr }).addTo(map);
+      //L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
+
+      myIcon = L.icon({
+        iconUrl: 'img/pin24.png',
+        iconRetinaUrl: 'img/pin48.png',
+        iconSize: [29, 24],
+        iconAnchor: [9, 21],
+        popupAnchor: [0, -14]
+      });
+
+      markerClusters = L.markerClusterGroup();
+    }
+
+    $.getJSON("http://explorer.conceal.network/services/nodes/geodata", function (data) {
+      $("#nodesNumber").html("(" + data.length + " online)");
+
+      if (markerClusters) {
+        markerClusters.clearLayers();
+        map.removeLayer(markerClusters);
+      }
+
+      for (var i = 0; i < data.length; ++i) {
+        if (data[i].geoData) {
+          var popup = '<b>city:</b> ' + data[i].geoData.city + '<br/>' +
+            '<b>region:</b> ' + data[i].geoData.region + '<br/>' +
+            '<b>country:</b> ' + data[i].geoData.country;
+
+          var m = L.marker([data[i].geoData.ll[0], data[i].geoData.ll[1]], { icon: myIcon }).bindPopup(popup);
+          markerClusters.addLayer(m);
+        }
+      }
+
+      map.addLayer(markerClusters);
+      nodeLoadingIndicator.hide();
+    });
   }
 
   function loadNodesDataToTable(initialLoad) {
@@ -217,7 +291,33 @@
 
   $("#refreshNodes").click(function () {
     nodeLoadingIndicator.show();
-    loadNodesDataToTable(false);
+
+    if (nodesType == 0) {
+      loadNodesDataToTable(false);
+    } else {
+      loadGlobalNodeMap();
+    }
+
+  });
+
+  $("#choseNodeListType").click(function () {
+    nodeLoadingIndicator.show();
+
+    if (nodesType == 0) {
+      $("#choseNodeListTypeText").html("Remote Nodes");
+      nodesType = 1;
+
+      $("#remoteNodesRow").hide();
+      $("#globalNodesRow").show();
+      loadGlobalNodeMap();
+    } else {
+      $("#choseNodeListTypeText").html("Global Nodes");
+      nodesType = 0;
+
+      $("#remoteNodesRow").show();
+      $("#globalNodesRow").hide();
+      loadNodesDataToTable(false);
+    }
   });
 
   // do the intial load
