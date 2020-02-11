@@ -112,7 +112,7 @@
 
   function loadNodesDataToTable(initialLoad) {
     $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest", function (release) {
-      $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true&isSynced=true", function (data) {
+      $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true", function (data) {
         var correctHeightList = {};
         var correctHeightCnt = 0;
         var tableData = [];
