@@ -141,7 +141,7 @@
               rowData.push(obj.blockchain ? obj.blockchain.status : "n/a");
               rowData.push(obj.status ? (obj.status.uptime || 0) : "0");
               rowData.push(obj.os);
-              rowData.push(obj.blockchain ? obj.blockchain.version : "n/a");
+              rowData.push(`${obj.version || "n/a"} / ${obj.blockchain ? obj.blockchain.version : "n/a"}`);
               tableData.push(rowData);
 
               // increase the node height for the current node
