@@ -40790,6 +40790,10 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   
 }
 
+#nodesTitle {
+  margin-right: 10px;
+}
+
 @media (max-width: 992px) {
   .search-box {
     display: flex; 
