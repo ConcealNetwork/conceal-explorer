@@ -419,7 +419,7 @@
             var columns =
               /*'<td>' + formatDate(timestamp) + ' (<span class="mtx-ago"></span>)' + '</td>' +*/
               '<td>' + getReadableCoins(amount, 4, true) + '</td>' +
-              '<td>' + getReadableCoins(fee, 4, true) + '</td>' +
+              '<td>' + getReadableCoins(fee, 6, true) + '</td>' +
               '<td>' + localizeNumber(size) + '</td>' +
               '<td>' + formatPaymentLink(hash) + '</td>';
             row.innerHTML = columns;
