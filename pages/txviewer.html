@@ -24,9 +24,9 @@
                     <input name="type" type="radio" id="secretKeyRecipient">
                     <span tkey="txViewKey">Secret view key owned by recipient</span>
                 </label>
-            </div>            
+            </div>
 
-            <div class="container mg-t-30">    
+            <div class="container mg-t-30">
                 <div class="form-group">
                     <label for="exampleInputEmail1" tkey="txTransactionHash">Transaction hash</label>
                     <input type="text" class="form-control" id="txHash" tplaceholder="txTransactionHashHint" placeholder="Enter your transaction hash" maxlength=64>
@@ -37,7 +37,7 @@
                 </div>                        
                 <div class="form-group">
                     <label for="exampleInputEmail1" tkey="txTransactionSecretKey">Transaction secret key</label>
-                    <input type="text" class="form-control" id="secretKey" tplaceholder="txTransactionSecretKeyHint" placeholder="Enter the transaction secret key" maxlength=66>
+                    <input type="text" class="form-control" id="secretKey" tplaceholder="txTransactionSecretKeyHint" placeholder="Enter the transaction secret key" maxlength=64>
                 </div>                        
             </div>            
             <p><center><button onclick="decode()" class="btn btn-primary-outline" id='button' tkey="btnShowTransaction">SHOW TRANSACTION</button></p></center>
@@ -157,7 +157,7 @@ function checkTx(hash, tx, secretKey, account, secretKeyType) {
   };
   const acctHex = cnBase58.decode(account)
   const t = 6, s = 8, m = t + 64, e = m + 64; //offsets in account hex
-  if (secretKey.length !== 66 || validHex(secretKey) !== true){
+  if (secretKey.length !== 64 || validHex(secretKey) !== true){
     results.error = "Invalid secret key."
   } else if (account.length != 98 || (acctHex.slice(-s) !== cn_fast_hash(acctHex.slice(0, -s)).slice(0, s))) {
     results.error = "Bad account address."
