@@ -74,6 +74,13 @@
       //if (xhrVerifyMessage) xhrVerifyMessage.abort();
     },
     init: function () {
+      if (GetURLParameter("address")) {
+        $("#public_address").val(GetURLParameter("address"));
+      }
+
+      if (GetURLParameter("sign")) {
+        $("#signature").val(GetURLParameter("sign"));
+      }
     },
     update: function () {
     }
