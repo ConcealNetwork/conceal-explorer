@@ -393,7 +393,7 @@
     },
     update: function () {
       renderLastBlock();
-      updateText('currentReward', getReadableCoins(block.baseReward, 0));
+      updateText('currentReward', getReadableCoins(lastStats.baseReward, 0));
       updateText('networkHeight', localizeNumber(lastStats.height.toString()));
       updateText('networkTransactions', localizeNumber(lastStats.tx_count.toString()));
       updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval));
