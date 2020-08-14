@@ -92,6 +92,35 @@
       </div><!-- row -->
     </div>
 
+    <div class="report-summary-header">
+      <div>
+        <h4 class="tx-white mg-b-3" tkey="miningInfo">Mining info</h4>
+      </div>
+    </div><!-- d-flex -->
+
+    <div class="card card-dash-one mg-t-20">
+      <div class="row no-gutters">
+        <div class="col-lg-4">
+          <div class="dash-content">
+            <label class="tx-primary" tkey="currentReward">Current block reward</label>
+            <h2><span id="currentReward">N/A</span></h2>
+          </div><!-- dash-content -->
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+          <div class="dash-content dash-small-info">
+            <label class="tx-primary" tkey="numOfMiners">Number of Miners</label>
+            <h2><span id="numOfMiners">N/A</span></h2>
+          </div><!-- dash-content -->
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+          <div class="dash-content dash-small-info">
+            <label class="tx-primary" tkey="sumPoolsHashrate">Pools speed</label>
+            <h2><span id="sumPoolsHashrate">N/A</span></h2>
+          </div><!-- dash-content -->
+        </div><!-- col-4 -->
+      </div><!-- row -->
+    </div>
+
     <hr>
 
     <div class="nav-statistics-wrapper mg-t-20">
@@ -209,6 +238,21 @@
     calcEstimateProfit();
   });
 
+  function initializePoolData() {
+    $.getJSON(poolListUrl, function (data, textStatus, jqXHR) {
+      var totalHashrate = 0;
+      var totalMiners = 0;
+
+      data.forEach(function (element) {
+        totalHashrate += element.pool.hashrate;
+        totalMiners += element.pool.miners;
+      });
+
+      updateText('sumPoolsHashrate', getReadableHashRateString(totalHashrate));
+      updateText('numOfMiners', localizeNumber(totalMiners));
+    });
+  }
+
   // Calculate current estimation
   function calcEstimateProfit() {
     try {
@@ -240,6 +284,7 @@
     },
     init: function () {
       $("#currentDate").html("Today is: " + moment().format('MMMM Do YYYY'));
+      initializePoolData();
       loadTranslations();
 
       $.ajax({
@@ -348,6 +393,7 @@
     },
     update: function () {
       renderLastBlock();
+      updateText('currentReward', getReadableCoins(block.baseReward, 0));
       updateText('networkHeight', localizeNumber(lastStats.height.toString()));
       updateText('networkTransactions', localizeNumber(lastStats.tx_count.toString()));
       updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval));
