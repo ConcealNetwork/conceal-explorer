@@ -440,7 +440,7 @@
               updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
               updateText('emissionPercent', getReadableCoins2(circulating_supply, 0));
               updateText('emissionPercentPct', "(" + circulating_supply_pct + "%)");
-              updateText('currentReward', getReadableCoins(block.baseReward, 0));
+              updateText('currentReward', getReadableCoins(block.baseReward, 2));
               updateText('depositCoins', getReadableCoins2(last_block_deposts, 0));
               updateText('depositCoinsPct', "(" + last_block_deposts_pct + "%)");
 
