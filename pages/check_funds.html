@@ -74,12 +74,21 @@
       //if (xhrVerifyMessage) xhrVerifyMessage.abort();
     },
     init: function () {
-      if (GetURLParameter("address")) {
-        $("#public_address").val(GetURLParameter("address"));
-      }
+      var preloadData = GetURLParameter("preloadData");
 
-      if (GetURLParameter("sign")) {
-        $("#signature").val(GetURLParameter("sign"));
+      if (preloadData) {
+        $.getJSON("funds.dat?" + makeid(20), function (resultFunds) {
+          if (preloadData == "ccx") {
+            $("#public_address").val(resultFunds.keys.ccx.address);
+            $("#signature").val(resultFunds.keys.ccx.signature);
+          } else if (preloadData == "wccx") {
+            $("#public_address").val(resultFunds.keys.wccx.address);
+            $("#signature").val(resultFunds.keys.wccx.signature);
+          }
+        });
+
+        // always remove the possible URL parameters to not polute the URL 
+        window.history.pushState({}, document.title, "/" + "index.html#check_funds");
       }
     },
     update: function () {

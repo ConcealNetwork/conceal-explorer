@@ -2,9 +2,17 @@
   <div class="card-header tx-medium bd-0 tx-white bg-primary-dark">
     <h2>
       <i class="fa fa-bank" aria-hidden="true"></i> Funds
-      <button class="btn btn-primary-outline" type="button" id="verifyFunds">
+      <button class="btn  btn-primary-outline dropdown-toggle" type="button" id="verifyFunds" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
         <span class="btnIcon fa fa-search"></span><span tkey="bpVerify">Verify</span>
       </button>
+      <div class="dropdown-menu" aria-labelledby="verifyFunds">
+        <a class="dropdown-item" href="javascript:verifyCCXFunds()">Verify CCX funds</a>
+        <a class="dropdown-item" href="javascript:verifywCCXFunds()">Verify wCCX funds</a>
+        <a class="dropdown-item" href="index.html?preloadData=ccx#check_funds">Got to verify page for CCX funds</a>
+        <a class="dropdown-item" href="index.html?preloadData=wccx#check_funds">Got to verify page for wCCX
+          funds</a>
+      </div>
     </h2>
   </div>
   <div class="card-body card-body-info">
@@ -169,6 +177,7 @@
     destroy: function () { },
     init: function () {
       loadTranslations();
+      $('.dropdown-toggle').dropdown();
     },
     update: function () { }
   };
@@ -177,20 +186,10 @@
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  function makeid(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  }
-
   $.getJSON("funds.dat?" + makeid(20), function (resultFunds) {
     fundsProof = resultFunds;
 
-    checkReserveRaw("", fundsProof.keys.address, fundsProof.keys.signature, function (resultReserve) {
+    checkReserveRaw("", fundsProof.keys.ccx.address, fundsProof.keys.ccx.signature, function (resultReserve) {
       reserveData = resultReserve;
 
       // unspent funds calculated
@@ -480,10 +479,15 @@
     });
   });
 
-  $("#verifyFunds").click(function () {
+  function verifyCCXFunds() {
     result_container.hide();
-    checkReserve(result_container, "", fundsProof.keys.address, fundsProof.keys.signature);
-  });
+    checkReserve(result_container, "", fundsProof.keys.ccx.address, fundsProof.keys.ccx.signature);
+  }
+
+  function verifywCCXFunds() {
+    result_container.hide();
+    checkReserve(result_container, "", fundsProof.keys.wccx.address, fundsProof.keys.wccx.signature);
+  }
 
   $("#uploadFunds").click(function () {
     $("#uploadError").hide();
