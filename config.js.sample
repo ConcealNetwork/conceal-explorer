@@ -1,0 +1,7 @@
+var api = 'http://explorer.conceal-testnet.tk:26000/';
+var poolListUrl = '';
+var donationAddress = "";
+var blockTargetInterval = 120;
+var coinUnits = 1000000;
+var symbol = 'CCX';
+var refreshDelay = 5000;
