@@ -157,7 +157,7 @@ function checkTx(hash, tx, secretKey, account, secretKeyType) {
   };
   const acctHex = cnBase58.decode(account)
   const t = 6, s = 8, m = t + 64, e = m + 64; //offsets in account hex
-  if (secretKey.length !== 66 || validHex(secretKey) !== true){
+  if (secretKey.length !== 64 || validHex(secretKey) !== true){
     results.error = "Invalid secret key."
   } else if (account.length != 98 || (acctHex.slice(-s) !== cn_fast_hash(acctHex.slice(0, -s)).slice(0, s))) {
     results.error = "Bad account address."
