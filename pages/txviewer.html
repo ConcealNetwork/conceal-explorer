@@ -2048,7 +2048,7 @@ var cnUtil = (function(initConfig) {
     };
 
     this.generate_key_derivation = function(pub, sec) {
-        if (pub.length !== 64 || sec.length !== 66) {
+        if (pub.length !== 64 || sec.length !== 64) {
             throw "Invalid input length";
         }
         var pub_b = hextobin(pub);
