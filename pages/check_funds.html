@@ -81,9 +81,12 @@
           if (preloadData == "ccx") {
             $("#public_address").val(resultFunds.keys.ccx.address);
             $("#signature").val(resultFunds.keys.ccx.signature);
-          } else if (preloadData == "wccx") {
-            $("#public_address").val(resultFunds.keys.wccx.address);
-            $("#signature").val(resultFunds.keys.wccx.signature);
+          } else if (preloadData == "wccx_eth") {
+            $("#public_address").val(resultFunds.keys.wccx_eth.address);
+            $("#signature").val(resultFunds.keys.wccx_eth.signature);
+          } else if (preloadData == "wccx_bsc") {
+            $("#public_address").val(resultFunds.keys.wccx_bsc.address);
+            $("#signature").val(resultFunds.keys.wccx_bsc.signature);
           }
         });
 

@@ -8,9 +8,11 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="verifyFunds">
         <a class="dropdown-item" href="javascript:verifyCCXFunds()">Verify CCX funds</a>
-        <a class="dropdown-item" href="javascript:verifywCCXFunds()">Verify wCCX funds</a>
+        <a class="dropdown-item" href="javascript:verifywCCXFunds_ETH()">Verify ETH wCCX funds</a>
+        <a class="dropdown-item" href="javascript:verifywCCXFunds_ETH()">Verify BSC wCCX funds</a>
         <a class="dropdown-item" href="index.html?preloadData=ccx#check_funds">Got to verify page for CCX funds</a>
-        <a class="dropdown-item" href="index.html?preloadData=wccx#check_funds">Got to verify page for wCCX
+        <a class="dropdown-item" href="index.html?preloadData=wccx_eth#check_funds">Got to verify page for ETH wCCX
+        <a class="dropdown-item" href="index.html?preloadData=wccx_bsc#check_funds">Got to verify page for BSC wCCX
           funds</a>
       </div>
     </h2>
@@ -484,9 +486,14 @@
     checkReserve(result_container, "", fundsProof.keys.ccx.address, fundsProof.keys.ccx.signature);
   }
 
-  function verifywCCXFunds() {
+  function verifywCCXFunds_ETH() {
     result_container.hide();
-    checkReserve(result_container, "", fundsProof.keys.wccx.address, fundsProof.keys.wccx.signature);
+    checkReserve(result_container, "", fundsProof.keys.wccx_eth.address, fundsProof.keys.wccx_eth.signature);
+  }
+
+  function verifywCCXFunds_BSC() {
+    result_container.hide();
+    checkReserve(result_container, "", fundsProof.keys.wccx_bsc.address, fundsProof.keys.wccx_bsc.signature);
   }
 
   $("#uploadFunds").click(function () {
