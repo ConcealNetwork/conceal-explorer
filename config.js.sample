@@ -1,5 +1,5 @@
-var api = 'https://explorer.conceal.network/daemon';
-var poolListUrl = 'https://explorer.conceal.network/services/pools/list';
+var api = 'http://explorer.conceal-testnet.tk:26000/';
+var poolListUrl = '';
 var donationAddress = "";
 var blockTargetInterval = 120;
 var coinUnits = 1000000;
