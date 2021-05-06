@@ -72,7 +72,6 @@
         <table id="fundsUnlockTable" class="table table-hover">
           <thead>
             <tr>
-              <th><span tkey="txRow">Row</span></th>
               <th><span tkey="txHash">TX Hash</span></th>
               <th><span tkey="txTimestamp">Timestamp</span></th>
               <th><span tkey="txBlock">Block</span></th>
@@ -453,16 +452,10 @@
       "displayLength": 300,
       "searching": false,
       "paging": false,
-      "ordering": false,
+      "ordering": true,
       "responsive": false,
       "info": true,
-      "columns": [
-        { "width": "10px", "targets": 0 },
-          null,
-          null,
-          null,
-          null
-      ]
+      "order": [[ 2, "asc" ]]
     });
 
     fundsProof.transactions.forEach(function (hash, index) {
@@ -481,7 +474,6 @@
         cache: 'false',
         success: function (data) {
           fundsTable.row.add([
-            index,
             "<a href='https://explorer.conceal.network/index.html?hash=" + data.result.txDetails.hash + "#blockchain_transaction'>" + data.result.txDetails.hash + "</a>",
             formatDate(data.result.block.timestamp),
             data.result.block.height,
