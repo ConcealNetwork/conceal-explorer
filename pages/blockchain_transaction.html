@@ -166,7 +166,7 @@
     }
     updateText('transaction.amount_out', getReadableCoins(details.amount_out, 6));
     updateText('transaction.fee', getReadableCoins(details.fee, 6));
-    updateText('transaction.mixin', 4);
+    updateText('transaction.mixin', details.mixin);
     if (!details.mixin)
       $('#div_transaction_mixin').hide();
     updateText('transaction.paymentId', details.paymentId);
