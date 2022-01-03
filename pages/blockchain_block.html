@@ -186,11 +186,11 @@
     }
 	
 	function makeNextBlockLink(blockHash){
-		$('#block_height').append('<a href="' + getBlockchainUrl(blockHash) + '" title="Next block"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a> ');
+		$('#block_height').append('<a href="' + getBlockchainUrl(blockHash) + '"  title="Previous block"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>');
 	}
 	
 	function makePrevBlockLink(blockHash){
-		$('#block_height').prepend(' <a href="' + getBlockchainUrl(blockHash) + '" title="Previous block"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>');
+		$('#block_height').prepend(' <a href="' + getBlockchainUrl(blockHash) + '" title="Next block"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a>');
 	}
 	
 	function formatPrevNextBlockLink(hash){
