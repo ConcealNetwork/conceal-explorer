@@ -199,7 +199,7 @@
 
   <div class="slim-footer" id="explorerFooter">
     <div class="container">
-      <p>Copyright 2018-2021 &copy; All Rights Reserved. Conceal Network</p>
+      <p>Copyright 2018-<span id="currentYear">2021</span> &copy; All Rights Reserved. Conceal Network</p>
     </div>
     <!-- container -->
   </div>
@@ -345,6 +345,8 @@
       searchByHashOrHeight(GetURLParameter("hash").trim());
     }
 
+    // render current year
+    $("#currentYear").html(new Date().getFullYear());
     renderLangSelector();
     loadTranslations();
 
