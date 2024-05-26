@@ -267,16 +267,13 @@
 
           // Update footer
           if ($('#fundsTable').DataTable().columns(':visible').count() > 1) {
-            $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent so far:");
+            $('tr:eq(0) th:eq(0)', api.table().footer()).html("Allocated / Spent:");
             $('tr:eq(0) th:eq(1)', api.table().footer()).html(numberWithCommas(pageTotal) + " CCX");
-            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available:");
+            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Available:");
             $('tr:eq(1) th:eq(1)', api.table().footer()).html(formatNumber(getReadableCoins(reserveData.result.total, 0)));
-            $('tr:eq(2) th:eq(0)', api.table().footer()).html("Funds in reserve:");
-            $('tr:eq(2) th:eq(1)', api.table().footer()).html(numberWithCommas(currUnspentFunds) + " CCX");
           } else {
-            $('tr:eq(0) th:eq(0)', api.table().footer()).html("Total spent: " + numberWithCommas(pageTotal) + " CCX");
-            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Funds available: " + getReadableCoins(reserveData.result.total, 0));
-            $('tr:eq(2) th:eq(0)', api.table().footer()).html("Funds in reserve: " + numberWithCommas(currUnspentFunds) + " CCX");
+            $('tr:eq(0) th:eq(0)', api.table().footer()).html("Allocated / Spent: " + numberWithCommas(pageTotal) + " CCX");
+            $('tr:eq(1) th:eq(0)', api.table().footer()).html("Available: " + getReadableCoins(reserveData.result.total, 0));
           }
         }
       });
