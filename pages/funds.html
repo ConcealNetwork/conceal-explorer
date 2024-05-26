@@ -442,42 +442,6 @@
         }
       });
     });
-
-    // set the funds unlock TX data
-    var fundsTable = $('#fundsUnlockTable').DataTable({
-      "displayLength": 300,
-      "searching": false,
-      "paging": false,
-      "ordering": true,
-      "responsive": false,
-      "info": true,
-      "order": [[ 2, "asc" ]]
-    });
-
-    fundsProof.transactions.forEach(function (hash, index) {
-      xhrGetTransaction = $.ajax({
-        url: api + '/json_rpc',
-        method: "POST",
-        data: JSON.stringify({
-          jsonrpc: "2.0",
-          id: "test",
-          method: "f_transaction_json",
-          params: {
-            hash: hash
-          }
-        }),
-        dataType: 'json',
-        cache: 'false',
-        success: function (data) {
-          fundsTable.row.add([
-            "<a href='https://explorer.conceal.network/index.html?hash=" + data.result.txDetails.hash + "#blockchain_transaction'>" + data.result.txDetails.hash + "</a>",
-            formatDate(data.result.block.timestamp),
-            data.result.block.height,
-            getReadableCoins2(400000000000, 0)
-          ]).draw(false);
-        }
-      });
-    });
   });
 
   function verifyCCXFunds() {
