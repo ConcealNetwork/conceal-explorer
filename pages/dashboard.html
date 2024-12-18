@@ -29,7 +29,7 @@
         <div class="col-lg-4">
           <div class="dash-content dash-small-info">
             <label class="tx-primary" tkey="totalSupply">Total Supply</label>
-            <label class="tx-primary" id="totalCoinsPct">(100%)</label><BR>
+            <label class="tx-primary" id="totalCoinsPct"></label><BR>
             <label class="tx-secondary" tkey="totalSupplyInfo">The total supply minted to date.</label>
             <h2><span id="totalCoins">N/A</span></h2>
           </div><!-- dash-content -->
@@ -437,12 +437,14 @@
               var circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
               var circulating_supply_pct = ((circulating_supply / block.alreadyGeneratedCoins) * 100).toFixed(2);
               var last_block_deposts_pct = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(2);
+              var total_coins_pct = ((block.alreadyGeneratedCoins / 200000000) * 100).toFixed(2);
               updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
               updateText('emissionPercent', getReadableCoins2(circulating_supply, 0));
               updateText('emissionPercentPct', "(" + circulating_supply_pct + "%)");
               updateText('currentReward', getReadableCoins(block.baseReward, 2));
               updateText('depositCoins', getReadableCoins2(last_block_deposts, 0));
               updateText('depositCoinsPct', "(" + last_block_deposts_pct + "%)");
+              updateText('totalCoinsPct', "(" + total_coins_pct + "%)");
 
             }
           });
