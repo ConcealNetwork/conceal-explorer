@@ -437,7 +437,7 @@
               var circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
               var circulating_supply_pct = ((circulating_supply / block.alreadyGeneratedCoins) * 100).toFixed(2);
               var last_block_deposts_pct = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(2);
-              var total_coins_pct = ((block.alreadyGeneratedCoins / 200000000) * 100).toFixed(2);
+              var total_coins_pct = ((block.alreadyGeneratedCoins / 200000000) * 100000000).toFixed(2);
               updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
               updateText('emissionPercent', getReadableCoins2(circulating_supply, 0));
               updateText('emissionPercentPct', "(" + circulating_supply_pct + "%)");
