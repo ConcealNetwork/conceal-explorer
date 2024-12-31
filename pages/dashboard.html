@@ -440,11 +440,11 @@
               var total_coins_pct = ((block.alreadyGeneratedCoins / 200000000000000) * 100).toFixed(2); // adjust
               updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
               updateText('emissionPercent', getReadableCoins2(circulating_supply, 0));
-              updateText('emissionPercentPct', "(" + circulating_supply_pct + "%)");
+              updateText('emissionPercentPct', "(" + circulating_supply_pct + "% of minted supply)");
               updateText('currentReward', getReadableCoins(block.baseReward, 2));
               updateText('depositCoins', getReadableCoins2(last_block_deposts, 0));
-              updateText('depositCoinsPct', "(" + last_block_deposts_pct + "%)");
-              updateText('totalCoinsPct', "(" + total_coins_pct + "%)");
+              updateText('depositCoinsPct', "(" + last_block_deposts_pct + "% of minted supply)");
+              updateText('totalCoinsPct', "(" + total_coins_pct + "% of Max Supply)");
 
             }
           });
