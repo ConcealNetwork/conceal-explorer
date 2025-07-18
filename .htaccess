@@ -1,4 +1,15 @@
-Header set Access-Control-Allow-Origin "*"
-Header add Access-Control-Allow-Headers "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
-Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
-Header add Access-Control-Allow-Credentials "true" 
+# Enable CORS for cross-origin requests
+Header always set Access-Control-Allow-Origin "*"
+Header always add Access-Control-Allow-Headers "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control, Authorization"
+Header always add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Credentials "true"
+
+# Handle preflight OPTIONS requests
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Security headers for Ubuntu 22 compatibility
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
