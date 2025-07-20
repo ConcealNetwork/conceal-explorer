@@ -7,11 +7,11 @@ $hash = $hashData['result']['block_header']['hash'];
 
 $blockData = fetch_rpc($config['api'], 'f_block_json', '{"hash":"'.$hash.'"}');
 
-$supplyRaw = $blockData[result][block][alreadyGeneratedCoins];
+$supplyRaw = $blockData['result']['block']['alreadyGeneratedCoins'];
 
 
 $info = fetch_getinfo($config['api']);
-$depositsRaw = $info['full_deposit_amount']
+$depositsRaw = $info['full_deposit_amount'];
 
 $supply = number_format(($supplyRaw - $depositsRaw) / $config['coinUnits'], 0, ".", "");
 
