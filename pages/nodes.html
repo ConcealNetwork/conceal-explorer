@@ -127,7 +127,11 @@
 
             if (obj.name) {
               if (obj.url && obj.url.host) {
-                rowData.push(obj.url.host + ":" + (obj.url.port || "16000"));
+                if (obj.url.host.includes("/")) {
+                  rowData.push(obj.url.host.split("/")[0] + ":" + (obj.url.port || "16000"));
+                } else {
+                  rowData.push(obj.url.host + ":" + (obj.url.port || "16000"));
+                }
               } else {
                 rowData.push(obj.location ? (obj.location.ip + ":" + (obj.nodePort || "16000")) : (obj.ip.substring(7) + ":" + (obj.nodePort || "16000")));
               }
