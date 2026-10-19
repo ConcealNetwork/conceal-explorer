@@ -127,15 +127,34 @@
     return '<span class="nodeStatus square-8 ' + statusClass + ' mg-r-5 rounded-circle"></span>';
   }
 
+  var latestTagCache = {};
+
+  function fetchLatestTag(repo) {
+    if (latestTagCache.hasOwnProperty(repo)) {
+      return $.Deferred().resolve([{ tag_name: latestTagCache[repo] }]).promise();
+    }
+
+    return $.getJSON("https://api.github.com/repos/ConcealNetwork/" + repo + "/releases/latest")
+      .then(function (release) {
+        var tag = (release && release.tag_name) || "";
+        latestTagCache[repo] = tag;
+        return [{ tag_name: tag }];
+      }, function () {
+        latestTagCache[repo] = "";
+        return [{ tag_name: "" }];
+      });
+  }
+
   function loadNodesDataToTable(initialLoad) {
     $.when(
-      $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest"),
-      $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-guardian/releases/latest")
+      fetchLatestTag("conceal-core"),
+      fetchLatestTag("conceal-guardian")
     ).done(function (coreReleaseRes, guardianReleaseRes) {
       var coreRelease = coreReleaseRes[0];
       var guardianRelease = guardianReleaseRes[0];
 
-      $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true", function (data) {
+      $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true")
+        .done(function (data) {
         var correctHeightList = {};
         var correctHeightCnt = 0;
         var tableData = [];
@@ -259,8 +278,10 @@
             .draw();
         }
 
-        nodeLoadingIndicator.hide();
-      });
+        })
+        .always(function () {
+          nodeLoadingIndicator.hide();
+        });
     });
   }
 
