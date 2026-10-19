@@ -17,14 +17,14 @@
     </h2>
   </div>
   <div class="card-body card-body-info">
-    <p class="card-subtitle tx-normal mg-b-15" id="nodesSubtitle">This is a list of Smart Nodes, that are currently in
-      use as remote nodes on the network</p>
+    <p class="card-subtitle tx-normal mg-b-15" id="nodesSubtitle">This is a list of reachable Smart Nodes that can be used as remote nodes on the network. Only those with an SSL connection can be used for the web wallet.</p>
     <div class="row" id="remoteNodesRow">
       <div class="col-lg-12">
         <table id="nodesTable" class="table display responsive nowrap">
           <thead>
             <tr>
               <th class="wd-15p ntNodeConnectURL">Connect URL</th>
+              <th class="wd-10p ntNodeSSL">SSL</th>
               <th class="wd-15p ntNodeName">Node Name</th>
               <th class="wd-20p ntNodeLocation">Location</th>
               <th class="wd-15p ntNodeStarted">Started</th>
@@ -37,9 +37,9 @@
           </thead>
         </table>
         <div id="nodesLegend">
-          <div><span class="nodeStatus square-8 bg-success mg-r-5 rounded-circle"></span><span>Node is running OK</span>
+          <div><span class="nodeStatus square-8 bg-success mg-r-5 rounded-circle"></span><span>Node or Guardian is at the latest released version</span>
           </div>
-          <div><span class="nodeStatus square-8 bg-warning mg-r-5 rounded-circle"></span><span>Node is not at the latest
+          <div><span class="nodeStatus square-8 bg-warning mg-r-5 rounded-circle"></span><span>Node or Guardian is not at the latest
               version</span></div>
           <div><span class="nodeStatus square-8 bg-danger mg-r-5 rounded-circle"></span><span>Node is not syncing or is
               lagging behind</span></div>
@@ -111,9 +111,30 @@
     copyToClipboard($(e.target).html());
   }
 
+  function normalizeVersion(version) {
+    return String(version || "").replace(/^v/i, "");
+  }
+
+  function isLatestVersion(actual, tagName) {
+    if (!actual || actual === "n/a" || !tagName) {
+      return false;
+    }
+    return normalizeVersion(actual) === normalizeVersion(tagName);
+  }
+
+  function versionStatusDot(isLatest) {
+    var statusClass = isLatest ? "bg-success" : "bg-warning";
+    return '<span class="nodeStatus square-8 ' + statusClass + ' mg-r-5 rounded-circle"></span>';
+  }
 
   function loadNodesDataToTable(initialLoad) {
-    $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest", function (release) {
+    $.when(
+      $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-core/releases/latest"),
+      $.getJSON("https://api.github.com/repos/ConcealNetwork/conceal-guardian/releases/latest")
+    ).done(function (coreReleaseRes, guardianReleaseRes) {
+      var coreRelease = coreReleaseRes[0];
+      var guardianRelease = guardianReleaseRes[0];
+
       $.getJSON("https://explorer.conceal.network/pool/list?hasFeeAddr=true&isReachable=true", function (data) {
         var correctHeightList = {};
         var correctHeightCnt = 0;
@@ -135,6 +156,7 @@
               } else {
                 rowData.push(obj.location ? (obj.location.ip + ":" + (obj.nodePort || "16000")) : (obj.ip.substring(7) + ":" + (obj.nodePort || "16000")));
               }
+              rowData.push(!!(obj.status && (obj.status.hasSSL || obj.status.hasTLS)));
               rowData.push(obj.name);
               if ((obj.location) && (obj.location.data)) {
                 rowData.push(getCountryName(obj.location.data.country));
@@ -170,6 +192,7 @@
           $('#nodesTable').DataTable({
             data: tableData,
             responsive: true,
+            dom: '<"nodesTableToolbar"lf>rtip',
             "columns": [
               {
                 className: "ntNodeConnectURL",
@@ -177,12 +200,20 @@
                   return '<a href="#" data-toggle="modal" data-target="#dlgCopiedToClipboard" onclick="onConnectURLClick(event)">' + data + '</a>';
                 }
               }, {
+                className: "ntNodeSSL",
+                render: function (data, type) {
+                  if (type !== "display") {
+                    return data ? 1 : 0;
+                  }
+                  return data ? '<span class="ntNodeSslCheck" title="SSL">✓</span>' : "";
+                }
+              }, {
                 className: "ntNodeName"
               }, {
                 className: "ntNodeLocation"
               }, {
                 className: "ntNodeStarted",
-                iDataSort: 4
+                iDataSort: 5
               }, {
                 className: "ntNodeStartedActual",
                 visible: false,
@@ -195,18 +226,21 @@
                   return data + "%";
                 }
               }, {
-                className: "ntGuardianVersion"
+                className: "ntGuardianVersion",
+                render: function (data, type) {
+                  if (type !== "display") {
+                    return data;
+                  }
+                  return data + versionStatusDot(isLatestVersion(data, guardianRelease.tag_name));
+                }
               }, {
                 className: "ntNodeVersion",
                 orderable: false,
                 render: function (data, type, row) {
-                  if (row[5] < (correctHeight - 2)) {
+                  if (row[6] < (correctHeight - 2)) {
                     return data + '<span class="nodeStatus square-8 bg-danger mg-r-5 rounded-circle"></span>';
-                  } else if (row[8] != release.tag_name) {
-                    return data + '<span class="nodeStatus square-8 bg-warning mg-r-5 rounded-circle"></span>';
-                  } else {
-                    return data + '<span class="nodeStatus square-8 bg-success mg-r-5 rounded-circle"></span>';
                   }
+                  return data + versionStatusDot(isLatestVersion(data, coreRelease.tag_name));
                 }
               }
             ]
@@ -258,7 +292,7 @@
         nodeLoadingIndicator.hide();
       });
     } else {
-      $("#nodesSubtitle").html("This is a list of Smart Nodes, that are currently in use as remote nodes on the network");
+      $("#nodesSubtitle").html("This is a list of reachable Smart Nodes that can be used as remote nodes on the network. Only those with an SSL connection can be used for the web wallet.");
       $("#choseNodeListTypeText").html("All Nodes Map");
       $("#nodesTitle").html("Smart Nodes")
       nodesType = 0;

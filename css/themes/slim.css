@@ -40600,10 +40600,17 @@ td.ntNodeVersion,
 th.ntNodeVersion,
 td.ntGuardianVersion,
 th.ntGuardianVersion,
+td.ntNodeSSL,
+th.ntNodeSSL,
 td.ntNodePlatform,
 th.ntNodePlatform
  {
   text-align: center;
+}
+
+td.ntNodeSSL .ntNodeSslCheck {
+  color: #23BF08;
+  font-weight: 400;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
@@ -40686,12 +40693,41 @@ table.dataTable.dtr-inline.collapsed tbody tr[role="row"] > th:first-child::befo
   width: 100% !important;
 }
 
+/* Keep Slim CSS sort triangles; hide DataTables PNG arrows that overlap them. */
+#nodesTable thead .sorting,
+#nodesTable thead .sorting_asc,
+#nodesTable thead .sorting_desc,
+#nodesTable thead .sorting_asc_disabled,
+#nodesTable thead .sorting_desc_disabled {
+  background-image: none;
+}
+
 .dataTables_filter label {
   color: #ccc !important;
 }
 
 .dataTables_filter input {
   border-color: #666 !important;
+}
+
+#nodesTable_wrapper .nodesTableToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+#nodesTable_wrapper .nodesTableToolbar .dataTables_length,
+#nodesTable_wrapper .nodesTableToolbar .dataTables_filter {
+  float: none;
+  padding-bottom: 0;
+}
+
+#nodesTable_wrapper .nodesTableToolbar .dataTables_filter input {
+  display: inline-block;
+  width: auto;
 }
 
 #uploadFundsDialog .modal-dialog {
