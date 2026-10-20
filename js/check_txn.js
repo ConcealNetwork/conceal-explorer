@@ -32,7 +32,7 @@ function checkTxn(transactionResponse, privateKey, address, privateKeyType) {
     } else if (address.length != 98 || (addrHex.slice(-s) !== cn_fast_hash(addrHex.slice(0,-s)).slice(0,s))) {
         results.error = "Bad address";
     } else if (privateKeyType === 'view' && addrHex.slice(m,e) !== sec_key_to_pub(privateKey)) {
-	results.error = "Secret View key does not match address.";
+ results.error = "Secret View key does not match address.";
     } else if (hash.length !== 64 || !validHex(hash)){
         results.error = "Invalid TXN Hash";
     } else  {
@@ -41,7 +41,7 @@ function checkTxn(transactionResponse, privateKey, address, privateKeyType) {
             pub =  pubKeyFromExtra(txn.extra);
         }
 
-	if (!pub) {
+ if (!pub) {
             results.error = "Unrecognized tx_extra format!";
         } else {
             var der = cnUtil.generate_key_derivation(pub, privateKey);
@@ -95,16 +95,16 @@ $("#check_transaction").click(function() {
             //TODO proper error display 
             alert(response.error.message);
         } else {
-	    var privateKeyType = $("[name=keyType]:checked").val();
+     var privateKeyType = $("[name=keyType]:checked").val();
             var results = checkTxn(response.result, privateKey.val(), publicAddress.val(), privateKeyType);
             if (results.error) {
-		$("#txn_link").attr('href', '');
-		$("#txn_link").html('?');
+  $("#txn_link").attr('href', '');
+  $("#txn_link").html('?');
                 //TODO proper error display
                 alert(results.error);
             } else {
-		$("#txn_link").attr('href', '?hash=' + transactionHash.val()  + '#blockchain_transaction');
-		$("#txn_link").html(transactionHash.val());
+  $("#txn_link").attr('href', '?hash=' + encodeURIComponent(transactionHash.val()) + '#blockchain_transaction');
+  $("#txn_link").text(transactionHash.val());
                 $("#outputs_rows").html("");
                 for (var o in results.owned) {
                     var owned = results.owned[o];
