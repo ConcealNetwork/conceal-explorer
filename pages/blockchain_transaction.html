@@ -188,7 +188,7 @@
   }
 
   function getInputCells(input) {
-    return '<td>' + getReadableCoins(input.value.amount, 6) + '</td>' + '<td>' + (input.value.k_image) + '</td>';
+    return '<td>' + getReadableCoins(input.value.amount, 6) + '</td>' + '<td>' + escapeHtml(input.value.k_image) + '</td>';
   }
 
 
@@ -226,7 +226,7 @@
 
 
   function getOutputCells(output) {
-    return '<td>' + getReadableCoins(output.amount, 6) + '</td>' + '<td>' + (output.target.data.key) + '</td>';
+    return '<td>' + getReadableCoins(output.amount, 6) + '</td>' + '<td>' + escapeHtml(output.target.data.key) + '</td>';
   }
 
 
