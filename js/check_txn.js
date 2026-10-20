@@ -103,8 +103,8 @@ $("#check_transaction").click(function() {
                 //TODO proper error display
                 alert(results.error);
             } else {
-		$("#txn_link").attr('href', '?hash=' + transactionHash.val()  + '#blockchain_transaction');
-		$("#txn_link").html(transactionHash.val());
+		$("#txn_link").attr('href', '?hash=' + encodeURIComponent(transactionHash.val()) + '#blockchain_transaction');
+		$("#txn_link").text(transactionHash.val());
                 $("#outputs_rows").html("");
                 for (var o in results.owned) {
                     var owned = results.owned[o];
