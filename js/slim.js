@@ -75,6 +75,7 @@ $(function(){
   // set skin to header
   $('body').on('click', '.header-skin', function(){
     var val = $(this).val();
+    if (!/^[a-z0-9_-]+$/i.test(val)) return;
     if(val !== 'default') {
       $.cookie('header-skin', val);
       $('#headerSkin').attr('href','../css/slim.'+val+'.css');

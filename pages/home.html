@@ -290,6 +290,8 @@
 
     $('#goto-height-go').click(function() {
         var height = document.getElementById('goto-height').value;
+        if (!/^\d+$/.test(height))
+            return;
         var newUrl = "/?height="+height;
         window.location = newUrl;
     });

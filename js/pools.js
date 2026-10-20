@@ -40,7 +40,7 @@ var renderPoolRow = function (data) {
   var pools_row = [];
 
   pools_row.push('<tr>');
-  pools_row.push('<td id=host-' + data.info.name + '><a target=blank href=http://' + data.info.host + '>' + data.info.name + '</a></td>');
+  pools_row.push('<td id="host-' + escapeHtml(data.info.name) + '"><a target="_blank" href="http://' + escapeHtml(data.info.host) + '">' + escapeHtml(data.info.name) + '</a></td>');
   pools_row.push('<td class="height" id=height-' + data.info.name + '>' + localizeNumber(data.network.height) + '</td>');
   pools_row.push('<td id=hashrate-' + data.info.name + '>' + localizeNumber(poolHashrate) + ' H/s</td>');
   pools_row.push('<td id=miners-' + data.info.name + '>' + localizeNumber(data.pool.miners) + '</td>');

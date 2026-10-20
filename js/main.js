@@ -41,19 +41,20 @@ function setParameter(paramName, paramValue) {
   var url = window.location.href;
   var hash = location.hash;
   url = url.replace(hash, '');
+  var safeParamValue = encodeURIComponent(paramValue);
   if (url.indexOf(paramName + "=") >= 0) {
     var prefix = url.substring(0, url.indexOf(paramName));
     var suffix = url.substring(url.indexOf(paramName));
     suffix = suffix.substring(suffix.indexOf("=") + 1);
     suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix.indexOf("&")) : "";
-    url = prefix + paramName + "=" + paramValue + suffix;
+    url = prefix + paramName + "=" + safeParamValue + suffix;
   } else {
     if (url.indexOf("?") < 0)
-      url += "?" + paramName + "=" + paramValue;
+      url += "?" + encodeURIComponent(paramName) + "=" + safeParamValue;
     else
-      url += "&" + paramName + "=" + paramValue;
+      url += "&" + encodeURIComponent(paramName) + "=" + safeParamValue;
   }
-  window.location.href = url + hash;
+  window.location.href = url + encodeURIComponent(hash);
 }
 
 function debounce(func, wait, immediate) {
@@ -78,6 +79,15 @@ $(document).ready(function () {
     $("#donationAddress").html(donationAddress);
   }
 });
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 function formatNumber(num) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -106,16 +116,12 @@ $.fn.update = function (txt) {
 
 function updateTextClasses(className, text) {
   var els = document.getElementsByClassName(className);
-  if ($(els).html !== text) {
-    $(els).html(text);
-  }
+  $(els).text(text);
 }
 
 function updateText(elementId, text) {
   var el = document.getElementById(elementId);
-  if ($(el).html !== text) {
-    $(el).html(text);
-  }
+  if (text !== undefined) el.textContent = text;
   return el;
 }
 
@@ -157,7 +163,7 @@ function getReadableDifficultyString(difficulty, precision) {
 }
 
 function formatBlockLink(hash) {
-  return '<a href="' + getBlockchainUrl(hash) + '">' + hash + '</a>';
+  return '<a href="' + getBlockchainUrl(hash) + '">' + escapeHtml(hash) + '</a>';
 }
 
 function getReadableCoins(coins, digits, withoutSymbol) {
@@ -176,7 +182,7 @@ function formatDate(time) {
 }
 
 function formatPaymentLink(hash) {
-  return '<a href="' + getTransactionUrl(hash) + '">' + hash + '</a>';
+  return '<a href="' + getTransactionUrl(hash) + '">' + escapeHtml(hash) + '</a>';
 }
 
 function pulseLiveUpdate() {
