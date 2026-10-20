@@ -94,7 +94,7 @@ function getFinalUrl(URL) {
 }
 
 function getTransactionUrl(id) {
-  return getFinalUrl(transactionExplorer.replace('{symbol}', symbol.toLowerCase()).replace('{id}', id))
+  return getFinalUrl(transactionExplorer.replace('{symbol}', symbol.toLowerCase()).replace('{id}', encodeURIComponent(id)))
 }
 
 $.fn.update = function (txt) {
@@ -255,7 +255,7 @@ function routePage(loadedCallback) {
 }
 
 function getBlockchainUrl(id) {
-  return getFinalUrl(blockchainExplorer.replace('{id}', id));
+  return getFinalUrl(blockchainExplorer.replace('{id}', encodeURIComponent(id)));
 }
 
 $(function () {
