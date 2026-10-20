@@ -294,7 +294,7 @@
                 success: function (data) {
                   if (data.result) {
                     sessionStorage.setItem('searchTransaction', JSON.stringify(data.result));
-                    window.location.href = getFinalUrl(transactionExplorer.replace('{id}', value));
+                    window.location.href = getFinalUrl(transactionExplorer.replace('{id}', encodeURIComponent(value)));
                   } else if (data.error) {
                     xhrGetTsx = $.ajax({
                       url: api + '/json_rpc',
@@ -313,7 +313,7 @@
                         if (data.result) {
                           txsByPaymentId = data.result.transactions;
                           sessionStorage.setItem('txsByPaymentId', JSON.stringify(txsByPaymentId));
-                          window.location.href = getFinalUrl(paymentIdExplorer.replace('{id}', value));
+                          window.location.href = getFinalUrl(paymentIdExplorer.replace('{id}', encodeURIComponent(value)));
                         } else if (data.error) {
                           $("#errorReason").html("We could not find anything, check if the data is correct.");
                           $("#errorDialog").modal();
