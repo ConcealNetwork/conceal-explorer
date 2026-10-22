@@ -403,7 +403,7 @@ function fetchLiveStats() {
 }
 
 function floatToString(float) {
-  return float.toFixed(6).replace(/[0\.]+$/, '');
+  return float.toFixed(6).replace(/[0.]+$/, '');
 }
 
 
@@ -460,7 +460,7 @@ $(function () {
 
 // Blockexplorer functions
 urlParam = function (name) {
-  var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+  var results = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href);
   if (results == null) {
     return null;
   } else {

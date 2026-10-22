@@ -95,7 +95,7 @@ currentPage = {
 };
 
 function urlParam(name) {
-	const value = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href)
+	const value = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.href)
 	return value ? value[1] : ''
 }
 
