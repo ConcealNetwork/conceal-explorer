@@ -21,7 +21,7 @@
         <div class="col-lg-4">
           <div class="dash-content dash-small-info">
             <label class="tx-primary" tkey="circulatingSuppy">Circulating Supply</label><BR>
-            <label class="tx-primary" id="emissionPercentPct""></label><BR>
+            <label class="tx-primary" id="emissionPercentPct"></label><BR>
             <label class=" tx-secondary" tkey="circulatingSuppyInfo">The total number of coins not banked.</label>
             <h2><span id="emissionPercent">N/A</span></h2>
           </div><!-- dash-content -->
@@ -308,7 +308,7 @@
       // get conceal market data
       $.getJSON("https://api.coingecko.com/api/v3/coins/conceal?sparkline=true", function (data) {
         USDperCCX = data.market_data.current_price.usd;
-        $("#CCXToUSD").text("$ " + localizeNumber(data.market_data.current_price.usd.toFixed(2)));
+        $("#CCXToUSD").text("$ " + localizeNumber(data.market_data.current_price.usd.toFixed(3)));
         $("#CCXToBTC").text(data.market_data.current_price.btc.toFixed(8));
         $("#marketcap").text("$ " + localizeNumber(data.market_data.market_cap.usd.toFixed(0)));
         $("#marketcapRank").text("(RANK " + data.market_cap_rank + ")");
@@ -402,54 +402,50 @@
   };
 
   function renderLastBlock() {
-    $.getJSON("https://explorer.conceal.network/daemon/getinfo", function (infoData) {
-      updateText('totalBanked', getReadableCoins2(infoData.full_deposit_amount, 0));
-
-      $.ajax({
-        url: api + '/json_rpc',
-        method: "POST",
-        data: JSON.stringify({
-          jsonrpc: "2.0",
-          id: "test",
-          method: "getlastblockheader",
-          params: {}
-        }),
-        dataType: 'json',
-        cache: 'false',
-        success: function (data) {
-          last_block_hash = data.result.block_header.hash;
-          last_block_deposts = data.result.block_header.deposits;
-          $.ajax({
-            url: api + '/json_rpc',
-            method: "POST",
-            data: JSON.stringify({
-              jsonrpc: "2.0",
-              id: "test",
-              method: "f_block_json",
-              params: {
-                hash: last_block_hash
-              }
-            }),
-            dataType: 'json',
-            cache: 'false',
-            success: function (data) {
-              var block = data.result.block;
-              var circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
-              var circulating_supply_pct = ((circulating_supply / block.alreadyGeneratedCoins) * 100).toFixed(2);
-              var last_block_deposts_pct = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(2);
-              var total_coins_pct = ((block.alreadyGeneratedCoins / 200000000000000) * 100).toFixed(2); // adjust
-              updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
-              updateText('emissionPercent', getReadableCoins2(circulating_supply, 0));
-              updateText('emissionPercentPct', "(" + circulating_supply_pct + "% of minted supply)");
-              updateText('currentReward', getReadableCoins(block.baseReward, 2));
-              updateText('depositCoins', getReadableCoins2(last_block_deposts, 0));
-              updateText('depositCoinsPct', "(" + last_block_deposts_pct + "% of minted supply)");
-              updateText('totalCoinsPct', "(" + total_coins_pct + "% of Max Supply)");
-
+    $.ajax({
+      url: api + '/json_rpc',
+      method: "POST",
+      data: JSON.stringify({
+        jsonrpc: "2.0",
+        id: "test",
+        method: "getlastblockheader",
+        params: {}
+      }),
+      dataType: 'json',
+      cache: 'false',
+      success: function (data) {
+        last_block_hash = data.result.block_header.hash;
+        last_block_deposts = data.result.block_header.deposits;
+        $.ajax({
+          url: api + '/json_rpc',
+          method: "POST",
+          data: JSON.stringify({
+            jsonrpc: "2.0",
+            id: "test",
+            method: "f_block_json",
+            params: {
+              hash: last_block_hash
             }
-          });
-        }
-      });
+          }),
+          dataType: 'json',
+          cache: 'false',
+          success: function (data) {
+            var block = data.result.block;
+            var circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
+            var circulating_supply_pct = ((circulating_supply / block.alreadyGeneratedCoins) * 100).toFixed(2);
+            var last_block_deposts_pct = ((last_block_deposts / block.alreadyGeneratedCoins) * 100).toFixed(2);
+            var total_coins_pct = ((block.alreadyGeneratedCoins / 200000000000000) * 100).toFixed(2); // adjust
+            updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 0));
+            updateText('emissionPercent', getReadableCoins2(circulating_supply, 0));
+            updateText('emissionPercentPct', "(" + circulating_supply_pct + "% of minted supply)");
+            updateText('currentReward', getReadableCoins(block.baseReward, 2));
+            updateText('depositCoins', getReadableCoins2(last_block_deposts, 0));
+            updateText('depositCoinsPct', "(" + last_block_deposts_pct + "% of minted supply)");
+            updateText('totalCoinsPct', "(" + total_coins_pct + "% of Max Supply)");
+
+          }
+        });
+      }
     });
   }
 
