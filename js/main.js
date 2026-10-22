@@ -127,12 +127,13 @@ function createTextCell(text, className) {
 
 function createLink(href, text, attrs) {
   var a = document.createElement('a');
-  a.setAttribute('href', href);
+  setSafeHref(a, href);
   a.textContent = text == null ? '' : String(text);
   if (attrs) {
     for (var key in attrs) {
       if (!Object.prototype.hasOwnProperty.call(attrs, key)) continue;
       if (key === 'className') a.className = attrs[key];
+      else if (key === 'href') setSafeHref(a, attrs[key]);
       else a.setAttribute(key, String(attrs[key]));
     }
   }
@@ -239,21 +240,60 @@ function getFinalUrl(URL) {
   return URL.replace('{lang}', '');
 }
 
+/** Same-document explorer URL (always starts with /). Hex id only. */
+function buildExplorerPathUrl(hashName, id) {
+  var safe = safeExplorerId(id);
+  if (!safe) return '#';
+  var u;
+  try {
+    u = new URL(window.location.href);
+  } catch (e) {
+    return '#';
+  }
+  u.searchParams.set('hash', safe);
+  var lang = getSafeLangCode();
+  if (lang) u.searchParams.set('lang', lang);
+  else u.searchParams.delete('lang');
+  u.hash = hashName;
+  return u.pathname + u.search + u.hash;
+}
+
 function getTransactionUrl(id) {
-  return getFinalUrl(transactionExplorer.replace('{symbol}', symbol.toLowerCase()).replace('{id}', encodeURIComponent(id)));
+  return buildExplorerPathUrl('blockchain_transaction', id);
 }
 
 function getPaymentIdUrl(id) {
-  return getFinalUrl(paymentIdExplorer.replace('{id}', encodeURIComponent(id)));
+  return buildExplorerPathUrl('blockchain_payment_id', id);
 }
 
 /**
- * Same-document navigation only (?query or #hash). Rejects absolute/scheme URLs.
- * Callers must pass ids already checked with safeExplorerId / builders below.
+ * Allow only same-document relative hrefs (/ ? #) or validated http(s).
+ * Blocks scheme tricks and protocol-relative "//…".
+ */
+function sanitizeHref(href) {
+  if (typeof href !== 'string' || href.length === 0) return '#';
+  if (href.indexOf('//') === 0) return '#';
+  var c0 = href.charAt(0);
+  if (c0 === '/' || c0 === '?' || c0 === '#') return href;
+  return safeExternalHttpUrl(href) || '#';
+}
+
+function setSafeHref(el, href) {
+  if (!el) return false;
+  var safe = sanitizeHref(href);
+  if (el.setAttribute) el.setAttribute('href', safe);
+  else $(el).attr('href', safe);
+  return true;
+}
+
+/**
+ * Same-document navigation only (path / query / hash). Rejects absolute/scheme URLs.
  */
 function navigateExplorer(url) {
-  if (typeof url !== 'string' || !/^[?#]/.test(url)) return false;
-  window.location.assign(url);
+  var safe = sanitizeHref(url);
+  if (safe === '#' && url !== '#') return false;
+  if (safe.charAt(0) !== '/' && safe.charAt(0) !== '?' && safe.charAt(0) !== '#') return false;
+  window.location.assign(safe);
   return true;
 }
 
@@ -422,7 +462,7 @@ function routePage(loadedCallback) {
 }
 
 function getBlockchainUrl(id) {
-  return getFinalUrl(blockchainExplorer.replace('{id}', encodeURIComponent(id)));
+  return buildExplorerPathUrl('blockchain_block', id);
 }
 
 $(function () {

@@ -98,17 +98,18 @@ $("#check_transaction").click(function() {
 	    var privateKeyType = $("[name=keyType]:checked").val();
             var results = checkTxn(response.result, privateKey.val(), publicAddress.val(), privateKeyType);
             if (results.error) {
-		$("#txn_link").attr('href', '#');
+		setSafeHref(document.getElementById('txn_link'), '#');
 		$("#txn_link").text('?');
                 //TODO proper error display
                 alert(results.error);
             } else {
                 var safeHash = safeExplorerId(transactionHash.val());
+                var txnLinkEl = document.getElementById('txn_link');
                 if (safeHash) {
-                  $("#txn_link").attr('href', getTransactionUrl(safeHash));
+                  setSafeHref(txnLinkEl, getTransactionUrl(safeHash));
                   $("#txn_link").text(safeHash);
                 } else {
-                  $("#txn_link").attr('href', '#');
+                  setSafeHref(txnLinkEl, '#');
                   $("#txn_link").text('?');
                 }
                 var outputsRows = document.getElementById('outputs_rows');
