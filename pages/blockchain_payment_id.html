@@ -63,13 +63,6 @@
 		sessionStorage.removeItem('txsByPaymentId');
 	}
 
-    function getTransactionCells(transaction){
-        return '<td>' + formatPaymentLink(transaction.hash) + '</td>' +
-               '<td>' + getReadableCoins(transaction.fee, 4, true) + '</td>' +
-               '<td>' + getReadableCoins(transaction.amount_out, 4, true) + '</td>' +
-               '<td>' + localizeNumber(transaction.size) + '</td>';
-    }
-
     function getTransactionRowElement(transaction, jsonString){
 
         var row = document.createElement('tr');
@@ -77,9 +70,12 @@
         row.setAttribute('data-hash', transaction.hash);
         row.setAttribute('id', 'transactionRow' + transaction.hash);
 
-        row.innerHTML = getTransactionCells(transaction);
-
-        return row;
+        return setRowCells(row, [
+            createPaymentLinkCell(transaction.hash),
+            createTextCell(getReadableCoins(transaction.fee, 4, true)),
+            createTextCell(getReadableCoins(transaction.amount_out, 4, true)),
+            createTextCell(localizeNumber(transaction.size))
+        ]);
     }
 
     function renderTransactions(transactionResults){

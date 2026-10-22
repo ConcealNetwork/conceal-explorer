@@ -1,5 +1,6 @@
 var blockchainExplorer = "?hash={id}{lang}#blockchain_block";
 var transactionExplorer = "?hash={id}{lang}#blockchain_transaction";
+var paymentIdExplorer = "?hash={id}{lang}#blockchain_payment_id";
 
 var style_cookie_name = "style";
 var style_cookie_duration = 365;
@@ -38,23 +39,19 @@ function GetURLParameter(sParam) {
 };
 
 function setParameter(paramName, paramValue) {
-  var url = window.location.href;
-  var hash = location.hash;
-  url = url.replace(hash, '');
-  var safeParamValue = encodeURIComponent(paramValue);
-  if (url.indexOf(paramName + "=") >= 0) {
-    var prefix = url.substring(0, url.indexOf(paramName));
-    var suffix = url.substring(url.indexOf(paramName));
-    suffix = suffix.substring(suffix.indexOf("=") + 1);
-    suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix.indexOf("&")) : "";
-    url = prefix + paramName + "=" + safeParamValue + suffix;
-  } else {
-    if (url.indexOf("?") < 0)
-      url += "?" + encodeURIComponent(paramName) + "=" + safeParamValue;
-    else
-      url += "&" + encodeURIComponent(paramName) + "=" + safeParamValue;
+  // Only lang is used; require allowlisted code from langs map.
+  if (paramName !== 'lang') return;
+  if (typeof langs === 'undefined' || !langs || !Object.prototype.hasOwnProperty.call(langs, paramValue)) {
+    return;
   }
-  window.location.href = url + encodeURIComponent(hash);
+  var url;
+  try {
+    url = new URL(window.location.href);
+  } catch (e) {
+    return;
+  }
+  url.searchParams.set('lang', paramValue);
+  window.location.assign(url.pathname + url.search + url.hash);
 }
 
 function debounce(func, wait, immediate) {
@@ -76,7 +73,7 @@ function debounce(func, wait, immediate) {
 $(document).ready(function () {
   if (donationAddress !== undefined && donationAddress !== "") {
     $("#donations").show();
-    $("#donationAddress").html(donationAddress);
+    $("#donationAddress").text(donationAddress);
   }
 });
 
@@ -89,26 +86,186 @@ function escapeHtml(text) {
     .replaceAll("'", '&#39;');
 }
 
+/** Hex ids used in explorer URLs (block/tx/payment hashes). */
+function safeExplorerId(id) {
+  var s = String(id == null ? '' : id);
+  return /^[0-9a-fA-F]+$/.test(s) ? s : '';
+}
+
+/** Safe fragment for element ids (pool names, etc.). */
+function safeDomIdPart(value) {
+  return String(value == null ? '' : value).replace(/[^A-Za-z0-9_-]/g, '_');
+}
+
+/**
+ * Allow only http(s) URLs with a simple hostname (no credentials).
+ * Accepts bare host or host/path (e.g. fastpool.xyz/ccx).
+ */
+function safeExternalHttpUrl(hostOrUrl) {
+  var s = String(hostOrUrl == null ? '' : hostOrUrl).trim();
+  if (!s) return '';
+  if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(s)) {
+    s = 'https://' + s;
+  }
+  try {
+    var u = new URL(s);
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return '';
+    if (u.username || u.password) return '';
+    if (!u.hostname || !/^[a-zA-Z0-9.-]+$/.test(u.hostname)) return '';
+    return u.protocol + '//' + u.host + u.pathname + u.search;
+  } catch (e) {
+    return '';
+  }
+}
+
+function createTextCell(text, className) {
+  var td = document.createElement('td');
+  if (className) td.className = className;
+  td.textContent = text == null ? '' : String(text);
+  return td;
+}
+
+function createLink(href, text, attrs) {
+  var a = document.createElement('a');
+  a.setAttribute('href', href);
+  a.textContent = text == null ? '' : String(text);
+  if (attrs) {
+    for (var key in attrs) {
+      if (!Object.prototype.hasOwnProperty.call(attrs, key)) continue;
+      if (key === 'className') a.className = attrs[key];
+      else a.setAttribute(key, String(attrs[key]));
+    }
+  }
+  return a;
+}
+
+function createLinkCell(href, text, className) {
+  var td = document.createElement('td');
+  if (className) td.className = className;
+  td.appendChild(createLink(href, text));
+  return td;
+}
+
+function setRowCells(row, cells) {
+  while (row.firstChild) row.removeChild(row.firstChild);
+  for (var i = 0; i < cells.length; i++) {
+    row.appendChild(cells[i]);
+  }
+  return row;
+}
+
+function createDateTimeCell(timestamp) {
+  var td = document.createElement('td');
+  td.className = 'date-time';
+  var dateTime = new Date(parseInt(timestamp, 10) * 1000).toISOString();
+  td.appendChild(document.createTextNode(formatDate(timestamp) + ' ('));
+  var time = document.createElement('time');
+  time.className = 'timeago';
+  time.setAttribute('datetime', dateTime);
+  td.appendChild(time);
+  td.appendChild(document.createTextNode(')'));
+  return td;
+}
+
+function createBlockLink(hash) {
+  var id = safeExplorerId(hash);
+  return createLink(id ? getBlockchainUrl(id) : '#', hash == null ? '' : String(hash));
+}
+
+function createPaymentLink(hash) {
+  var id = safeExplorerId(hash);
+  return createLink(id ? getTransactionUrl(id) : '#', hash == null ? '' : String(hash));
+}
+
+function createBlockLinkCell(hash, className) {
+  var td = document.createElement('td');
+  if (className) td.className = className;
+  td.appendChild(createBlockLink(hash));
+  return td;
+}
+
+function createPaymentLinkCell(hash, className) {
+  var td = document.createElement('td');
+  if (className) td.className = className;
+  td.appendChild(createPaymentLink(hash));
+  return td;
+}
+
+function replaceElementChildren(el, nodeOrNodes) {
+  while (el.firstChild) el.removeChild(el.firstChild);
+  if (nodeOrNodes == null) return el;
+  if (Array.isArray(nodeOrNodes)) {
+    for (var i = 0; i < nodeOrNodes.length; i++) {
+      el.appendChild(nodeOrNodes[i]);
+    }
+  } else if (typeof nodeOrNodes === 'string') {
+    el.textContent = nodeOrNodes;
+  } else {
+    el.appendChild(nodeOrNodes);
+  }
+  return el;
+}
+
+function makeNavBlockLink(blockHash, direction) {
+  var id = safeExplorerId(blockHash);
+  var a = createLink(id ? getBlockchainUrl(id) : '#', '');
+  var isNext = direction === 'next';
+  a.setAttribute('title', isNext ? 'Previous block' : 'Next block');
+  var icon = document.createElement('i');
+  icon.className = 'fa fa-chevron-circle-' + (isNext ? 'right' : 'left');
+  icon.setAttribute('aria-hidden', 'true');
+  a.appendChild(icon);
+  return a;
+}
+
 function formatNumber(num) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
-function getFinalUrl(URL) {
+function getSafeLangCode() {
   var Language = GetURLParameter('lang');
-
-  if (Language) {
-    return URL.replace('{lang}', "&lang=" + Language);
-  } else {
-    return URL.replace('{lang}', "");
+  if (Language && typeof langs !== 'undefined' && langs &&
+      Object.prototype.hasOwnProperty.call(langs, Language)) {
+    return Language;
   }
+  return '';
+}
+
+function getFinalUrl(URL) {
+  var Language = getSafeLangCode();
+  if (Language) {
+    return URL.replace('{lang}', '&lang=' + encodeURIComponent(Language));
+  }
+  return URL.replace('{lang}', '');
 }
 
 function getTransactionUrl(id) {
-  return getFinalUrl(transactionExplorer.replace('{symbol}', symbol.toLowerCase()).replace('{id}', encodeURIComponent(id)))
+  return getFinalUrl(transactionExplorer.replace('{symbol}', symbol.toLowerCase()).replace('{id}', encodeURIComponent(id)));
+}
+
+function getPaymentIdUrl(id) {
+  return getFinalUrl(paymentIdExplorer.replace('{id}', encodeURIComponent(id)));
+}
+
+/**
+ * Same-document navigation only (?query or #hash). Rejects absolute/scheme URLs.
+ * Callers must pass ids already checked with safeExplorerId / builders below.
+ */
+function navigateExplorer(url) {
+  if (typeof url !== 'string' || !/^[?#]/.test(url)) return false;
+  window.location.assign(url);
+  return true;
+}
+
+function navigateByExplorerId(id, buildUrl) {
+  var safe = safeExplorerId(id);
+  if (!safe) return false;
+  return navigateExplorer(buildUrl(safe));
 }
 
 $.fn.update = function (txt) {
   var el = this[0];
+  if (!el) return this;
   if (el.textContent !== txt)
     el.textContent = txt;
   return this;
@@ -121,16 +278,15 @@ function updateTextClasses(className, text) {
 
 function updateText(elementId, text) {
   var el = document.getElementById(elementId);
+  if (!el) return null;
   if (text !== undefined) el.textContent = text;
   return el;
 }
 
-function updateTextLinkable(elementId, text) {
+function updateTextLinkable(elementId, nodeOrText) {
   var el = document.getElementById(elementId);
-  if (el.innerHTML !== text) {
-    el.innerHTML = text;
-  }
-  return el;
+  if (!el) return null;
+  return replaceElementChildren(el, nodeOrText);
 }
 
 var currentPage;
@@ -163,7 +319,9 @@ function getReadableDifficultyString(difficulty, precision) {
 }
 
 function formatBlockLink(hash) {
-  return '<a href="' + getBlockchainUrl(hash) + '">' + escapeHtml(hash) + '</a>';
+  var id = safeExplorerId(hash);
+  var href = id ? getBlockchainUrl(id) : '#';
+  return '<a href="' + escapeHtml(href) + '">' + escapeHtml(hash) + '</a>';
 }
 
 function getReadableCoins(coins, digits, withoutSymbol) {
@@ -182,11 +340,14 @@ function formatDate(time) {
 }
 
 function formatPaymentLink(hash) {
-  return '<a href="' + getTransactionUrl(hash) + '">' + escapeHtml(hash) + '</a>';
+  var id = safeExplorerId(hash);
+  var href = id ? getTransactionUrl(id) : '#';
+  return '<a href="' + escapeHtml(href) + '">' + escapeHtml(hash) + '</a>';
 }
 
 function pulseLiveUpdate() {
   var stats_update = document.getElementById('stats_updated');
+  if (!stats_update) return;
   stats_update.style.transition = 'opacity 100ms ease-out';
   stats_update.style.opacity = 1;
   setTimeout(function () {
@@ -464,7 +625,12 @@ function checkReserve(cointainer, message, address, signature) {
       result_icon.removeClass("fa-check");
       result_icon.removeClass("fa-times");
 
-      result_text.html("This proves that specified address holds at least <span class='verificationNum'>" + formatNumber(getReadableCoins(res.total, 2)) + "</span>"); /*, from which the following amount was spent: <span class='verificationNum'>" + formatNumber(getReadableCoins(res.spent, 2))) + "</span>"; */
+      result_text.empty();
+      result_text.append(document.createTextNode('This proves that specified address holds at least '));
+      var amountSpan = document.createElement('span');
+      amountSpan.className = 'verificationNum';
+      amountSpan.textContent = formatNumber(getReadableCoins(res.total, 2));
+      result_text.append(amountSpan);
       cointainer.addClass("panel-success");
       result.addClass("text-success");
       result.attr("id", "bpTextSuccess");

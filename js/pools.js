@@ -21,7 +21,11 @@ var poolsLoadingIndicator = null;
 var poolsRefreshed = 0;
 
 var poolsTable = document.getElementById('network-hash');
-sorttable.makeSortable(poolsTable);
+if (poolsTable) sorttable.makeSortable(poolsTable);
+
+function poolFieldId(field, name) {
+  return field + '-' + safeDomIdPart(name);
+}
 
 var calculateTotalFee = function (config) {
   let totalFee = config.config.fee;
@@ -34,22 +38,64 @@ var calculateTotalFee = function (config) {
 };
 
 var renderPoolRow = function (data) {
+  var name = data.info.name;
   var agostring = $.timeago(new Date(data.pool.lastBlockFound));
   var datestring = renderDate(new Date(data.pool.lastBlockFound));
   var poolHashrate = data.pool.soloHashrate ? (data.pool.hashrate + data.pool.soloHashrate) : data.pool.hashrate;
-  var pools_row = [];
 
-  pools_row.push('<tr>');
-  pools_row.push('<td id="host-' + escapeHtml(data.info.name) + '"><a target="_blank" href="http://' + escapeHtml(data.info.host) + '">' + escapeHtml(data.info.name) + '</a></td>');
-  pools_row.push('<td class="height" id=height-' + data.info.name + '>' + localizeNumber(data.network.height) + '</td>');
-  pools_row.push('<td id=hashrate-' + data.info.name + '>' + localizeNumber(poolHashrate) + ' H/s</td>');
-  pools_row.push('<td id=miners-' + data.info.name + '>' + localizeNumber(data.pool.miners) + '</td>');
-  pools_row.push('<td id=totalFee-' + data.info.name + '>' + data.config.poolFee + '%</td>');
-  pools_row.push('<td id=minPayout-' + data.info.name + '>' + getReadableCoins(data.config.minPaymentThreshold, 2) + '</td>');
-  pools_row.push('<td><span id=lastFound-' + data.info.name + '>' + datestring + '</span> (<span class="timeago" id="ago-' + data.info.name + '">' + agostring + '</span>)</td>');
-  pools_row.push('</tr>');
+  var row = document.createElement('tr');
 
-  return pools_row.join('');
+  var hostTd = document.createElement('td');
+  hostTd.id = poolFieldId('host', name);
+  var href = safeExternalHttpUrl(data.info.host);
+  if (href) {
+    var a = document.createElement('a');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
+    a.setAttribute('href', href);
+    a.textContent = name == null ? '' : String(name);
+    hostTd.appendChild(a);
+  } else {
+    hostTd.textContent = name == null ? '' : String(name);
+  }
+  row.appendChild(hostTd);
+
+  var heightTd = createTextCell(localizeNumber(data.network.height));
+  heightTd.id = poolFieldId('height', name);
+  heightTd.className = 'height';
+  row.appendChild(heightTd);
+
+  var hashrateTd = createTextCell(localizeNumber(poolHashrate) + ' H/s');
+  hashrateTd.id = poolFieldId('hashrate', name);
+  row.appendChild(hashrateTd);
+
+  var minersTd = createTextCell(localizeNumber(data.pool.miners));
+  minersTd.id = poolFieldId('miners', name);
+  row.appendChild(minersTd);
+
+  var feeTd = createTextCell(data.config.poolFee + '%');
+  feeTd.id = poolFieldId('totalFee', name);
+  row.appendChild(feeTd);
+
+  var payoutTd = createTextCell(getReadableCoins(data.config.minPaymentThreshold, 2));
+  payoutTd.id = poolFieldId('minPayout', name);
+  row.appendChild(payoutTd);
+
+  var lastTd = document.createElement('td');
+  var lastFound = document.createElement('span');
+  lastFound.id = poolFieldId('lastFound', name);
+  lastFound.textContent = datestring;
+  lastTd.appendChild(lastFound);
+  lastTd.appendChild(document.createTextNode(' ('));
+  var ago = document.createElement('span');
+  ago.className = 'timeago';
+  ago.id = poolFieldId('ago', name);
+  ago.textContent = agostring;
+  lastTd.appendChild(ago);
+  lastTd.appendChild(document.createTextNode(')'));
+  row.appendChild(lastTd);
+
+  return row;
 };
 
 var displayChart = function displayChart() {
@@ -113,7 +159,9 @@ var displayChart = function displayChart() {
           title: function (tooltipItem, data) { return data.labels[tooltipItem[0].index]; },
           label: function (tooltipItem, data) {
             var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-            var total = eval(data.datasets[tooltipItem.datasetIndex].data.join('+'));
+            var series = data.datasets[tooltipItem.datasetIndex].data;
+            var total = 0;
+            for (var i = 0; i < series.length; i++) total += series[i];
             return localizeNumber(amount) + ' / ' + localizeNumber(total) + ' H/s  (' + parseFloat(amount * 100 / total).toFixed(2) + '%)';
           }
         }
@@ -174,11 +222,11 @@ setInterval(function () {
       totalHashrate += element.pool.hashrate;
       totalMiners += parseInt(element.pool.miners);
 
-      updateText('height-' + poolName, localizeNumber(element.network.height));
-      updateText('hashrate-' + poolName, localizeNumber(element.pool.hashrate) + ' H/s');
-      updateText('miners-' + poolName, localizeNumber(element.pool.miners));
-      updateText('lastFound-' + poolName, datestring);
-      updateText('ago-' + poolName, agostring);
+      updateText(poolFieldId('height', poolName), localizeNumber(element.network.height));
+      updateText(poolFieldId('hashrate', poolName), localizeNumber(element.pool.hashrate) + ' H/s');
+      updateText(poolFieldId('miners', poolName), localizeNumber(element.pool.miners));
+      updateText(poolFieldId('lastFound', poolName), datestring);
+      updateText(poolFieldId('ago', poolName), agostring);
       updateText('totalPoolsHashrate', getReadableHashRateString(totalHashrate) + '/sec');
       updateText('total_miners', localizeNumber(totalMiners));
       updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval) + '/sec');

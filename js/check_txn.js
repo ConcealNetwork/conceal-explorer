@@ -98,18 +98,29 @@ $("#check_transaction").click(function() {
 	    var privateKeyType = $("[name=keyType]:checked").val();
             var results = checkTxn(response.result, privateKey.val(), publicAddress.val(), privateKeyType);
             if (results.error) {
-		$("#txn_link").attr('href', '');
-		$("#txn_link").html('?');
+		$("#txn_link").attr('href', '#');
+		$("#txn_link").text('?');
                 //TODO proper error display
                 alert(results.error);
             } else {
-		$("#txn_link").attr('href', '?hash=' + encodeURIComponent(transactionHash.val()) + '#blockchain_transaction');
-		$("#txn_link").text(transactionHash.val());
-                $("#outputs_rows").html("");
+                var safeHash = safeExplorerId(transactionHash.val());
+                if (safeHash) {
+                  $("#txn_link").attr('href', getTransactionUrl(safeHash));
+                  $("#txn_link").text(safeHash);
+                } else {
+                  $("#txn_link").attr('href', '#');
+                  $("#txn_link").text('?');
+                }
+                var outputsRows = document.getElementById('outputs_rows');
+                while (outputsRows.firstChild) outputsRows.removeChild(outputsRows.firstChild);
                 for (var o in results.owned) {
                     var owned = results.owned[o];
-                    var row = "<tr><td>" + owned[2] + "</td><td>" + owned[1] + "</td></tr>";
-                    $("#outputs_rows").append(row);
+                    var row = document.createElement('tr');
+                    setRowCells(row, [
+                      createTextCell(owned[2]),
+                      createTextCell(owned[1])
+                    ]);
+                    outputsRows.appendChild(row);
                 }
             }
         }

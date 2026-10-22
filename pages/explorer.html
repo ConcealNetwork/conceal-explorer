@@ -89,11 +89,6 @@
       });
     },
     update: function () {
-      renderLastBlock();
-      updateText('networkHeight', localizeNumber(lastStats.height.toString()));
-      updateText('networkTransactions', localizeNumber(lastStats.tx_count.toString()));
-      updateText('networkHashrate', getReadableHashRateString(lastStats.difficulty / blockTargetInterval));
-      updateText('networkDifficulty', getReadableDifficultyString(lastStats.difficulty, 0).toString());
       $("time.timeago").timeago();
       getPoolTransactions();
       var currHeight = $('#blocks_rows').children().first().data('height');
@@ -111,47 +106,6 @@
       }
     }
   };
-
-  function renderLastBlock() {
-    $.ajax({
-      url: api + '/json_rpc',
-      method: "POST",
-      data: JSON.stringify({
-        jsonrpc: "2.0",
-        id: "test",
-        method: "getlastblockheader",
-        params: {}
-      }),
-      dataType: 'json',
-      cache: 'false',
-      success: function (data) {
-        last_block_hash = data.result.block_header.hash;
-        last_block_deposts = data.result.block_header.deposits;
-        $.ajax({
-          url: api + '/json_rpc',
-          method: "POST",
-          data: JSON.stringify({
-            jsonrpc: "2.0",
-            id: "test",
-            method: "f_block_json",
-            params: {
-              hash: last_block_hash
-            }
-          }),
-          dataType: 'json',
-          cache: 'false',
-          success: function (data) {
-            block = data.result.block;
-            circulating_supply = block.alreadyGeneratedCoins - last_block_deposts;
-            updateText('totalCoins', getReadableCoins2(block.alreadyGeneratedCoins, 6));
-            updateText('emissionPercent', getReadableCoins2(circulating_supply, 6));
-            updateText('currentReward', getReadableCoins(block.baseReward, 6));
-            updateText('depositCoins', getReadableCoins2(last_block_deposts, 6));
-          }
-        });
-      }
-    });
-  }
 
   var xhrGetBlocks;
   $('#loadMoreBlocks').click(function () {
@@ -314,13 +268,6 @@
     row.setAttribute('title', block.hash);
     var dateTime = new Date(block.timestamp * 1000).toISOString();
     row.setAttribute('data-dt', dateTime);
-    var columns =
-      '<td class="blk-height">' + localizeNumber(block.height) + '</td>' +
-      '<td class="blk-size">' + localizeNumber(block.cumul_size) + '</td>' +
-      '<td class="blk-hash">' + formatBlockLink(block.hash) + '</td>' +
-      '<td class="blk-diff">' + localizeNumber(block.difficulty) + '</td>' +
-      '<td class="blk-tx">' + localizeNumber(block.tx_count) + '</td>' +
-      '<td class="date-time">' + formatDate(block.timestamp) + ' (<time class="timeago" datetime="' + dateTime + '"></time>)</td>';
 
     Difficulties.push(parseInt(block.difficulty));
     Blocks.push(parseInt(block.height));
@@ -328,9 +275,14 @@
     Sizes.push(parseInt(block.cumul_size));
     Timestamps.push(dateTime);
 
-    row.innerHTML = columns;
-
-    return row;
+    return setRowCells(row, [
+      createTextCell(localizeNumber(block.height), 'blk-height'),
+      createTextCell(localizeNumber(block.cumul_size), 'blk-size'),
+      createBlockLinkCell(block.hash, 'blk-hash'),
+      createTextCell(localizeNumber(block.difficulty), 'blk-diff'),
+      createTextCell(localizeNumber(block.tx_count), 'blk-tx'),
+      createDateTimeCell(block.timestamp)
+    ]);
   }
 
   function renderBlocks(blocksResults) {
@@ -418,13 +370,12 @@
             var size = transactions[tx].size;
             var row = document.createElement('tr');
             var timestamp = Date().now; // this is not yet part of the json that gets returned in f_transactions_pool_json, leave for now
-            var columns =
-              /*'<td>' + formatDate(timestamp) + ' (<span class="mtx-ago"></span>)' + '</td>' +*/
-              '<td>' + getReadableCoins(amount, 4, true) + '</td>' +
-              '<td>' + getReadableCoins(fee, 6, true) + '</td>' +
-              '<td>' + localizeNumber(size) + '</td>' +
-              '<td>' + formatPaymentLink(hash) + '</td>';
-            row.innerHTML = columns;
+            setRowCells(row, [
+              createTextCell(getReadableCoins(amount, 4, true)),
+              createTextCell(getReadableCoins(fee, 6, true)),
+              createTextCell(localizeNumber(size)),
+              createPaymentLinkCell(hash)
+            ]);
             $(txsRows).append(row);
             //$(row).find('.mtx-ago').timeago('update', new Date(timestamp * 1000).toISOString()); We can re-enable this after a timestamp is added to the mem_pool json
           }
