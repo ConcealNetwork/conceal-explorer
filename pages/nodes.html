@@ -108,7 +108,7 @@
   }
 
   function onConnectURLClick(e) {
-    copyToClipboard($(e.target).html());
+    copyToClipboard($(e.target).text());
   }
 
   function normalizeVersion(version) {
@@ -204,7 +204,7 @@
             }
           }
 
-          $("#nodesNumber").html("(" + tableData.length + " online)");
+          $("#nodesNumber").text("(" + tableData.length + " online)");
         }
 
         if (initialLoad) {
@@ -216,7 +216,8 @@
               {
                 className: "ntNodeConnectURL",
                 render: function (data, type, row) {
-                  return '<a href="#" data-toggle="modal" data-target="#dlgCopiedToClipboard" onclick="onConnectURLClick(event)">' + data + '</a>';
+                  if (type !== "display") return data;
+                  return '<a href="#" data-toggle="modal" data-target="#dlgCopiedToClipboard" onclick="onConnectURLClick(event)">' + escapeHtml(data) + '</a>';
                 }
               }, {
                 className: "ntNodeSSL",
@@ -227,22 +228,27 @@
                   return data ? '<span class="ntNodeSslCheck" title="SSL">✓</span>' : "";
                 }
               }, {
-                className: "ntNodeName"
+                className: "ntNodeName",
+                render: dtEscapedText
               }, {
-                className: "ntNodeLocation"
+                className: "ntNodeLocation",
+                render: dtEscapedText
               }, {
                 className: "ntNodeStarted",
-                iDataSort: 5
+                iDataSort: 5,
+                render: dtEscapedText
               }, {
                 className: "ntNodeStartedActual",
                 visible: false,
                 searchable: false
               }, {
-                className: "ntNodeHeight"
+                className: "ntNodeHeight",
+                render: dtEscapedText
               }, {
                 className: "ntNodeUptime",
                 render: function (data, type, row) {
-                  return data + "%";
+                  if (type !== "display" && type !== "filter") return data;
+                  return escapeHtml(data) + "%";
                 }
               }, {
                 className: "ntGuardianVersion",
@@ -250,16 +256,19 @@
                   if (type !== "display") {
                     return data;
                   }
-                  return data + versionStatusDot(isLatestVersion(data, guardianRelease.tag_name));
+                  return escapeHtml(data) + versionStatusDot(isLatestVersion(data, guardianRelease.tag_name));
                 }
               }, {
                 className: "ntNodeVersion",
                 orderable: false,
                 render: function (data, type, row) {
-                  if (row[6] < (correctHeight - 2)) {
-                    return data + '<span class="nodeStatus square-8 bg-danger mg-r-5 rounded-circle"></span>';
+                  if (type !== "display") {
+                    return data;
                   }
-                  return data + versionStatusDot(isLatestVersion(data, coreRelease.tag_name));
+                  if (row[6] < (correctHeight - 2)) {
+                    return escapeHtml(data) + '<span class="nodeStatus square-8 bg-danger mg-r-5 rounded-circle"></span>';
+                  }
+                  return escapeHtml(data) + versionStatusDot(isLatestVersion(data, coreRelease.tag_name));
                 }
               }
             ]
