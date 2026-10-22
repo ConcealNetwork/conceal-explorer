@@ -179,7 +179,7 @@
       $('#tx_unconfirmed').show();
     }
 
-    updateTextLinkable('block.hash', formatBlockLink(block.hash));
+    updateTextLinkable('block.hash', createBlockLink(block.hash));
     updateText('block.height', localizeNumber(block.height));
     updateText('block.timestamp', formatDate(block.timestamp));
 
@@ -187,18 +187,15 @@
     renderOutputs(outputs);
   }
 
-  function getInputCells(input) {
-    return '<td>' + getReadableCoins(input.value.amount, 6) + '</td>' + '<td>' + escapeHtml(input.value.k_image) + '</td>';
-  }
-
-
   function getInputRowElement(input, jsonString) {
     var row = document.createElement('tr');
     row.setAttribute('data-json', jsonString);
     row.setAttribute('data-k_image', input.value.k_image);
     row.setAttribute('id', 'inputRow' + input.value.k_image);
-    row.innerHTML = getInputCells(input);
-    return row;
+    return setRowCells(row, [
+      createTextCell(getReadableCoins(input.value.amount, 6)),
+      createTextCell(input.value.k_image)
+    ]);
   }
 
   function renderInputs(inputResults) {
@@ -225,18 +222,15 @@
   }
 
 
-  function getOutputCells(output) {
-    return '<td>' + getReadableCoins(output.amount, 6) + '</td>' + '<td>' + escapeHtml(output.target.data.key) + '</td>';
-  }
-
-
   function getOutputRowElement(output, jsonString) {
     var row = document.createElement('tr');
     row.setAttribute('data-json', jsonString);
     row.setAttribute('data-k_image', output.target.data.key);
     row.setAttribute('id', 'outputRow' + output.target.data.key);
-    row.innerHTML = getOutputCells(output);
-    return row;
+    return setRowCells(row, [
+      createTextCell(getReadableCoins(output.amount, 6)),
+      createTextCell(output.target.data.key)
+    ]);
   }
 
   function renderOutputs(outputResults) {

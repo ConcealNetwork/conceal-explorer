@@ -248,7 +248,7 @@
           success: function (data) {
             if (data.result) {
               block = data.result.block_header;
-              window.location.href = getBlockchainUrl(block.hash);
+              if (!navigateByExplorerId(block.hash, getBlockchainUrl)) wrongSearchAlert();
             } else if (data.error) {
               wrongSearchAlert();
             }
@@ -276,7 +276,7 @@
             if (data.result) {
               block = data.result.block;
               sessionStorage.setItem('searchBlock', JSON.stringify(block));
-              window.location.href = getBlockchainUrl(block.hash);
+              if (!navigateByExplorerId(block.hash, getBlockchainUrl)) wrongSearchAlert();
             } else if (data.error) {
               $.ajax({
                 url: api + '/json_rpc',
@@ -294,7 +294,7 @@
                 success: function (data) {
                   if (data.result) {
                     sessionStorage.setItem('searchTransaction', JSON.stringify(data.result));
-                    window.location.href = getFinalUrl(transactionExplorer.replace('{id}', encodeURIComponent(value)));
+                    if (!navigateByExplorerId(value, getTransactionUrl)) wrongSearchAlert();
                   } else if (data.error) {
                     xhrGetTsx = $.ajax({
                       url: api + '/json_rpc',
@@ -313,9 +313,9 @@
                         if (data.result) {
                           txsByPaymentId = data.result.transactions;
                           sessionStorage.setItem('txsByPaymentId', JSON.stringify(txsByPaymentId));
-                          window.location.href = getFinalUrl(paymentIdExplorer.replace('{id}', encodeURIComponent(value)));
+                          if (!navigateByExplorerId(value, getPaymentIdUrl)) wrongSearchAlert();
                         } else if (data.error) {
-                          $("#errorReason").html("We could not find anything, check if the data is correct.");
+                          $("#errorReason").text("We could not find anything, check if the data is correct.");
                           $("#errorDialog").modal();
                         }
                       }
@@ -356,7 +356,7 @@
     });
 
     function wrongSearchAlert() {
-      $("#errorReason").html("Wrong search query!</strong><br /> Please enter block height or hash, transaction hash, or payment id.");
+      $("#errorReason").text("Wrong search query! Please enter block height or hash, transaction hash, or payment id.");
       $("#errorDialog").modal();
     }
 
@@ -404,22 +404,24 @@
     });
 
     $('#mainNavigation .nav-link').click(function () {
-      var newURL = window.location.href.split('?').map((url, i) => !i ? url : url.split('&').filter(p => !p.startsWith('hash' + '=')).join('&')).join('?');
-
-      if ((newURL.lastIndexOf('?') == (newURL.lastIndexOf('#') - 1)) || (newURL.substring(newURL.length - 1) == "?")) {
-        newURL = newURL.replace("?", "");
+      var href = $(this).attr('href') || '';
+      // Same-document hash targets only (dashboard uses "" / "#").
+      if (href !== '' && href !== '#' && !/^#[A-Za-z0-9_-]+$/.test(href)) {
+        return false;
       }
-
-      if (newURL.search("#") > -1) {
-        newURL = newURL.substring(0, newURL.lastIndexOf('#'));
+      var url;
+      try {
+        url = new URL(window.location.href);
+      } catch (e) {
+        return false;
       }
-
-      if (($(this).attr("href") == "") || ($(this).attr("href") == "#")) {
-        window.location.href = newURL;
+      url.searchParams.delete('hash');
+      if (href === '' || href === '#') {
+        url.hash = '';
       } else {
-        window.location.href = newURL + $(this).attr("href");
+        url.hash = href;
       }
-
+      window.location.assign(url.pathname + url.search + url.hash);
       return false;
     });
   </script>

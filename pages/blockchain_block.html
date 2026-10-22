@@ -142,13 +142,6 @@
 		});	
 	}
 	
-    function getTransactionCells(transaction){
-        return '<td>' + formatPaymentLink(transaction.hash) + '</td>' +
-               '<td>' + getReadableCoins(transaction.fee, 6, true) + '</td>' +
-               '<td>' + getReadableCoins(transaction.amount_out, 4, true) + '</td>' +
-               '<td>' + localizeNumber(transaction.size) + '</td>';
-    }
-
     function getTransactionRowElement(transaction, jsonString){
 
         var row = document.createElement('tr');
@@ -156,9 +149,12 @@
         row.setAttribute('data-hash', transaction.hash);
         row.setAttribute('id', 'transactionRow' + transaction.hash);
 
-        row.innerHTML = getTransactionCells(transaction);
-
-        return row;
+        return setRowCells(row, [
+            createPaymentLinkCell(transaction.hash),
+            createTextCell(getReadableCoins(transaction.fee, 6, true)),
+            createTextCell(getReadableCoins(transaction.amount_out, 4, true)),
+            createTextCell(localizeNumber(transaction.size))
+        ]);
     }
 
     function renderTransactions(transactionResults){
@@ -186,16 +182,14 @@
     }
 	
 	function makeNextBlockLink(blockHash){
-		$('#block_height').append('<a href="' + getBlockchainUrl(blockHash) + '"  title="Previous block"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>');
+		document.getElementById('block_height').appendChild(makeNavBlockLink(blockHash, 'next'));
 	}
 	
 	function makePrevBlockLink(blockHash){
-		$('#block_height').prepend(' <a href="' + getBlockchainUrl(blockHash) + '" title="Next block"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></a>');
+		var el = document.getElementById('block_height');
+		el.insertBefore(document.createTextNode(' '), el.firstChild);
+		el.insertBefore(makeNavBlockLink(blockHash, 'prev'), el.firstChild);
 	}
-	
-	function formatPrevNextBlockLink(hash){
-        return '<a href="' + getBlockchainUrl(hash) + '">' + hash + '</a>';
-    }
 	
 	$(function() {
 		$('[data-toggle="tooltip"]').tooltip();

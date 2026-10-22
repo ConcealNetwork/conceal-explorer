@@ -40,7 +40,7 @@
                     <input type="text" class="form-control" id="secretKey" tplaceholder="txTransactionSecretKeyHint" placeholder="Enter the transaction secret key" maxlength=66>
                 </div>                        
             </div>            
-            <p><center><button onclick="decode()" class="btn btn-primary-outline" id='button' tkey="btnShowTransaction">SHOW TRANSACTION</button></p></center>
+            <p class="text-center"><button onclick="decode()" class="btn btn-primary-outline" id='button' tkey="btnShowTransaction">SHOW TRANSACTION</button></p>
             
             <!-- general modal error dialog -->
             <div id="errorDialog" class="modal fade" style="display: none;" aria-hidden="true">
@@ -82,7 +82,7 @@
 
 <link href="lib/highlightjs/css/dracula.css" rel="stylesheet">
 <script src="lib/highlightjs/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script>hljs.highlightAll();</script>
 
 <script>
 currentPage = {
@@ -111,26 +111,26 @@ function decode (url) {
   const type = $('input:radio[name=type]:checked').val();
 
   if (!txHash) {
-    $("#errorReason").html("Please enter the transaction hash");
+    $("#errorReason").text("Please enter the transaction hash");
     $("#errorDialog").modal();
     return false;
   }
 
   if (!account) {
-    $("#errorReason").html("Please enter the recipient wallet address");
+    $("#errorReason").text("Please enter the recipient wallet address");
     $("#errorDialog").modal();
     return false;
   }
 
   if (!secretKey) {
-    $("#errorReason").html("Please enter the transaction secret key");
+    $("#errorReason").text("Please enter the transaction secret key");
     $("#errorDialog").modal();
     return false;
   }
 
   getTx(txHash, (res) => {
     if (res.error || !res.result) {
-        $("#errorReason").html(res.error ? res.error.message : 'Unknown error');
+        $("#errorReason").text(res.error ? res.error.message : 'Unknown error');
         $("#errorDialog").modal();
     } else {
         let output = 'Block containing transaction:\n' + JSON.stringify(res.result.block, null, 2)
@@ -142,7 +142,11 @@ function decode (url) {
         }
         output += JSON.stringify(txDetails, null, 2);
 
-        $("#txData").html(output);
+        var txDataEl = document.getElementById('txData');
+        txDataEl.textContent = output;
+        if (window.hljs && typeof hljs.highlightElement === 'function') {
+          hljs.highlightElement(txDataEl);
+        }
         $("#txDetails").modal();
     }
   })
