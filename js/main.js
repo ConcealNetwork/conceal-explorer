@@ -1,7 +1,3 @@
-var blockchainExplorer = "?hash={id}{lang}#blockchain_block";
-var transactionExplorer = "?hash={id}{lang}#blockchain_transaction";
-var paymentIdExplorer = "?hash={id}{lang}#blockchain_payment_id";
-
 var style_cookie_name = "style";
 var style_cookie_duration = 365;
 var style_domain = window.location.hostname;
@@ -78,12 +74,18 @@ $(document).ready(function () {
 });
 
 function escapeHtml(text) {
-  return String(text)
+  return String(text == null ? '' : text)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+/** DataTables render helper: escape for display/filter, raw value for sort/type. */
+function dtEscapedText(data, type) {
+  if (type === 'display' || type === 'filter') return escapeHtml(data);
+  return data;
 }
 
 /** Hex ids used in explorer URLs (block/tx/payment hashes). */
@@ -232,14 +234,6 @@ function getSafeLangCode() {
   return '';
 }
 
-function getFinalUrl(URL) {
-  var Language = getSafeLangCode();
-  if (Language) {
-    return URL.replace('{lang}', '&lang=' + encodeURIComponent(Language));
-  }
-  return URL.replace('{lang}', '');
-}
-
 /** Same-document explorer URL (always starts with /). Hex id only. */
 function buildExplorerPathUrl(hashName, id) {
   var safe = safeExplorerId(id);
@@ -358,12 +352,6 @@ function getReadableDifficultyString(difficulty, precision) {
   return localizeNumber((difficulty / Math.pow(1000, Math.floor(number))).toFixed(precision)) + ' ' + units[number];
 }
 
-function formatBlockLink(hash) {
-  var id = safeExplorerId(hash);
-  var href = id ? getBlockchainUrl(id) : '#';
-  return '<a href="' + escapeHtml(href) + '">' + escapeHtml(hash) + '</a>';
-}
-
 function getReadableCoins(coins, digits, withoutSymbol) {
   var amount = (coins / coinUnits).toFixed(digits);
   return (amount) + (withoutSymbol ? '' : (' ' + symbol));
@@ -377,12 +365,6 @@ function getReadableCoins2(coins, digits, withoutSymbol) {
 function formatDate(time) {
   if (!time) return '';
   return renderDate(new Date(parseInt(time) * 1000));
-}
-
-function formatPaymentLink(hash) {
-  var id = safeExplorerId(hash);
-  var href = id ? getTransactionUrl(id) : '#';
-  return '<a href="' + escapeHtml(href) + '">' + escapeHtml(hash) + '</a>';
 }
 
 function pulseLiveUpdate() {
