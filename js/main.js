@@ -594,7 +594,7 @@ function wrongParamAlert(message, cointainer) {
     '<div id="paramsAlert" class="alert alert-solid alert-danger mg-b-0" role="alert" style="z-index: 999;">' +
     '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
     '<span aria-hidden="true">×</span>' +
-    '</button>' + message +
+    '</button>' + escapeHtml(message) +
     '</div>');
 
   setTimeout(() => {

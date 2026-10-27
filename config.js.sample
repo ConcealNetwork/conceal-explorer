@@ -1,4 +1,5 @@
-var api = 'http://explorer.conceal-testnet.tk:26000/';
+var api = 'https://explorer.conceal-testnet.tk:26000/';
+// Always use HTTPS: daemon responses are rendered in the explorer's origin
 var poolListUrl = '';
 var donationAddress = "";
 var blockTargetInterval = 120;
