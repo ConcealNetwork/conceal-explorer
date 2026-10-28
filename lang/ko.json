@@ -74,8 +74,11 @@
     "poolsLastBlockFound": "Last Block Found",
     "poolsChartTitle": "Network Hashrate Visualization",
 
-    "txText1": "This page allows viewing of private data in a transaction not viewable using the <a href='http://explorer.conceal.network/' target = '_blank'>Conceal Block Explorer</a>, if you have the transaction hash, the recipient wallet address and either the secret transaction key (provided by the sender and valid for only a single transaction) or the recipient's secret view key.",
-    "txText2": "Select the type of secret key, complete the form, then click on <i>SHOW TRANSACTION</i>. If you omit the address and/or secret key, the transaction will be displayed without private data. The transaction can be viewed only after it is included in a block, which may take a few minutes.",
+    "txText1a": "This page allows viewing of private data in a transaction not viewable using the ",
+    "txExplorerLink": "Conceal Block Explorer",
+    "txText1b": ", if you have the transaction hash, the recipient wallet address and either the secret transaction key (provided by the sender and valid for only a single transaction) or the recipient's secret view key.",
+    "txText2a": "Select the type of secret key, complete the form, then click on ",
+    "txText2b": ". If you omit the address and/or secret key, the transaction will be displayed without private data. The transaction can be viewed only after it is included in a block, which may take a few minutes.",
     "txTransactionKey": "Secret transaction key provided by sender",
     "txViewKey": "Secret view key owned by recipient",
     "txTransactionHash": "Transaction hash",

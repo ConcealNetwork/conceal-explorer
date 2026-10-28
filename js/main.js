@@ -507,7 +507,7 @@ var translate = function (data) {
 
   $("[tkey]").each(function (index) {
     var strTr = data[$(this).attr('tkey')];
-    $(this).html(strTr);
+    $(this).text(strTr);
   });
 
   $("[tplaceholder]").each(function (index) {

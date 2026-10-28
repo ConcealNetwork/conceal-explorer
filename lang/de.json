@@ -74,8 +74,11 @@
     "poolsLastBlockFound": "Letzter gefundener Block",
 	"poolsChartTitle": "Visualisierung der Netzwerk Hashrate",
 
-    "txText1": "Diese Seite ermöglicht das Ansehen von privaten Daten einer Transaktion, die über den <a href='http://explorer.conceal.network/' target = '_blank'>Conceal Block Explorer</a> nicht sichtbar ist. Dafür wird der Transaction hash, die Empfängeradresse und entweder der geheime Transaktions-Key (bereitgestellt durch den Absender und gültig für eine einzige Transaktion) oder der geheime View-Key des Empfängers.",
-    "txText2": "Wähle eine Form des geheimen Keys, fülle das Formular aus und klicke dann auf <i>TRANSAKTION ANZEIGEN</i>. Lässt du die Adresse und/oder den geheimen Key leer, wird die Transaktion ohne die privaten Daten angezeigt. Die Transaktion kann erst angesehen werden, nachdem sie in einem Block abgelegt wurde. Dies kann wenige Minuten in Anspruch nehmen.",
+    "txText1a": "Diese Seite ermöglicht das Ansehen von privaten Daten einer Transaktion, die über den ",
+    "txExplorerLink": "Conceal Block Explorer",
+    "txText1b": " nicht sichtbar ist. Dafür wird der Transaction hash, die Empfängeradresse und entweder der geheime Transaktions-Key (bereitgestellt durch den Absender und gültig für eine einzige Transaktion) oder der geheime View-Key des Empfängers.",
+    "txText2a": "Wähle eine Form des geheimen Keys, fülle das Formular aus und klicke dann auf ",
+    "txText2b": ". Lässt du die Adresse und/oder den geheimen Key leer, wird die Transaktion ohne die privaten Daten angezeigt. Die Transaktion kann erst angesehen werden, nachdem sie in einem Block abgelegt wurde. Dies kann wenige Minuten in Anspruch nehmen.",
     "txTransactionKey": "Geheimer Transaktions-Key wird durch den Absender bereitgestellt",
     "txViewKey": "Geheimer View-Key ist im Besitz des Empfängers",
     "txTransactionHash": "Transaktionshash",

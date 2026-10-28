@@ -75,8 +75,11 @@
     "poolsLastBlockFound": "Último bloque encontrado",
     "poolsChartTitle": "Visualización de la red ",
 
-    "txText1": "Esta página permite ver datos privados en una transacción que no se puede ver usando el <a href='http://explorer.conceal.network/' target ='_blanco'> Ocultación de Explorador de Bloques </a>, si tiene el hash de transacción, la dirección de la cartera del destinatario y la clave de transacción secreta (proporcionada por el remitente y válida para una sola transacción) o la clave de vista secreta del destinatario ",
-    "txText2": "Seleccione el tipo de clave secreta, complete el formulario, luego haga clic en <i> MOSTRAR TRANSACCIÓN </i>. Si omite la dirección y / o clave secreta, la transacción se mostrará sin datos privados. la transacción se puede ver solo después de que se incluya en un bloque, lo que puede demorar unos minutos ",
+    "txText1a": "Esta página permite ver datos privados en una transacción que no se puede ver usando el ",
+    "txExplorerLink": "Ocultación de Explorador de Bloques",
+    "txText1b": ", si tiene el hash de transacción, la dirección de la cartera del destinatario y la clave de transacción secreta (proporcionada por el remitente y válida para una sola transacción) o la clave de vista secreta del destinatario",
+    "txText2a": "Seleccione el tipo de clave secreta, complete el formulario, luego haga clic en ",
+    "txText2b": ". Si omite la dirección y / o clave secreta, la transacción se mostrará sin datos privados. la transacción se puede ver solo después de que se incluya en un bloque, lo que puede demorar unos minutos",
     "txTransactionKey": "Clave de transacción secreta proporcionada por el remitente",
     "txViewKey": "Clave de vista secreta propiedad del destinatario",
     "txTransactionHash": "transacción hash",

@@ -3,15 +3,16 @@
         <div class="card-header tx-medium bd-0 tx-white bg-primary-dark"><h3><span tkey="txViewerTitle">Conceal Transaction Viewer</span></h3></div>
         <div class="card-body card-body-info">
             <div class="container">  
-                <p><label tkey="txText1">This page allows viewing of private data in a transaction not viewable using the
-                <a href="http://explorer.conceal.network/" target = "_blank">Conceal Block Explorer</a>,
-                if you have the transaction hash, the recipient wallet address and either
-                the secret transaction key (provided by the sender and valid for only a single transaction)
-                or the recipient's secret view key.</label></p>
+                <p><label>
+                <span tkey="txText1a">This page allows viewing of private data in a transaction not viewable using the </span>
+                <a href="https://explorer.conceal.network/" target="_blank" rel="noopener" tkey="txExplorerLink">Conceal Block Explorer</a>
+                <span tkey="txText1b">, if you have the transaction hash, the recipient wallet address and either the secret transaction key (provided by the sender and valid for only a single transaction) or the recipient's secret view key.</span>
+                </label></p>
 
-                <p><label tkey="txText2">Select the type of secret key, complete the form, then click on <i>SHOW TRANSACTION</i>.
-                If you omit the address and/or secret key, the transaction will be displayed without private data.
-                The transaction can be viewed only after it is included in a block, which may take a few minutes.
+                <p><label>
+                <span tkey="txText2a">Select the type of secret key, complete the form, then click on </span>
+                <i tkey="btnShowTransaction">SHOW TRANSACTION</i>
+                <span tkey="txText2b">. If you omit the address and/or secret key, the transaction will be displayed without private data. The transaction can be viewed only after it is included in a block, which may take a few minutes.</span>
                 </label></p>
             </div>
 
