@@ -40266,6 +40266,12 @@ a.hover-white-8:hover, a.hover-white-8:focus {
   border: 1px solid #FFA500 !important;
 }
 
+.btn-primary-outline:hover,
+.btn-primary-outline:focus {
+  color: #fff !important;
+  background-color: #FFA500;
+}
+
 .btn-primary-dark {
   color: #fff;
   background-color: #20384f !important;
